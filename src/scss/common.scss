@@ -62,22 +62,22 @@ body { overflow: -moz-scrollbars-none; }
 }
 
 // Заїзд - виїзд блоку на сторінку
-// .position-right {
-// 	position: relative;
-// 	left: 200%;
-// }
+.position-right {
+	position: relative;
+	left: 200%;
+}
 
-// .position-left {
-// 	transition: all 1.7s cubic-bezier(.14,.06,0,.99) 0s;
-// 	position: relative;
-// 	left: -200%;
-// }
+.position-left {
+	transition: all 1.7s cubic-bezier(.14,.06,0,.99) 0s;
+	position: relative;
+	left: -200%;
+}
 
-// .position-center {
-// 	transition: all 0.4s ease 0s;
-// 	position: relative;
-// 	left: 0%;
-// }
+.position-center {
+	transition: all 0.4s ease 0s;
+	position: relative;
+	left: 0%;
+}
 
 // Ефект кола при наведенні
 .button-effect {
