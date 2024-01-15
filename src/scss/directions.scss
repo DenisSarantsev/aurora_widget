@@ -1,0 +1,19 @@
+
+.directions-page {
+	width: 100%;
+	height: 100%;
+	&__container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: toRem(20);
+	}
+	&__title {
+	}
+	&__buttons-block {
+
+	}
+	&__button {
+	}
+}

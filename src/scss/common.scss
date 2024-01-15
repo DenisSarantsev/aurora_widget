@@ -1,0 +1,150 @@
+// Заголовки, загальні БЕМ блоки та інше...
+
+
+	/* хром, сафари */
+body::-webkit-scrollbar { width: 0; }
+
+/* ie 10+ */
+body { -ms-overflow-style: none; }
+
+/* фф (свойство больше не работает, других способов тоже нет)*/
+body { overflow: -moz-scrollbars-none; }
+
+
+.page {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: $backGroundColor;
+	padding: toRem(20) toRem(0)
+}
+
+// Головний контейнер з контентом
+.page-container {
+	max-width: toRem(768);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: toRem(20);
+}
+
+// Головний стиль заголовку
+.title-main-style {
+	text-align: center;
+	font-size: toRem(20);
+	font-weight: 600;
+}
+
+// Головний стиль тексту та підзаголовків
+.subtitle-main-style {
+	text-align: center;
+	font-size: toRem(16);
+}
+
+// Головний стиль кнопок для вибору
+.route-button-main-style {
+	font-weight: 500;
+	background-color: $mainYellow;
+	border-radius: 100px;
+	line-height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: auto;
+	font-size: toRem(18);
+	transition: all 0.3s ease 0s;
+	&:hover {
+		transition: all 0.3s ease 0s;
+	}
+}
+
+// Заїзд - виїзд блоку на сторінку
+// .position-right {
+// 	position: relative;
+// 	left: 200%;
+// }
+
+// .position-left {
+// 	transition: all 1.7s cubic-bezier(.14,.06,0,.99) 0s;
+// 	position: relative;
+// 	left: -200%;
+// }
+
+// .position-center {
+// 	transition: all 0.4s ease 0s;
+// 	position: relative;
+// 	left: 0%;
+// }
+
+// Ефект кола при наведенні
+.button-effect {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.button-effect div {
+  position: relative;
+  transition: all .45s ease-out;
+}
+
+#circle {
+	z-index: 0;
+  width: 0%;
+  height: 0%;
+
+  line-height: 40px;
+  border-radius: 50%;
+  background: #ffc800;
+  position: absolute;
+  transition: all .5s ease-Out;
+  top: 0px;
+  left: 90px;
+}
+
+.button-effect:hover #circle {
+  width: 200%;
+  height: 500%;
+	opacity: 1;
+  top: -100px;
+  left: -50px;
+	z-index: 0;
+}
+
+.button-effect:hover div {
+	position: relative;
+	z-index: 2;
+  color: #000;
+}
+
+// Кнопки у футері
+.footer-button {
+	font-weight: 500;
+	border-radius: 100px;
+	line-height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: auto;
+	font-size: toRem(18);
+	width: 100%;
+	transition: all 0.3s ease 0s;
+	max-width: toRem(500);
+	background-color: rgba($color: #000000, $alpha: 0.15);
+	&:hover {
+		transition: all 0.3s ease 0s;
+	}
+}
+
+// Головний блок з кнопками по центру
+.route-buttons-block {
+	max-width: toRem(500);
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: toRem(10);
+}

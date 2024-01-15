@@ -1,0 +1,42 @@
+.page {
+	&__about-company {
+	}
+}
+.about-company {
+	&__container {
+	}
+	&__title {
+		text-align: left;
+	}
+	&__subtitle {
+		text-align: left;
+	}
+	&__image {
+		max-width: toRem(700);
+		margin-bottom: toRem(10);
+	}
+	&__list {
+		&>* {
+			margin-top: toRem(10);
+			gap: toRem(5);
+			display: flex;
+			flex-direction: column;
+			align-items: start;
+			padding-left: toRem(10);
+			position: relative;
+			&::before {
+				content: "";
+				position: absolute;
+				left: 0;
+				top: 6px;
+				width: toRem(5);
+				height: toRem(5);
+				border-radius: 50%;
+				background-color: #333;
+			}
+		}
+	}
+	&__buttons-block {
+	}
+}
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	@@include('html/_head.htm',{
+	"title":"HomePage"
+	})
+	<body>
+		<div class="wrapper">
+			@@include('html/_header.htm',{})
+			<main class="page">
+				<section class="page__directions directions-page">
+					<div class="directions-page__container page-container position-right">
+						<h1 class="directions-page__title title-main-style">
+							Оберіть напрямок:
+						</h1>
+						<div class="directions-page__buttons-block route-buttons-block">
+							<a href="directions.html" class="button route-button-main-style button-effect">
+								<div id="circle"></div>
+								<div>Офіс</div>
+							</a>
+							<a href="directions.html" class="button route-button-main-style button-effect">
+								<div id="circle"></div>
+								<div>Склад</div>
+							</a>
+							<a href="directions.html" class="button route-button-main-style button-effect">
+								<div id="circle"></div>
+								<div>Магазин</div>
+							</a>
+						</div>
+					</div>
+				</section>
+			</main>
+			@@include('html/_footer.htm',{})
+		</div>
+		@@include('html/_js.htm',{})
+	</body>
+</html>

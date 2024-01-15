@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	@@include('html/_head.htm',{
+	"title":"HomePage"
+	})
+	<body>
+		<div class="wrapper">
+			@@include('html/_header.htm',{})
+			<main class="page">
+				<section class="page__home home-page">
+					<div class="home-page__container page-container position-right">
+						<h1 class="home-page__title title-main-style">
+							Оберіть спосіб пошуку вакансії:
+						</h1>
+						<div class="home-page__subtitle subtitle-main-style">
+							Ви завжди зможете повернутись та почати пошук заново
+						</div>
+						<div class="home-page__buttons-block route-buttons-block">
+							<a href="directions.html" class="button route-button-main-style button-effect">
+								<div id="circle"></div>
+								<div>За напрямком роботи</div>
+							</a>
+							<a href="#" class="button route-button-main-style button-effect">
+								<div id="circle"></div>
+								<div>За місцем розташування</div>
+							</a>
+						</div>
+					</div>
+				</section>
+			</main>
+			@@include('html/_footer.htm',{})
+		</div>
+		@@include('html/_js.htm',{})
+	</body>
+</html>
