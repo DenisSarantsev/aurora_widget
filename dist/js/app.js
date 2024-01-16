@@ -4622,24 +4622,6 @@
         var gsapWithCSS = gsap.registerPlugin(CSSPlugin) || gsap;
         gsapWithCSS.core.Tween;
         barba_umd.init({
-            views: [ {
-                namespace: "home",
-                beforeEnter() {
-                    menu.update();
-                },
-                afterEnter() {
-                    function goBack() {
-                        window.history.back();
-                    }
-                    if (document.querySelector(".footer__button-back-link")) {
-                        const backButton = document.querySelector(".footer__button-back-link");
-                        backButton.addEventListener("click", (() => {
-                            goBack();
-                        }));
-                    }
-                    parallax.refresh();
-                }
-            } ],
             transitions: [ {
                 name: "opacity-transition",
                 sync: true,
