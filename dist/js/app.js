@@ -4623,16 +4623,24 @@
         gsapWithCSS.core.Tween;
         barba_umd.init({
             transitions: [ {
-                name: "opacity-transition",
+                name: "slide-transition",
                 sync: true,
                 leave(data) {
-                    return gsapWithCSS.to(data.current.container, {
-                        opacity: 0
+                    const currentPage = data.current.container;
+                    return gsapWithCSS.to(currentPage, {
+                        opacity: 0,
+                        x: "-100%",
+                        duration: .5,
+                        ease: "power2.inOut"
                     });
                 },
                 enter(data) {
-                    return gsapWithCSS.from(data.next.container, {
-                        opacity: 0
+                    const nextPage = data.next.container;
+                    return gsapWithCSS.from(nextPage, {
+                        opacity: 0,
+                        x: "100%",
+                        duration: .5,
+                        ease: "power2.inOut"
                     });
                 }
             } ]
