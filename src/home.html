@@ -3,36 +3,39 @@
 	@@include('html/_head.htm',{
 	"title":"HomePage"
 	})
-	<body>
+	<body data-barba="wrapper">
 		<div class="wrapper">
 			@@include('html/_header.htm',{})
-			<main class="page">
-				<section class="page__home home-page">
-					<div class="home-page__container page-container position-right">
-						<img src="@img/main/logo-aurora.svg" alt="main image" class="home-page__main-image">
-						<h1 class="home-page__title title-main-style">
-							Вітаємо, Денис!
-						</h1>
-						<div class="home-page__subtitle subtitle-main-style">
-							Ласкаво просимо до нашого віртуального відділу кадрів! Ми раді, що ви завітали до нас.
+			<div class="barba-wrapper">
+				<main class="page home-main-page" data-barba="container" data-barba-namespace="home">
+					<section class="page__home home-page">
+						<div class="home-page__container page-container position-right">
+							<img src="@img/main/logo-aurora.svg" alt="main image" class="home-page__main-image">
+							<h1 class="home-page__title title-main-style">
+								Вітаємо, Денис!
+							</h1>
+							<div class="home-page__subtitle subtitle-main-style">
+								Ласкаво просимо до нашого віртуального відділу кадрів! Ми раді, що ви завітали до нас.
+							</div>
+							<div class="home-page__buttons-block route-buttons-block">
+								<a href="about-company.html" class="button route-button-main-style button-effect about-company-main-page-button">
+									<div id="circle"></div>
+									<div>Про компанію</div>
+								</a>
+								<a href="search-type.html" class="button route-button-main-style button-effect">
+									<div id="circle"></div>
+									<div>Знайти вакансію</div>
+								</a>
+							</div>
 						</div>
-						<div class="home-page__buttons-block route-buttons-block">
-							<a href="about-company.html" class="button route-button-main-style button-effect about-company-main-page-button">
-								<div id="circle"></div>
-								<div>Про компанію</div>
-							</a>
-							<a href="search-type.html" class="button route-button-main-style button-effect">
-								<div id="circle"></div>
-								<div>Знайти вакансію</div>
-							</a>
+					</section>
+					<footer class="footer">
+						<div class="footer__container main-footer-container">
 						</div>
-					</div>
-				</section>
-			</main>
-			<footer class="footer">
-				<div class="footer__container main-footer-container">
-				</div>
-			</footer>
+					</footer>
+				</main>
+
+			</div>
 		</div>
 		@@include('html/_js.htm',{})
 	</body>

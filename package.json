@@ -84,6 +84,8 @@
 		"webpack-stream": "latest"
 	},
 	"dependencies": {
+		"@barba/core": "^2.9.7",
+		"gsap": "^3.12.4",
 		"gulp-cheerio": "^1.0.0",
 		"isotope-layout": "^3.0.6",
 		"react": "^18.2.0",

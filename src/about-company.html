@@ -3,54 +3,57 @@
 	@@include('html/_head.htm',{
 	"title":"HomePage"
 	})
-	<body>
+	<body data-barba="wrapper">
 		<div class="wrapper">
 			@@include('html/_header.htm',{})
-			<main class="page">
-				<section class="page__about-company about-company">
-					<div class="about-company__container page-container position-right">
-						<h1 class="about-company__title title-main-style">
-							Кого ми шукаємо?
-						</h1>
-						<img src="@img/main/aurora-image.webp" alt="" class="about-company__image">
-						<div class="about-company__subtitle subtitle-main-style">
-							<p>
-								Те, чим ти займаєшся на роботі, має подобатися, приносити дохід та давати можливість розвиватися. Повір, ці складові для роботодавця такі ж важливі, як і для тебе. Адже коли все добре у тебе, то і бізнес почувається краще.
-							</p>
-							<br>
-							<p>
-								Тому ми зацікавлені бачити у нашій команді людей, яким з нами буде добре працювати, розвиватися, відпочивати та робити світ трішечки кращим.
-							</p>
-							<br>
-							<p>
-								Тобі з нами по дорозі, якщо ти:
-								<ul class="about-company__list">
-									<li>відповідально ставишся до роботи;</li>
-									<li>з повагою відносишся до людей;</li>
-									<li>щоб не було, горою стоїш за позитив та веселий настрій;</li>
-									<li>старанно працюєш для досягнення мети;</li>
-									<li>маєш бажання надати клієнтам найкраще.</li>
-								</ul>
-							</p>
-							<br>
-							<p>
-								Якщо тобі теж близькі вищевказані думки, то довго не роздумуй, почитай ще про переваги та плюшечки, і скоріш надсилай резюме.
-							</p>
+			<div class="barba-wrapper">
+				<main class="page" data-barba="container" data-barba-namespace="home">
+					<section class="page__about-company about-company">
+						<div class="about-company__container page-container position-right">
+							<h1 class="about-company__title title-main-style">
+								Кого ми шукаємо?
+							</h1>
+							<img src="@img/main/aurora-image.webp" alt="" class="about-company__image">
+							<div class="about-company__subtitle subtitle-main-style">
+								<p>
+									Те, чим ти займаєшся на роботі, має подобатися, приносити дохід та давати можливість розвиватися. Повір, ці складові для роботодавця такі ж важливі, як і для тебе. Адже коли все добре у тебе, то і бізнес почувається краще.
+								</p>
+								<br>
+								<p>
+									Тому ми зацікавлені бачити у нашій команді людей, яким з нами буде добре працювати, розвиватися, відпочивати та робити світ трішечки кращим.
+								</p>
+								<br>
+								<p>
+									Тобі з нами по дорозі, якщо ти:
+									<ul class="about-company__list">
+										<li>відповідально ставишся до роботи;</li>
+										<li>з повагою відносишся до людей;</li>
+										<li>щоб не було, горою стоїш за позитив та веселий настрій;</li>
+										<li>старанно працюєш для досягнення мети;</li>
+										<li>маєш бажання надати клієнтам найкраще.</li>
+									</ul>
+								</p>
+								<br>
+								<p>
+									Якщо тобі теж близькі вищевказані думки, то довго не роздумуй, почитай ще про переваги та плюшечки, і скоріш надсилай резюме.
+								</p>
+							</div>
+							<div class="about-company__buttons-block route-buttons-block">
+								<a href="search-type.html" class="button route-button-main-style button-effect">
+									<div id="circle"></div>
+									<div>Дізнатись більше на сайті</div>
+								</a>
+								<a href="search-type.html" class="button route-button-main-style button-effect">
+									<div id="circle"></div>
+									<div>Перейти до пошуку вакансій</div>
+								</a>
+							</div>
 						</div>
-						<div class="about-company__buttons-block route-buttons-block">
-							<a href="search-type.html" class="button route-button-main-style button-effect">
-								<div id="circle"></div>
-								<div>Дізнатись більше на сайті</div>
-							</a>
-							<a href="search-type.html" class="button route-button-main-style button-effect">
-								<div id="circle"></div>
-								<div>Перейти до пошуку вакансій</div>
-							</a>
-						</div>
-					</div>
-				</section>
-			</main>
-			@@include('html/_footer.htm',{})
+					</section>
+					@@include('html/_footer.htm',{})
+				</main>
+				
+			</div>
 		</div>
 		@@include('html/_js.htm',{})
 	</body>
