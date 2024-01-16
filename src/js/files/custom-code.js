@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		})
 	}
 
-	// Функция перехода на предыдуую страницу
+	// Функция перехода на предыдущую страницу
 	function goBack() {
 		window.history.back();
 	}
