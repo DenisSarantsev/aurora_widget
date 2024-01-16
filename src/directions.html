@@ -3,33 +3,36 @@
 	@@include('html/_head.htm',{
 	"title":"HomePage"
 	})
-	<body>
+	<body data-barba="wrapper">
 		<div class="wrapper">
 			@@include('html/_header.htm',{})
-			<main class="page">
-				<section class="page__directions directions-page">
-					<div class="directions-page__container page-container position-right">
-						<h1 class="directions-page__title title-main-style">
-							Оберіть напрямок:
-						</h1>
-						<div class="directions-page__buttons-block route-buttons-block">
-							<a href="directions.html" class="button route-button-main-style button-effect">
-								<div id="circle"></div>
-								<div>Офіс</div>
-							</a>
-							<a href="directions.html" class="button route-button-main-style button-effect">
-								<div id="circle"></div>
-								<div>Склад</div>
-							</a>
-							<a href="directions.html" class="button route-button-main-style button-effect">
-								<div id="circle"></div>
-								<div>Магазин</div>
-							</a>
+			<div class="barba-wrapper">
+				<main class="page home-main-page" data-barba="container" data-barba-namespace="home">
+					<section class="page__directions directions-page">
+						<div class="directions-page__container page-container position-right">
+							<h1 class="directions-page__title title-main-style">
+								Оберіть напрямок:
+							</h1>
+							<div class="directions-page__buttons-block route-buttons-block">
+								<a href="jobs-list.html" class="button route-button-main-style button-effect">
+									<div id="circle"></div>
+									<div>Офіс</div>
+								</a>
+								<a href="jobs-list.html" class="button route-button-main-style button-effect">
+									<div id="circle"></div>
+									<div>Склад</div>
+								</a>
+								<a href="jobs-list.html" class="button route-button-main-style button-effect">
+									<div id="circle"></div>
+									<div>Магазин</div>
+								</a>
+							</div>
 						</div>
-					</div>
-				</section>
-			</main>
-			@@include('html/_footer.htm',{})
+					</section>
+					@@include('html/_footer.htm',{})
+				</main>
+				
+			</div>
 		</div>
 		@@include('html/_js.htm',{})
 	</body>

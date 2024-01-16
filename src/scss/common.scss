@@ -23,9 +23,11 @@ body {
 	overflow-y: scroll;
 	position: relative;
 	height: 100dvh;
+	transition: all 0.3s ease 0s;
 }
 
 .page {
+	overflow: scroll;
 	position: absolute;
 	width: 100%;
 	display: flex;

@@ -172,9 +172,12 @@ body {
   overflow-y: scroll;
   position: relative;
   height: 100dvh;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
 }
 
 .page {
+  overflow: scroll;
   position: absolute;
   width: 100%;
   display: -webkit-box;
@@ -377,36 +380,56 @@ body {
 .header__user-name-link {
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.5rem;
+  padding: 0.3125rem 0.625rem;
+  border-radius: 6.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
 }
 
-.header__user-name-link:hover {
-  -webkit-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-  color: rgb(255, 221, 0);
+.header__profile-icon {
+  height: 1.1875rem;
+}
+
+.header__sign-in-link {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.5rem;
+  background-color: rgb(255, 221, 0);
+  padding: 0.4375rem 0.625rem;
+  border-radius: 6.25rem;
+  border: 1px solid transparent;
 }
 
 .header__sign-in-icon {
-  -webkit-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
+  height: 0.9375rem;
 }
 
-.header__sign-in-icon:hover {
-  -webkit-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-  -webkit-filter: invert(92%) sepia(15%) saturate(6892%) hue-rotate(355deg) brightness(104%) contrast(107%);
-          filter: invert(92%) sepia(15%) saturate(6892%) hue-rotate(355deg) brightness(104%) contrast(107%);
+.header__sign-out-link {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.5rem;
+  background-color: rgb(255, 221, 0);
+  padding: 0.4375rem 0.625rem;
+  border-radius: 6.25rem;
+  border: 1px solid transparent;
 }
 
 .header__sign-out-icon {
-  -webkit-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-}
-
-.header__sign-out-icon:hover {
-  -webkit-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-  -webkit-filter: invert(92%) sepia(15%) saturate(6892%) hue-rotate(355deg) brightness(104%) contrast(107%);
-          filter: invert(92%) sepia(15%) saturate(6892%) hue-rotate(355deg) brightness(104%) contrast(107%);
+  height: 0.9375rem;
 }
 
 .footer {
@@ -457,6 +480,16 @@ body {
 .directions-page {
   width: 100%;
   height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .directions-page__container {
@@ -474,6 +507,7 @@ body {
       -ms-flex-pack: center;
           justify-content: center;
   gap: 1.25rem;
+  width: 100%;
 }
 
 .about-company__title {

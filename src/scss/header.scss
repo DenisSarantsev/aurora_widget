@@ -32,27 +32,38 @@
 	}
 	&__user-name-link {
 		transition: all 0.3s ease 0s;
-		&:hover {
-			transition: all 0.3s ease 0s;
-			color: $mainYellow;
-		}
+		display: flex;
+		align-items: center;
+		gap: toRem(8);
+		padding: toRem(5) toRem(10);
+		border-radius: toRem(100);
+		border: 1px solid rgba($color: #000000, $alpha: 0.4);
+	}
+	&__profile-icon {
+		height: toRem(19);
 	}
 	&__sign-in-link {
+		display: flex;
+		align-items: center;
+		gap: toRem(8);
+		background-color: $mainYellow;
+		padding: toRem(7) toRem(10);
+		border-radius: toRem(100);
+		border: 1px solid transparent;
 	}
 	&__sign-in-icon {
-		transition: all 0.3s ease 0s;
-		&:hover {
-			transition: all 0.3s ease 0s;
-			filter: invert(92%) sepia(15%) saturate(6892%) hue-rotate(355deg) brightness(104%) contrast(107%);
-		}
+		height: toRem(15);
 	}
 	&__sign-out-link {
+		display: flex;
+		align-items: center;
+		gap: toRem(8);
+		background-color: $mainYellow;
+		padding: toRem(7) toRem(10);
+		border-radius: toRem(100);
+		border: 1px solid transparent;
 	}
 	&__sign-out-icon {
-		transition: all 0.3s ease 0s;
-		&:hover {
-			transition: all 0.3s ease 0s;
-			filter: invert(92%) sepia(15%) saturate(6892%) hue-rotate(355deg) brightness(104%) contrast(107%);
-		}
+		height: toRem(15);
 	}
 }
