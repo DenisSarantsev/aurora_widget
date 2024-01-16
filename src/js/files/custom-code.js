@@ -2,17 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 	// Анимация заезда/выезда блока при переключении страницы
-	const pageContainer = document.querySelector(".page-container");
-	pageContainer.classList.remove("position-right");
-	pageContainer.classList.add("position-center");
+	// const pageContainer = document.querySelector(".page-container");
+	// pageContainer.classList.remove("position-right");
+	// pageContainer.classList.add("position-center");
 
-	const buttonsRouteArray = document.querySelectorAll(".route-button-main-style");
-	for ( let i = 0; i < buttonsRouteArray.length; i++ ) {
-		buttonsRouteArray[i].addEventListener("click", () => {
-			pageContainer.classList.remove("position-center");
-			pageContainer.classList.add("position-left");
-		})
-	}
+	// const buttonsRouteArray = document.querySelectorAll(".route-button-main-style");
+	// for ( let i = 0; i < buttonsRouteArray.length; i++ ) {
+	// 	buttonsRouteArray[i].addEventListener("click", () => {
+	// 		pageContainer.classList.remove("position-center");
+	// 		pageContainer.classList.add("position-left");
+	// 	})
+	// }
 
 	// Функция перехода на предыдущую страницу
 	function goBack() {

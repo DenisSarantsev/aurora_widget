@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
 	<!-- <style>body{opacity: 0;}</style> -->
-	<link rel="stylesheet" href="css/style.min.css?_v=20240116034314">
+	<link rel="stylesheet" href="css/style.min.css?_v=20240116041056">
 	<link rel="shortcut icon" href="favicon.ico">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,42 +30,46 @@
 				</div>
 			</div>
 		</header>
-		<main class="page">
-			<section class="page__home home-page">
-				<div class="home-page__container page-container position-right">
-					<h1 class="home-page__title title-main-style">
-						Оберіть спосіб пошуку вакансії:
-					</h1>
-					<div class="home-page__subtitle subtitle-main-style">
-						Ви завжди зможете повернутись та почати пошук заново
+		<div class="barba-wrapper">
+			<main class="page home-main-page" data-barba="container" data-barba-namespace="home">
+				<section class="page__home home-page">
+					<div class="home-page__container page-container position-right">
+						<h1 class="home-page__title title-main-style">
+							Оберіть спосіб пошуку вакансії:
+						</h1>
+						<div class="home-page__subtitle subtitle-main-style">
+							Ви завжди зможете повернутись та почати пошук заново
+						</div>
+						<div class="home-page__buttons-block route-buttons-block">
+							<a href="directions.html" class="button route-button-main-style button-effect">
+								<div id="circle"></div>
+								<div>За напрямком роботи</div>
+							</a>
+							<a href="#" class="button route-button-main-style button-effect">
+								<div id="circle"></div>
+								<div>За місцем розташування</div>
+							</a>
+						</div>
 					</div>
-					<div class="home-page__buttons-block route-buttons-block">
-						<a href="directions.html" class="button route-button-main-style button-effect">
+				</section>
+				<script src="https://cdn.jsdelivr.net/npm/@barba/core?_v=20240116041056"></script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js?_v=20240116041056"></script>
+				<footer class="footer">
+					<div class="footer__container">
+						<a href="#" class="footer__button-back-link footer-button button-effect">
 							<div id="circle"></div>
-							<div>За напрямком роботи</div>
+							<div>Назад</div>
 						</a>
-						<a href="#" class="button route-button-main-style button-effect">
+						<a href="home.html" class="footer__button-main-link footer-button button-effect">
 							<div id="circle"></div>
-							<div>За місцем розташування</div>
+							<div>На головну</div>
 						</a>
 					</div>
-				</div>
-			</section>
-		</main>
-		<footer class="footer">
-			<div class="footer__container">
-				<a href="#" class="footer__button-back-link footer-button button-effect">
-					<div id="circle"></div>
-					<div>Назад</div>
-				</a>
-				<a href="home.html" class="footer__button-main-link footer-button button-effect">
-					<div id="circle"></div>
-					<div>На головну</div>
-				</a>
-			</div>
-		</footer>
+				</footer>
+			</main>
+		</div>
 	</div>
-	<script src="js/app.min.js?_v=20240116034314"></script>
+	<script src="js/app.min.js?_v=20240116041056"></script>
 </body>
 
 </html>
