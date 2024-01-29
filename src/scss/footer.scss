@@ -20,4 +20,25 @@
 .main-footer-container {
 	min-height: toRem(40);
 }
+
+// Кнопки у футері
+.footer-button {
+	font-weight: 500;
+	border-radius: 100px;
+	line-height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: auto;
+	font-size: toRem(18);
+	width: 100%;
+	transition: all 0.3s ease 0s;
+	max-width: toRem(500);
+	background-color: $mainYellow;
+	// border: 1px solid rgba($color: #000000, $alpha: 0.4);
+	// background-color: rgba($color: #000000, $alpha: 0.15);
+	&:hover {
+		transition: all 0.3s ease 0s;
+	}
+}
 //====================================================================================================

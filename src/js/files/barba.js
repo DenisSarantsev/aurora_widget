@@ -42,30 +42,30 @@ import { gsap } from "gsap";
 //   }]
 // });
 
-barba.init({
-  transitions: [{
-    name: 'slide-transition',
-    sync: true,
-    leave(data) {
-      const currentPage = data.current.container;
+// barba.init({
+//   transitions: [{
+//     name: 'slide-transition',
+//     sync: true,
+//     leave(data) {
+//       const currentPage = data.current.container;
       
-      return gsap.to(currentPage, {
-        opacity: 0,
-        x: '-100%', // Перемещение влево на 100% ширины страницы
-        duration: 0.5,
-        ease: 'power2.inOut'
-      });
-    },
-    enter(data) {
-      const nextPage = data.next.container;
+//       return gsap.to(currentPage, {
+//         opacity: 0,
+//         x: '-100%', // Перемещение влево на 100% ширины страницы
+//         duration: 0.5,
+//         ease: 'power2.inOut'
+//       });
+//     },
+//     enter(data) {
+//       const nextPage = data.next.container;
 
-      return gsap.from(nextPage, {
-        opacity: 0,
-        x: '100%', // Перемещение справа на 100% ширины страницы
-        duration: 0.5,
-        ease: 'power2.inOut'
-      });
-    }
-  }]
-});
+//       return gsap.from(nextPage, {
+//         opacity: 0,
+//         x: '100%', // Перемещение справа на 100% ширины страницы
+//         duration: 0.5,
+//         ease: 'power2.inOut'
+//       });
+//     }
+//   }]
+// });
 

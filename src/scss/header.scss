@@ -28,12 +28,13 @@
 		display: flex;
 		align-items: center;
 		gap: toRem(10);
-		padding-right: toRem(10);
+		padding-right: toRem(15);
 	}
 	&__user-name-link {
 		transition: all 0.3s ease 0s;
 		display: flex;
 		align-items: center;
+		font-size: toRem(17);
 		gap: toRem(8);
 		padding: toRem(5) toRem(10);
 		border-radius: toRem(100);

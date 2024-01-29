@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
 	<!-- <style>body{opacity: 0;}</style> -->
-	<link rel="stylesheet" href="css/style.min.css?_v=20240116174302">
+	<link rel="stylesheet" href="css/style.min.css?_v=20240129105026">
 	<link rel="shortcut icon" href="favicon.ico">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,59 +16,207 @@
 	<div class="wrapper">
 		<header class="header">
 			<div class="header__container">
-				<a href="home.html" class="header__logo-link">
+				<button id="001_home-page" href="home.html" class="header__logo-link">
 					<img src="img/main/logo-aurora.svg" alt="logo aurora" class="header__logo">
-				</a>
+				</button>
 				<div class="header__right-block">
-					<a href="#" class="header__user-name-link">
-						<div>Денис</div>
+					<button class="header__user-name-link">
+						<div class="header__user-name-text"></div>
 						<img src="img/icons/profile.svg" alt="" class="header__profile-icon">
-					</a>
-					<a href="#" class="header__sign-in-link">
-						<img src="img/icons/sign-in.svg" alt="sign in" class="header__sign-in-icon">
-						<div>Увійти</div>
-					</a>
-					<!-- <a href="#" class="header__sign-out-link">
-				<img src="img/icons/sign-out.svg" alt="sign out" class="header__sign-out-icon">
-				<div>Вийти</div>
-			</a> -->
+					</button>
 				</div>
 			</div>
 		</header>
-		<div class="barba-wrapper">
-			<main class="page home-main-page" data-barba="container" data-barba-namespace="home">
-				<section class="page__home home-page">
-					<div class="home-page__container page-container position-right">
-						<img src="img/main/logo-aurora.svg" alt="main image" class="home-page__main-image">
-						<h1 class="home-page__title title-main-style">
-							Вітаємо, Денис!
-						</h1>
-						<div class="home-page__subtitle subtitle-main-style">
-							Ласкаво просимо до нашого віртуального відділу кадрів! Ми раді, що ви завітали до нас.
-						</div>
-						<div class="home-page__buttons-block route-buttons-block">
-							<a href="about-company.html" class="button route-button-main-style button-effect about-company-main-page-button">
-								<div id="circle"></div>
-								<div>Про компанію</div>
-							</a>
-							<a href="search-type.html" class="button route-button-main-style button-effect">
-								<div id="circle"></div>
-								<div>Знайти вакансію</div>
-							</a>
-						</div>
-					</div>
-				</section>
-				<script src="https://cdn.jsdelivr.net/npm/@barba/core?_v=20240116174302"></script>
-				<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js?_v=20240116174302"></script>
-				<footer class="footer">
-					<div class="footer__container main-footer-container">
-					</div>
-				</footer>
-			</main>
+		<main class="page home-main-page" data-barba="container" data-barba-namespace="home">
 
-		</div>
+			<section id="home-page" class="page-template page__home">
+				<div class="home-page__container page-container content-width-limiter">
+					<img src="img/main/logo-aurora.svg" alt="main image" class="home-page__main-image">
+					<h1 class="home-page__title title-main-style">
+						Вітаємо, Денис!
+					</h1>
+					<div class="home-page__subtitle subtitle-main-style"></div>
+					<div class="home-page__buttons-block route-buttons-block">
+						<button id="001_about-company" class="route-button button route-button-main-style button-effect about-company-main-page-button">
+							<div id="circle"></div>
+							<div>Дізнатись більше про Аврору</div>
+						</button>
+						<button id="001_directions-page" class="route-button button route-button-main-style button-effect find-vacancy-main-page-button">
+							<div id="circle"></div>
+							<div>Знайти вакансію</div>
+						</button>
+						<button class="route-button button route-button-main-style button-effect">
+							<div id="circle"></div>
+							<div>Хочу бути №1</div>
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<section id="about-company" class="page-template page__about-company about-company">
+				<div class="about-company__container page-container">
+					<h2 class="about-company__title title-main-style">
+						Кого ми шукаємо?
+					</h2>
+					<img src="img/main/aurora-image.webp" alt="" class="about-company__image">
+					<div class="about-company__subtitle subtitle-main-style">
+						<p>
+							Те, чим ти займаєшся на роботі, має подобатися, приносити дохід та давати можливість розвиватися. Повір, ці складові для роботодавця такі ж важливі, як і для тебе. Адже коли все добре у тебе, то і бізнес почувається краще.
+						</p>
+						<br>
+						<p>
+							Тому ми зацікавлені бачити у нашій команді людей, яким з нами буде добре працювати, розвиватися, відпочивати та робити світ трішечки кращим.
+						</p>
+						<br>
+						<p>
+							Тобі з нами по дорозі, якщо ти:
+						<ul class="about-company__list">
+							<li>відповідально ставишся до роботи;</li>
+							<li>з повагою відносишся до людей;</li>
+							<li>щоб не було, горою стоїш за позитив та веселий настрій;</li>
+							<li>старанно працюєш для досягнення мети;</li>
+							<li>маєш бажання надати клієнтам найкраще.</li>
+						</ul>
+						</p>
+						<br>
+						<p>
+							Якщо тобі теж близькі вищевказані думки, то довго не роздумуй, почитай ще про переваги та плюшечки, і скоріш надсилай резюме.
+						</p>
+					</div>
+					<div class="about-company__buttons-block route-buttons-block">
+						<a href="https://avrora.ua/" class="button route-button-main-style button-effect">
+							<div id="circle"></div>
+							<div>Дізнатись більше на сайті</div>
+						</a>
+						<button id="002_directions-page" class="route-button button route-button-main-style button-effect">
+							<div id="circle"></div>
+							<div>Перейти до пошуку вакансій</div>
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<section id="directions-page" class="page-template page__directions directions-page">
+				<div class="directions-page__container page-container content-width-limiter">
+					<h2 class="directions-page__title title-main-style">
+						Оберіть напрямок:
+					</h2>
+					<div class="directions-page__buttons-block route-buttons-block">
+						<button id="001_office-jobs-list-page" class="route-button button route-button-main-style button-effect">
+							<div id="circle"></div>
+							<div>Офіс</div>
+						</button>
+						<button id="001_shop-jobs-list-page" class="route-button button route-button-main-style button-effect">
+							<div id="circle"></div>
+							<div>Склад</div>
+						</button>
+						<button id="001_stock-jobs-list-page" class="route-button button route-button-main-style button-effect">
+							<div id="circle"></div>
+							<div>Магазин</div>
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<section id="office-jobs-list-page" class="page-template page__jobs-list jobs-list office-jobs-list-page">
+				<div class="jobs-list__container">
+					<div class="jobs-list__buttons-block jobs-list__office">
+					</div>
+				</div>
+			</section>
+
+			<section id="shop-jobs-list-page" class="page-template page__jobs-list jobs-list shop-jobs-list-page">
+				<div class="jobs-list__container">
+					<div class="jobs-list__buttons-block jobs-list__shop">
+					</div>
+				</div>
+			</section>
+
+			<section id="stock-jobs-list-page" class="page-template page__jobs-list jobs-list stock-jobs-list-page">
+				<div class="jobs-list__container">
+					<div class="jobs-list__buttons-block jobs-list__stock">
+					</div>
+				</div>
+			</section>
+
+			<section id="vacancy-page" class="page-template page__vacancy-page vacancy-page">
+				<div class="vacancy-page__container page-container">
+					<h2 class="vacancy-page__title title-main-style"></h2>
+					<div class="vacancy-page__content"></div>
+					<button id="001_post-request-vacancy-page" class="route-button vacancy-page__request-button route-button-main-style button-effect">
+						<div id="circle"></div>
+						<div>Відгукнутись на вакансію</div>
+					</button>
+			</section>
+
+			<section id="post-request-vacancy-page" class="page-template page__post-request-vacancy-page post-request-vacancy-page">
+				<div class="post-request-vacancy-page__container page-container">
+					<h2 class="post-request-vacancy-page__title title-main-style">Заповніть форму:</h2>
+					<div class="post-request-vacancy-page__content post-request-vacancy-form">
+						<div class="post-request-vacancy-form__name-container">
+							<label for="name" class="post-request-vacancy-form__name-label post-request-vacancy-form__form-label">*Вкажіть ваше ім'я:</label>
+							<input id="name" type="text" class="post-request-vacancy-form__name-input post-request-vacancy-form__form-input js-form-input">
+						</div>
+						<div class="post-request-vacancy-form__age-gender-container">
+							<div class="post-request-vacancy-form__age-container">
+								<label class="post-request-vacancy-form__age-label post-request-vacancy-form__form-label" for="age">*Вкажіть ваш вік:</label>
+								<input placeholder="Від 18 років" id="age" type="text" class="post-request-vacancy-form__age-input post-request-vacancy-form__form-input js-form-input">
+							</div>
+							<div class="post-request-vacancy-form__gender-container">
+								<div class="post-request-vacancy-form__gender-title">Оберіть стать:</div>
+								<div class="post-request-vacancy-form__gender-inner-container">
+									<label for="male" class="post-request-vacancy-form__gender-label post-request-vacancy-form__radio-label">Чоловік</label>
+									<input checked class="post-request-vacancy-form__gender-radio post-request-vacancy-form__form-radio js-form-input" id="male" value="male" name="gender" type="radio">
+									<label for="female" class="post-request-vacancy-form__gender-label post-request-vacancy-form__radio-label">Жінка</label>
+									<input class="post-request-vacancy-form__gender-radio post-request-vacancy-form__form-radio js-form-input" id="female" value="female" name="gender" type="radio">
+									<label for="doesn't-matter" class="post-request-vacancy-form__gender-label post-request-vacancy-form__radio-label">Неважливо</label>
+									<input class="post-request-vacancy-form__gender-radio post-request-vacancy-form__form-radio js-form-input" id="doesn't-matter" value="doesn't-matter" name="gender" type="radio">
+								</div>
+							</div>
+						</div>
+						<div class="post-request-vacancy-form__about-me-container">
+							<label class="post-request-vacancy-form__about-me-label post-request-vacancy-form__form-label" for="about-me">Розкажіть щось про себе:</label>
+							<textarea type="text" id="about-me" cols="30" rows="10" class="post-request-vacancy-form__about-me-input post-request-vacancy-form__form-textarea js-form-input"></textarea>
+						</div>
+						<div class="post-request-vacancy-form__wish-container">
+							<label class="post-request-vacancy-form__wish-label post-request-vacancy-form__form-label" for="wish">Які ваші очікування під роботи?:</label>
+							<textarea type="text" id="wish" cols="30" rows="10" class="post-request-vacancy-form__wish-input post-request-vacancy-form__form-textarea js-form-input"></textarea>
+						</div>
+						<!-- <div class="post-request-vacancy-form__kind-of-job-container">
+									<h3 class="post-request-vacancy-form__kind-of-job-title">Оберіть стать:</h3>
+									<div class="post-request-vacancy-form__kind-of-job-inner-container">
+										<label for="office" class="post-request-vacancy-form__kind-of-job-label post-request-vacancy-form__radio-label">Офіс</label>
+										<input class="post-request-vacancy-form__kind-of-job-radio post-request-vacancy-form__form-radio" id="office" value="office" name="kind" type="radio">
+										<label for="shop" class="post-request-vacancy-form__kind-of-job-label post-request-vacancy-form__radio-label">Магазин</label>
+										<input class="post-request-vacancy-form__kind-of-job-radio post-request-vacancy-form__form-radio" id="shop" value="shop" name="kind" type="radio">
+										<label for="stock" class="post-request-vacancy-form__kind-of-job-label post-request-vacancy-form__radio-label">Склад</label>
+										<input class="post-request-vacancy-form__kind-of-job-radio post-request-vacancy-form__form-radio" id="stock" value="stock" name="kind" type="radio">
+									</div>
+								</div> -->
+					</div>
+					<button class="post-request-vacancy-page__request-button route-button-main-style button-effect button">
+						<div id="circle"></div>
+						<div>Надіслати заявку</div>
+					</button>
+			</section>
+
+		</main>
+		<script src="https://cdn.jsdelivr.net/npm/@barba/core?_v=20240129105026"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js?_v=20240129105026"></script>
+		<footer class="footer">
+			<div class="footer__container">
+				<a href="#" class="footer__button-back-link footer-button button-effect">
+					<div id="circle"></div>
+					<div>Назад</div>
+				</a>
+				<button id="000_home-page" class="route-button footer__button-main-link footer-button button-effect">
+					<div id="circle"></div>
+					<div>На головну</div>
+				</button>
+			</div>
+		</footer>
 	</div>
-	<script src="js/app.min.js?_v=20240116174302"></script>
+	<script src="js/app.min.js?_v=20240129105026"></script>
 </body>
 
 </html>

@@ -1,51 +1,53 @@
 // Заголовки, загальні БЕМ блоки та інше...
-
-
-	/* хром, сафари */
-// body::-webkit-scrollbar { width: 0; }
-
-// /* ie 10+ */
-// body { -ms-overflow-style: none; }
-
-// /* фф (свойство больше не работает, других способов тоже нет)*/
-// body { overflow: -moz-scrollbars-none; }
-
 body {
 	background-color: $backGroundColor;
 }
 
-.barba-wrapper {
-	position: relative;
+
+section {
+	width: 100%;
 	height: 100%;
+	display: flex;
+	align-items: center;
+}
+
+
+._hidden-template {
+	display: none;
+}
+
+._visible-template {
+	display: block;
 }
 
 .wrapper {
-	overflow-y: scroll;
-	position: relative;
-	height: 100dvh;
-	transition: all 0.3s ease 0s;
 }
 
 .page {
-	overflow: scroll;
-	position: absolute;
-	width: 100%;
+	height: 100%;
+
+	// width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: toRem(20) toRem(0) toRem(0) toRem(0);
-	gap: toRem(20);
+	padding: toRem(20) toRem(0);
+	// gap: toRem(20);
 }
 
 // Головний контейнер з контентом
 .page-container {
 	max-width: toRem(768);
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	gap: toRem(20);
+}
+
+.content-width-limiter {
+	max-width: toRem(600);
 }
 
 // Головний стиль заголовку
@@ -66,35 +68,20 @@ body {
 	font-weight: 500;
 	background-color: $mainYellow;
 	border-radius: 100px;
-	line-height: 40px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: auto;
 	font-size: toRem(18);
 	transition: all 0.3s ease 0s;
+	padding: toRem(12) toRem(15);
 	&:hover {
 		transition: all 0.3s ease 0s;
 	}
+	@media (max-width: em(400)){
+		font-size: toRem(16);
+	}
 }
-
-// Заїзд - виїзд блоку на сторінку
-// .position-right {
-// 	position: relative;
-// 	left: 200%;
-// }
-
-// .position-left {
-// 	transition: all 1.7s cubic-bezier(.14,.06,0,.99) 0s;
-// 	position: relative;
-// 	left: -200%;
-// }
-
-// .position-center {
-// 	transition: all 0.4s ease 0s;
-// 	position: relative;
-// 	left: 0%;
-// }
 
 // Ефект кола при наведенні
 .button-effect {
@@ -117,7 +104,7 @@ body {
   border-radius: 50%;
   background: #ffc800;
   position: absolute;
-  transition: all .5s ease-Out;
+  transition: all .4s ease-Out;
   top: 0px;
   left: 90px;
 }
@@ -137,24 +124,7 @@ body {
   color: #000;
 }
 
-// Кнопки у футері
-.footer-button {
-	font-weight: 500;
-	border-radius: 100px;
-	line-height: 40px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: auto;
-	font-size: toRem(18);
-	width: 100%;
-	transition: all 0.3s ease 0s;
-	max-width: toRem(500);
-	background-color: rgba($color: #000000, $alpha: 0.15);
-	&:hover {
-		transition: all 0.3s ease 0s;
-	}
-}
+
 
 // Головний блок з кнопками по центру
 .route-buttons-block {
@@ -164,4 +134,201 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	gap: toRem(10);
+}
+
+// Анімація переходів
+.position-left {
+	animation: fadeOut 0.3s cubic-bezier(1,-0.25,1,.71);
+}
+
+@keyframes fadeOut {
+  0% {
+    margin-right: 0vw;
+  }
+  100% {
+    margin-right: 200vw;
+  }
+}
+
+
+.position-right {
+	animation: fadeIn 0.3s cubic-bezier(0,.92,.24,1.07);
+}
+
+@keyframes fadeIn {
+  0% {
+    margin-left: 200vw;
+  }
+  100% {
+    margin-left: 0vw;
+  }
+}
+
+
+.vacancy-page {
+	&__content {
+		font-family: $fontFamily;
+		font-family: toRem(20);
+	}
+	&__request-button {
+		width: 100%;
+	}
+}
+
+
+// Стили формы отправки заявки
+.page {
+		&__post-request-vacancy-page {
+		}
+}
+.post-request-vacancy-page {
+		&__container {
+		}
+		&__title {
+		}
+		&__content {
+		}
+		&__request-button {
+			width: 100%;
+		}
+}
+.post-request-vacancy-form {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: toRem(20);
+	font-size: toRem(18);
+
+		&__radio-label {
+			height: toRem(38);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border: 1px solid rgba($color: #000000, $alpha: 0.4);
+			padding: 0 toRem(15);
+			border-radius: 100px;
+			&:hover {
+				cursor: pointer;
+			}
+		}
+		&__form-label {
+			margin-left: toRem(15);
+		}
+		&__form-input {
+			padding: toRem(7) toRem(15);
+			outline: none;
+			border: 1px solid rgba($color: #000000, $alpha: 0.3);
+			border-radius: 100px;
+			transition: all 0.3s ease 0s;
+			&:focus {
+				border: 1px solid $mainYellow;
+				transition: all 0.3s ease 0s;
+			}
+		}
+		&__form-radio {
+			display: none;
+		}
+		&__form-textarea {
+			resize: none;
+			padding: toRem(15) toRem(15);
+			font-size: toRem(18);
+			outline: none;
+			border: 1px solid rgba($color: #000000, $alpha: 0.3);
+			border-radius: 25px;
+			&:focus {
+				border: 1px solid $mainYellow;
+			}
+		}
+		&__name-container {
+			display: flex;
+			flex-direction: column;
+			gap: toRem(5);
+		}
+		&__name-label {
+		}
+		&__name-input {
+		}
+
+		&__age-gender-container {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: toRem(15);
+		}
+
+		&__age-container {
+			display: flex;
+			flex-direction: column;
+			gap: toRem(5);
+		}
+		&__age-label {
+		}
+		&__age-input {
+			width: auto;
+		}
+
+		&__gender-container {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			gap: toRem(5);
+		}
+		&__gender-title {
+			margin-left: toRem(15);
+		}
+		&__gender-inner-container {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			grid-template-rows: 1fr;
+			grid-column-gap: 0px;
+			grid-row-gap: 0px;
+			gap: toRem(15);
+		}
+		&__gender-label {
+
+		}
+		&__gender-radio {
+		}
+
+		&__about-me-container {
+			display: flex;
+			flex-direction: column;
+			gap: toRem(5);
+		}
+		&__about-me-label {
+		}
+		&__about-me-input {
+		}
+
+		&__wish-container {
+			display: flex;
+			flex-direction: column;
+			gap: toRem(5);
+		}
+		&__wish-label {
+		}
+		&__wish-input {
+		}
+
+		&__kind-of-job-container {
+		}
+		&__kind-of-job-title {
+
+		}
+		&__kind-of-job-inner-container {
+
+		}
+		&__kind-of-job-label {
+		}
+		&__kind-of-job-radio {
+		}
+}
+
+// Стили для валидации формы
+.red-border {
+	border: 1px solid $mainRed;
+}
+
+.green-border {
+	border: 1px solid rgba(28, 189, 17, 1);
 }
