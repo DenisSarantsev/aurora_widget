@@ -314,6 +314,19 @@ section {
           animation: moveAround 40s infinite;
 }
 
+.bg-eleven-circle-element {
+  z-index: -1;
+  position: absolute;
+  top: 65vh;
+  left: 1vh;
+  background-color: rgba(255, 221, 0, 0.2);
+  width: 9vh;
+  height: 9vh;
+  border-radius: 50%;
+  -webkit-animation: moveAround 40s infinite;
+          animation: moveAround 40s infinite;
+}
+
 @-webkit-keyframes moveAround {
   0% {
     -webkit-transform: translate(0, 0);

@@ -143,6 +143,17 @@ section {
 	border-radius: 50%;
 	animation: moveAround 40s infinite;
 }
+.bg-eleven-circle-element {
+	z-index: -1;
+	position: absolute;
+	top: 65vh;
+	left: 1vh;
+	background-color: $backgoundYellowCircle;
+	width: 9vh;
+	height: 9vh;
+	border-radius: 50%;
+	animation: moveAround 40s infinite;
+}
 
 @keyframes moveAround {
 	0% {
