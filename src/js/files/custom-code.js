@@ -26,21 +26,19 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Подзаголовок:
 	const homePageSubtitleElement = document.querySelector(".home-page__subtitle");
 	homePageSubtitleElement.insertAdjacentHTML("beforeend", `${currentContent}`);
-	// Функция для анимации появления подзаголовка
-	// function displayStringWithDelay(currentContentReverse, delay) {
-	// 	let index = 0;
-	// 	function displayNextCharacter() {
-	// 		if (index < currentContentReverse.length) {
-	// 			homePageSubtitleElement.insertAdjacentHTML("beforeend", `${currentContentReverse.charAt(index)}`);
-	// 			index++;
-	// 			setTimeout(displayNextCharacter, delay);
-	// 		}
-	// 	}
-	// 	displayNextCharacter();
-	// }
-	// const delay = 10; // Задержка в миллисекундах
-	// displayStringWithDelay(currentContent, delay);
 
+	// Скрываем футер на главной странице
+	const allButtons = document.querySelectorAll(".button");
+	console.log(allButtons)
+	const footerElement = document.querySelector(".footer");
+	function hiddenOrShowFooter() {
+		if ( currentTemplateID === "home-page" ) {
+			footerElement.classList.add("_hidden");
+		} else {
+			footerElement.classList.remove("_hidden");
+		}
+	}
+	hiddenOrShowFooter();
 
 
 
@@ -62,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					currentTemplateID = removeDigitsAndUnderscore(e.target.parentElement.id);
 					firstEnter = false;
 					includeCurrentTemplate(currentTemplateID);
+					hiddenOrShowFooter();
 				})
 			}
 			// Задаем событие при клике на дочерний элемент
@@ -69,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				currentTemplateID = removeDigitsAndUnderscore(event.target.parentElement.id);
 				firstEnter = false;
 				includeCurrentTemplate(currentTemplateID);
+				hiddenOrShowFooter();
 			})
 		}
 	}

@@ -172,6 +172,10 @@ section {
           align-items: center;
 }
 
+._hidden {
+  display: none;
+}
+
 ._hidden-template {
   display: none;
 }
@@ -670,6 +674,8 @@ section {
   -webkit-box-shadow: 0px 0px 15px 5px rgba(194, 194, 194, 0.5);
   -moz-box-shadow: 0px 0px 15px 5px rgba(194, 194, 194, 0.5);
   width: 100%;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
 }
 
 .footer__container {
@@ -715,10 +721,21 @@ section {
   transition: all 0.3s ease 0s;
 }
 
+.page__home {
+  padding: 0 0 7vh 0;
+}
+
+.home-page__container {
+  position: relative;
+  -webkit-animation: marginContainer 1.5s cubic-bezier(0, 1.17, 0.67, 0.94);
+          animation: marginContainer 1.5s cubic-bezier(0, 1.17, 0.67, 0.94);
+}
+
 .home-page__main-image {
+  position: relative;
   max-width: 12.5rem;
-  -webkit-animation: marginImage 0.9s cubic-bezier(0, 1.17, 0.67, 0.94);
-          animation: marginImage 0.9s cubic-bezier(0, 1.17, 0.67, 0.94);
+  -webkit-animation: marginImage 1.5s cubic-bezier(0, 1.17, 0.67, 0.94);
+          animation: marginImage 1.5s cubic-bezier(0, 1.17, 0.67, 0.94);
 }
 
 .home-page__title {
@@ -737,13 +754,13 @@ section {
 }
 
 .find-vacancy-main-page-button {
-  -webkit-animation: marginFirstButton 1s cubic-bezier(0, 1.17, 0.67, 0.94);
-          animation: marginFirstButton 1s cubic-bezier(0, 1.17, 0.67, 0.94);
+  -webkit-animation: marginFirstButton 0.7s cubic-bezier(0, 1.17, 0.67, 0.94);
+          animation: marginFirstButton 0.7s cubic-bezier(0, 1.17, 0.67, 0.94);
 }
 
 .about-company-main-page-button {
-  -webkit-animation: marginSecondButton 1s cubic-bezier(0, 1.17, 0.67, 0.94);
-          animation: marginSecondButton 1s cubic-bezier(0, 1.17, 0.67, 0.94);
+  -webkit-animation: marginSecondButton 0.7s cubic-bezier(0, 1.17, 0.67, 0.94);
+          animation: marginSecondButton 0.7s cubic-bezier(0, 1.17, 0.67, 0.94);
 }
 
 @-webkit-keyframes opacityText {
@@ -766,23 +783,51 @@ section {
   }
 }
 
-@-webkit-keyframes marginImage {
+@-webkit-keyframes marginContainer {
   0% {
-    margin-left: -200vw;
+    margin-bottom: -400vw;
+    position: absolute;
   }
 
   100% {
-    margin-left: 0;
+    margin-bottom: 0;
+    position: relative;
+  }
+}
+
+@keyframes marginContainer {
+  0% {
+    margin-bottom: -400vw;
+    position: absolute;
+  }
+
+  100% {
+    margin-bottom: 0;
+    position: relative;
+  }
+}
+
+@-webkit-keyframes marginImage {
+  0% {
+    margin-top: -400vw;
+    position: absolute;
+  }
+
+  100% {
+    margin-top: 0;
+    position: relative;
   }
 }
 
 @keyframes marginImage {
   0% {
-    margin-left: -200vw;
+    margin-top: -400vw;
+    position: absolute;
   }
 
   100% {
-    margin-left: 0;
+    margin-top: 0;
+    position: relative;
   }
 }
 

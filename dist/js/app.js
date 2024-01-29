@@ -1164,6 +1164,13 @@
             homePageTitleElement.insertAdjacentText("afterbegin", `${homePageTitleText}`);
             const homePageSubtitleElement = document.querySelector(".home-page__subtitle");
             homePageSubtitleElement.insertAdjacentHTML("beforeend", `${currentContent}`);
+            const allButtons = document.querySelectorAll(".button");
+            console.log(allButtons);
+            const footerElement = document.querySelector(".footer");
+            function hiddenOrShowFooter() {
+                if (currentTemplateID === "home-page") footerElement.classList.add("_hidden"); else footerElement.classList.remove("_hidden");
+            }
+            hiddenOrShowFooter();
             if (document.querySelector(".route-button")) {
                 const allRouteButtons = document.querySelectorAll(".route-button");
                 for (let item of allRouteButtons) {
@@ -1173,11 +1180,13 @@
                         currentTemplateID = removeDigitsAndUnderscore(e.target.parentElement.id);
                         firstEnter = false;
                         includeCurrentTemplate(currentTemplateID);
+                        hiddenOrShowFooter();
                     }));
                     item.addEventListener("click", (event => {
                         currentTemplateID = removeDigitsAndUnderscore(event.target.parentElement.id);
                         firstEnter = false;
                         includeCurrentTemplate(currentTemplateID);
+                        hiddenOrShowFooter();
                     }));
                 }
             }

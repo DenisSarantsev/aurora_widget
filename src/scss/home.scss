@@ -1,8 +1,16 @@
 //====================================================================================================
 
+.page__home {
+	padding: 0 0 7vh 0;
+}
+.home-page__container {
+	position: relative;
+	animation: marginContainer 1.5s cubic-bezier(0,1.17,.67,.94);
+}
 .home-page__main-image {
+	position: relative;
 	max-width: toRem(200);
-	animation: marginImage 0.9s cubic-bezier(0,1.17,.67,.94);
+	animation: marginImage 1.5s cubic-bezier(0,1.17,.67,.94);
 }
 .home-page__title {
 	animation: 2s opacityText;
@@ -15,10 +23,10 @@
 	position: relative;
 }
 .find-vacancy-main-page-button {
-	animation: marginFirstButton 1s cubic-bezier(0,1.17,.67,.94);
+	animation: marginFirstButton 0.7s cubic-bezier(0,1.17,.67,.94);
 }
 .about-company-main-page-button {
-	animation: marginSecondButton 1s cubic-bezier(0,1.17,.67,.94);
+	animation: marginSecondButton 0.7s cubic-bezier(0,1.17,.67,.94);
 }
 
 @keyframes opacityText {
@@ -26,9 +34,13 @@
 	100% { opacity: 1; }
 }
 
+@keyframes marginContainer {
+	0% { margin-bottom: -400vw; position: absolute}
+	100% { margin-bottom: 0; position: relative;}
+}
 @keyframes marginImage {
-	0% { margin-left: -200vw; }
-	100% { margin-left: 0; }
+	0% { margin-top: -400vw; position: absolute}
+	100% { margin-top: 0; position: relative;}
 }
 @keyframes marginFirstButton {
 	0% { margin-left: 200vw;}
