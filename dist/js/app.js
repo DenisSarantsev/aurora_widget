@@ -1171,24 +1171,20 @@
                 if (currentTemplateID === "home-page") footerElement.classList.add("_hidden"); else footerElement.classList.remove("_hidden");
             }
             hiddenOrShowFooter();
+            const footerButtonToHome = document.querySelector(".footer__button-main-link");
+            footerButtonToHome.addEventListener("click", (() => {
+                window.location.reload();
+                firstEnter = true;
+                currentTemplateID = "home-page";
+            }));
             if (document.querySelector(".route-button")) {
                 const allRouteButtons = document.querySelectorAll(".route-button");
-                for (let item of allRouteButtons) {
-                    const itemChildrens = item.children;
-                    for (let child of itemChildrens) child.addEventListener("click", (e => {
-                        e.stopPropagation();
-                        currentTemplateID = removeDigitsAndUnderscore(e.target.parentElement.id);
-                        firstEnter = false;
-                        includeCurrentTemplate(currentTemplateID);
-                        hiddenOrShowFooter();
-                    }));
-                    item.addEventListener("click", (event => {
-                        currentTemplateID = removeDigitsAndUnderscore(event.target.parentElement.id);
-                        firstEnter = false;
-                        includeCurrentTemplate(currentTemplateID);
-                        hiddenOrShowFooter();
-                    }));
-                }
+                for (let item of allRouteButtons) item.addEventListener("click", (e => {
+                    currentTemplateID = removeDigitsAndUnderscore(e.target.parentElement.id);
+                    firstEnter = false;
+                    includeCurrentTemplate(currentTemplateID);
+                    hiddenOrShowFooter();
+                }));
             }
             function removeDigitsAndUnderscore(inputString) {
                 var resultString = inputString.replace(/[0-9_]/g, "");

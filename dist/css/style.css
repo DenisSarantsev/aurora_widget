@@ -284,8 +284,8 @@ section {
   width: 6vh;
   height: 6vh;
   border-radius: 50%;
-  -webkit-animation: moveAround 40s infinite;
-          animation: moveAround 40s infinite;
+  -webkit-animation: moveAround 50s infinite;
+          animation: moveAround 50s infinite;
 }
 
 .bg-nine-circle-element {
@@ -297,8 +297,8 @@ section {
   width: 11vh;
   height: 11vh;
   border-radius: 50%;
-  -webkit-animation: moveAround 40s infinite;
-          animation: moveAround 40s infinite;
+  -webkit-animation: moveAround 35s infinite;
+          animation: moveAround 35s infinite;
 }
 
 .bg-ten-circle-element {
@@ -310,8 +310,8 @@ section {
   width: 7vh;
   height: 7vh;
   border-radius: 50%;
-  -webkit-animation: moveAround 40s infinite;
-          animation: moveAround 40s infinite;
+  -webkit-animation: moveAround 80s infinite;
+          animation: moveAround 80s infinite;
 }
 
 .bg-eleven-circle-element {
@@ -323,8 +323,8 @@ section {
   width: 9vh;
   height: 9vh;
   border-radius: 50%;
-  -webkit-animation: moveAround 40s infinite;
-          animation: moveAround 40s infinite;
+  -webkit-animation: moveAround 25s infinite;
+          animation: moveAround 25s infinite;
 }
 
 @-webkit-keyframes moveAround {
@@ -532,6 +532,15 @@ section {
 .route-button-main-style:hover {
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
+}
+
+.route-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.route-button div {
+  pointer-events: none;
 }
 
 .button-effect {

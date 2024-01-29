@@ -119,7 +119,7 @@ section {
 	width: 6vh;
 	height: 6vh;
 	border-radius: 50%;
-	animation: moveAround 40s infinite;
+	animation: moveAround 50s infinite;
 }
 .bg-nine-circle-element {
 	z-index: -1;
@@ -130,7 +130,7 @@ section {
 	width: 11vh;
 	height: 11vh;
 	border-radius: 50%;
-	animation: moveAround 40s infinite;
+	animation: moveAround 35s infinite;
 }
 .bg-ten-circle-element {
 	z-index: -1;
@@ -141,7 +141,7 @@ section {
 	width: 7vh;
 	height: 7vh;
 	border-radius: 50%;
-	animation: moveAround 40s infinite;
+	animation: moveAround 80s infinite;
 }
 .bg-eleven-circle-element {
 	z-index: -1;
@@ -152,7 +152,7 @@ section {
 	width: 9vh;
 	height: 9vh;
 	border-radius: 50%;
-	animation: moveAround 40s infinite;
+	animation: moveAround 25s infinite;
 }
 
 @keyframes moveAround {
@@ -264,7 +264,14 @@ section {
 	}
 }
 
+.route-button {
+	position: relative;
+	overflow: hidden;
+}
 
+.route-button div {
+	pointer-events: none;
+}
 
 // Ефект кола при наведенні
 .button-effect {

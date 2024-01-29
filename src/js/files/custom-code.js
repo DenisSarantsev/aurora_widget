@@ -40,10 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	hiddenOrShowFooter();
 
-
-
-
-	
+	// При клике на кнопку "На головну" перезагружаем весь сайт
+	const footerButtonToHome = document.querySelector(".footer__button-main-link");
+	footerButtonToHome.addEventListener("click", () => {
+		window.location.reload();
+		firstEnter = true;
+		currentTemplateID = "home-page";
+	})
 
 	
 	// Проходимся по всем кнопкам с роутами, чтобы повесить на них событие клика и при необходимости включить функцию переключения шаблона
@@ -53,19 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Вешаем события на все кнопки с роутами в виджете
 		for ( let item of allRouteButtons ) {
 			// Отменяем всплытие и задаем событие при клике на дочерние элементы
-			const itemChildrens = item.children;
-			for ( let child of itemChildrens ) {
-				child.addEventListener("click", (e) => {
-					e.stopPropagation();
-					currentTemplateID = removeDigitsAndUnderscore(e.target.parentElement.id);
-					firstEnter = false;
-					includeCurrentTemplate(currentTemplateID);
-					hiddenOrShowFooter();
-				})
-			}
-			// Задаем событие при клике на дочерний элемент
-			item.addEventListener("click", (event)=> {
-				currentTemplateID = removeDigitsAndUnderscore(event.target.parentElement.id);
+			item.addEventListener("click", (e) => {
+				currentTemplateID = removeDigitsAndUnderscore(e.target.parentElement.id);
 				firstEnter = false;
 				includeCurrentTemplate(currentTemplateID);
 				hiddenOrShowFooter();
@@ -73,13 +65,30 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
+	// const itemChildrens = item.children;
+	// for ( let child of itemChildrens ) {
+	// 	child.addEventListener("click", (e) => {
+	// 		currentTemplateID = removeDigitsAndUnderscore(e.target.parentElement.id);
+	// 		firstEnter = false;
+	// 		includeCurrentTemplate(currentTemplateID);
+	// 		hiddenOrShowFooter();
+	// 	})
+	// }
+	// // Задаем событие при клике на дочерний элемент
+	// item.addEventListener("click", (event)=> {
+	// 	currentTemplateID = removeDigitsAndUnderscore(event.target.parentElement.id);
+	// 	firstEnter = false;
+	// 	includeCurrentTemplate(currentTemplateID);
+	// 	hiddenOrShowFooter();
+	// })
+
 	// Функция удаления префикса из ID
 	function removeDigitsAndUnderscore(inputString) {
 		var resultString = inputString.replace(/[0-9_]/g, '');
 		return resultString;
 	}
 
-	// Находим все шаблоны и скрываем все кроме главного (при первой загрузке)
+	// Находим все шаблоны
 	const allWidgetTemplates = document.querySelectorAll(".page-template");
 	// Функция для включения нужного шаблона (выполняется по клике кнопки роута)
 	const includeCurrentTemplate = (templateID) => {
