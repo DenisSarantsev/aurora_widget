@@ -1168,7 +1168,19 @@
             console.log(allButtons);
             const footerElement = document.querySelector(".footer");
             function hiddenOrShowFooter() {
-                if (currentTemplateID === "home-page") footerElement.classList.add("_hidden"); else footerElement.classList.remove("_hidden");
+                if (currentTemplateID === "home-page") {
+                    footerElement.classList.add("animation-hidden-footer");
+                    setTimeout((function() {
+                        footerElement.classList.add("_hidden");
+                        footerElement.classList.remove("animation-hidden-footer");
+                    }), 510);
+                } else setTimeout((function() {
+                    footerElement.classList.remove("_hidden");
+                    footerElement.classList.add("animation-show-footer");
+                    setTimeout((function() {
+                        footerElement.classList.remove("animation-show-footer");
+                    }), 510);
+                }), 300);
             }
             hiddenOrShowFooter();
             const footerButtonToHome = document.querySelector(".footer__button-main-link");
@@ -1180,7 +1192,7 @@
             if (document.querySelector(".route-button")) {
                 const allRouteButtons = document.querySelectorAll(".route-button");
                 for (let item of allRouteButtons) item.addEventListener("click", (e => {
-                    currentTemplateID = removeDigitsAndUnderscore(e.target.parentElement.id);
+                    currentTemplateID = removeDigitsAndUnderscore(e.target.id);
                     firstEnter = false;
                     includeCurrentTemplate(currentTemplateID);
                     hiddenOrShowFooter();
@@ -1191,20 +1203,21 @@
                 return resultString;
             }
             const allWidgetTemplates = document.querySelectorAll(".page-template");
-            const includeCurrentTemplate = templateID => {
-                for (let item of allWidgetTemplates) if (item.id !== templateID && firstEnter) item.classList.add("_hidden-template"); else if (item.id !== templateID && !firstEnter) {
+            console.log(allWidgetTemplates);
+            const includeCurrentTemplate = currentTemplateID => {
+                for (let item of allWidgetTemplates) if (item.id !== currentTemplateID && !firstEnter) {
                     item.classList.add("position-left");
                     setTimeout((function() {
                         item.classList.add("_hidden-template");
                         item.classList.remove("position-left");
-                    }), 300);
-                } else if (item.id === templateID && !firstEnter) {
+                    }), 290);
+                } else if (item.id === currentTemplateID && !firstEnter) setTimeout((function() {
                     item.classList.add("position-right");
+                    item.classList.remove("_hidden-template");
                     setTimeout((function() {
-                        item.classList.remove("_hidden-template");
-                        item.classList.add("position-left");
-                    }), 300);
-                }
+                        item.classList.remove("position-right");
+                    }), 100);
+                }), 290);
             };
             includeCurrentTemplate(currentTemplateID);
             const apiUserUrl = `${actualHost}/user/${data.telegram_id}/${data.password}`;

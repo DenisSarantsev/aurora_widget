@@ -626,27 +626,33 @@ section {
 }
 
 .position-right {
-  -webkit-animation: fadeIn 0.3s cubic-bezier(0, 0.92, 0.24, 1.07);
-          animation: fadeIn 0.3s cubic-bezier(0, 0.92, 0.24, 1.07);
+  -webkit-animation: fadeIn 0.3s cubic-bezier(0, 1.49, 0.66, 0.9);
+          animation: fadeIn 0.3s cubic-bezier(0, 1.49, 0.66, 0.9);
+}
+
+.position-center {
+  margin-right: 0vw;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
 }
 
 @-webkit-keyframes fadeIn {
   0% {
-    margin-left: 200vw;
+    margin-right: -200vw;
   }
 
   100% {
-    margin-left: 0vw;
+    margin-right: 0vw;
   }
 }
 
 @keyframes fadeIn {
   0% {
-    margin-left: 200vw;
+    margin-right: -200vw;
   }
 
   100% {
-    margin-left: 0vw;
+    margin-right: 0vw;
   }
 }
 
@@ -1001,6 +1007,56 @@ section {
 .footer-button:hover {
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
+}
+
+.animation-hidden-footer {
+  -webkit-animation: hiddenFooter 0.5s ease;
+          animation: hiddenFooter 0.5s ease;
+}
+
+.animation-show-footer {
+  -webkit-animation: showFooter 0.5s ease;
+          animation: showFooter 0.5s ease;
+}
+
+@-webkit-keyframes hiddenFooter {
+  0% {
+    margin-bottom: 0rem;
+  }
+
+  100% {
+    margin-bottom: -6.25rem;
+  }
+}
+
+@keyframes hiddenFooter {
+  0% {
+    margin-bottom: 0rem;
+  }
+
+  100% {
+    margin-bottom: -6.25rem;
+  }
+}
+
+@-webkit-keyframes showFooter {
+  0% {
+    margin-bottom: -6.25rem;
+  }
+
+  100% {
+    margin-bottom: 0;
+  }
+}
+
+@keyframes showFooter {
+  0% {
+    margin-bottom: -6.25rem;
+  }
+
+  100% {
+    margin-bottom: 0;
+  }
 }
 
 .page__home {

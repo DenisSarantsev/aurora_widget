@@ -42,4 +42,31 @@
 		transition: all 0.3s ease 0s;
 	}
 }
+
+
+.animation-hidden-footer {
+	animation: hiddenFooter 0.5s ease;
+}
+
+.animation-show-footer {
+	animation: showFooter 0.5s ease;
+}
+
+@keyframes hiddenFooter {
+  0% {
+    margin-bottom: toRem(0);
+  }
+  100% {
+    margin-bottom: toRem(-100);
+  }
+}
+
+@keyframes showFooter {
+  0% {
+    margin-bottom: toRem(-100);
+  }
+  100% {
+    margin-bottom: 0;
+  }
+}
 //====================================================================================================

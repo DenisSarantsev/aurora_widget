@@ -342,15 +342,20 @@ section {
 
 
 .position-right {
-	animation: fadeIn 0.3s cubic-bezier(0,.92,.24,1.07);
+	animation: fadeIn 0.3s cubic-bezier(0,1.49,.66,.9);
 }
+.position-center {
+	margin-right: 0vw;
+	transition: all 0.3s ease 0s;
+}
+
 
 @keyframes fadeIn {
   0% {
-    margin-left: 200vw;
+    margin-right: -200vw;
   }
   100% {
-    margin-left: 0vw;
+    margin-right: 0vw;
   }
 }
 

@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	let currentUserName = data.first_name;
 	let currentTelegramID = data.telegram_id;
 	let currentPassword = data.password;
-
 	let actualHost = "https://avrora-web.fly.dev";
 	let currentTemplateID = "home-page"; // Изначальное значение домашняя страница. Впоследствии перезаписывается при переходах между страницами
 	let firstEnter = true;
@@ -33,9 +32,20 @@ document.addEventListener("DOMContentLoaded", () => {
 	const footerElement = document.querySelector(".footer");
 	function hiddenOrShowFooter() {
 		if ( currentTemplateID === "home-page" ) {
-			footerElement.classList.add("_hidden");
+			footerElement.classList.add("animation-hidden-footer")
+			setTimeout(function() {
+				footerElement.classList.add("_hidden");
+				footerElement.classList.remove("animation-hidden-footer")
+			}, 510);
 		} else {
-			footerElement.classList.remove("_hidden");
+			setTimeout(function() {
+				footerElement.classList.remove("_hidden");
+				footerElement.classList.add("animation-show-footer");
+				setTimeout(function() {
+					footerElement.classList.remove("animation-show-footer");
+				}, 510);
+			}, 300);
+			
 		}
 	}
 	hiddenOrShowFooter();
@@ -57,30 +67,13 @@ document.addEventListener("DOMContentLoaded", () => {
 		for ( let item of allRouteButtons ) {
 			// Отменяем всплытие и задаем событие при клике на дочерние элементы
 			item.addEventListener("click", (e) => {
-				currentTemplateID = removeDigitsAndUnderscore(e.target.parentElement.id);
+				currentTemplateID = removeDigitsAndUnderscore(e.target.id);
 				firstEnter = false;
 				includeCurrentTemplate(currentTemplateID);
 				hiddenOrShowFooter();
 			})
 		}
 	}
-
-	// const itemChildrens = item.children;
-	// for ( let child of itemChildrens ) {
-	// 	child.addEventListener("click", (e) => {
-	// 		currentTemplateID = removeDigitsAndUnderscore(e.target.parentElement.id);
-	// 		firstEnter = false;
-	// 		includeCurrentTemplate(currentTemplateID);
-	// 		hiddenOrShowFooter();
-	// 	})
-	// }
-	// // Задаем событие при клике на дочерний элемент
-	// item.addEventListener("click", (event)=> {
-	// 	currentTemplateID = removeDigitsAndUnderscore(event.target.parentElement.id);
-	// 	firstEnter = false;
-	// 	includeCurrentTemplate(currentTemplateID);
-	// 	hiddenOrShowFooter();
-	// })
 
 	// Функция удаления префикса из ID
 	function removeDigitsAndUnderscore(inputString) {
@@ -90,23 +83,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Находим все шаблоны
 	const allWidgetTemplates = document.querySelectorAll(".page-template");
+	console.log(allWidgetTemplates)
 	// Функция для включения нужного шаблона (выполняется по клике кнопки роута)
-	const includeCurrentTemplate = (templateID) => {
+	const includeCurrentTemplate = (currentTemplateID) => {
 		for ( let item of allWidgetTemplates ) {
-			if ( item.id !== templateID && firstEnter ) {
-				item.classList.add("_hidden-template");
-			} else if ( item.id !== templateID && !firstEnter ) { 
+			if ( item.id !== currentTemplateID && !firstEnter ) { 
 				item.classList.add("position-left");
 				setTimeout(function() {
 					item.classList.add("_hidden-template");
 					item.classList.remove("position-left");
-				}, 300);
-			} else if ( item.id === templateID && !firstEnter ) {
-				item.classList.add("position-right");
+				}, 290);
+			} else if ( item.id === currentTemplateID && !firstEnter ) {
 				setTimeout(function() {
+					item.classList.add("position-right");
 					item.classList.remove("_hidden-template");
-					item.classList.add("position-left");
-				}, 300);
+					setTimeout(function() {
+						item.classList.remove("position-right");
+					}, 100);
+				}, 290);
+				
 			} else {}
 		}
 	}
