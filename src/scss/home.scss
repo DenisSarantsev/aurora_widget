@@ -13,11 +13,11 @@
 	animation: marginImage 1.5s cubic-bezier(0,1.17,.67,.94);
 }
 .home-page__title {
-	animation: 1.1s opacityText;
+	animation: 0.8s opacityText;
 }
 .home-page__subtitle {
 	max-width: toRem(400);
-	animation: 1.2s opacityText;
+	animation: 0.9s opacityText;
 }
 .home-page__buttons-block {
 	position: relative;
@@ -60,10 +60,10 @@
 }
 
 .opacity-animation-first-button-text {
-	animation: opacityButtonText 1.5s ease;
+	animation: opacityButtonText 1s ease;
 }
 .opacity-animation-second-button-text {
-	animation: opacityButtonText 1.6s ease;
+	animation: opacityButtonText 1.1s ease;
 }
 @keyframes opacityButtonText {
 	0% { opacity: 0; display: none; }
