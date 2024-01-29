@@ -693,6 +693,10 @@ section {
   transition: all 0.3s ease 0s;
 }
 
+.home-page__main-image {
+  max-width: 12.5rem;
+}
+
 .directions-page {
   width: 100%;
   height: 100%;
