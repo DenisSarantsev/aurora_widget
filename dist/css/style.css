@@ -200,11 +200,11 @@ section {
 .bg-two-circle-element {
   z-index: -1;
   position: absolute;
-  top: 81vh;
+  top: 75vh;
   left: 79vw;
   background-color: rgba(255, 221, 0, 0.2);
-  width: 7vh;
-  height: 7vh;
+  width: 11vh;
+  height: 11vh;
   border-radius: 50%;
   -webkit-animation: moveAroundTwo 90s infinite;
           animation: moveAroundTwo 90s infinite;
