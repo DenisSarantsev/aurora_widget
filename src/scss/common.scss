@@ -1,7 +1,10 @@
 // Заголовки, загальні БЕМ блоки та інше...
 body {
 	background-color: $backGroundColor;
+	
 }
+
+
 
 
 section {
@@ -24,9 +27,64 @@ section {
 }
 
 .wrapper {
+	
 }
 
+
+
+// Анимация кружков на фоне
+.bg-one-circle-element {
+	position: absolute;
+	top: 10vh;
+	left: 25vw;
+	background-color: $backgoundYellowCircle;
+	width: toRem(180);
+	height: toRem(180);
+	border-radius: 50%;
+}
+.bg-two-circle-element {
+	position: absolute;
+	top: 81vh;
+	left: 58vw;
+	background-color: $backgoundYellowCircle;
+	width: toRem(110);
+	height: toRem(110);
+	border-radius: 50%;
+}
+.bg-three-circle-element {
+	position: absolute;
+	bottom: 40vh;
+	right: 40vw;
+	background-color: $backgoundYellowCircle;
+	width: toRem(70);
+	height: toRem(70);
+	border-radius: 50%;
+}
+.bg-four-circle-element {
+	position: absolute;
+	top: 20vh;
+	right: 20vw;
+	background-color: $backgoundYellowCircle;
+	width: toRem(190);
+	height: toRem(190);
+	border-radius: 50%;
+}
+.bg-five-circle-element {
+	position: absolute;
+	bottom: 10vh;
+	left: 20vw;
+	background-color: $backgoundYellowCircle;
+	width: toRem(90);
+	height: toRem(90);
+	border-radius: 50%;
+}
+
+
+
+
+
 .page {
+	position: relative;
 	height: 100%;
 
 	// width: 100%;
@@ -37,6 +95,7 @@ section {
 	padding: toRem(20) toRem(0);
 	// gap: toRem(20);
 }
+
 
 // Головний контейнер з контентом
 .page-container {
@@ -87,16 +146,7 @@ section {
 	}
 }
 
-.opacity-animation-button-text {
-	
-	animation: opacityButtonText 1.5s ease;
-}
-@keyframes opacityButtonText {
-	0% { opacity: 0; display: none; }
-	50% {opacity: 0; display: none;}
-	75% {display: block;}
-	100% { opacity: 1; display: block; transition: all 0.3s ease 0s; }
-}
+
 
 // Ефект кола при наведенні
 .button-effect {
