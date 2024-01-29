@@ -1149,14 +1149,21 @@
                 first_name: "Денис",
                 telegram_id: 210325718,
                 password: "5777ef8c7a3f5c32bf2a85814352bc763d063712287a142087225d8a8367f7784b5eb193814fc801eb68",
-                content: "Ласкаво просимо до нашого віртуального відділу кадрів! Ми раді, що ви завітали до нас.",
+                content: "Хочеш стати частиною команди Аврори? Я маю для тебе кілька вакансій",
                 visit_website: false
             };
+            let currentContent = data.content;
+            let currentUserName = data.first_name;
             let currentTelegramID = data.telegram_id;
             let currentPassword = data.password;
             let actualHost = "https://avrora-web.fly.dev";
             let currentTemplateID = "home-page";
             let firstEnter = true;
+            const homePageTitleElement = document.querySelector(".home-page__title");
+            const homePageTitleText = `Привіт, ${currentUserName}! `;
+            homePageTitleElement.insertAdjacentText("afterbegin", `${homePageTitleText}`);
+            const homePageSubtitleElement = document.querySelector(".home-page__subtitle");
+            homePageSubtitleElement.insertAdjacentHTML("beforeend", `${currentContent}`);
             if (document.querySelector(".route-button")) {
                 const allRouteButtons = document.querySelectorAll(".route-button");
                 for (let item of allRouteButtons) {
@@ -1330,8 +1337,6 @@
             }));
             const headerUserName = document.querySelector(".header__user-name-text");
             headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
-            const homePageSubtitle = document.querySelector(".home-page__subtitle");
-            homePageSubtitle.insertAdjacentText("afterbegin", `${data.content}`);
         }));
         __webpack_require__(69);
         window["FLS"] = true;

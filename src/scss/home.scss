@@ -2,8 +2,42 @@
 
 .home-page__main-image {
 	max-width: toRem(200);
+	animation: marginImage 0.9s cubic-bezier(0,1.17,.67,.94);
+}
+.home-page__title {
+	animation: 2s opacityText;
+}
+.home-page__subtitle {
+	max-width: toRem(400);
+	animation: 2s opacityText;
+}
+.home-page__buttons-block {
+	position: relative;
+}
+.find-vacancy-main-page-button {
+	animation: marginFirstButton 1s cubic-bezier(0,1.17,.67,.94);
+}
+.about-company-main-page-button {
+	animation: marginSecondButton 1s cubic-bezier(0,1.17,.67,.94);
 }
 
+@keyframes opacityText {
+	0% { opacity: 0 }
+	100% { opacity: 1; }
+}
+
+@keyframes marginImage {
+	0% { margin-left: -200vw; }
+	100% { margin-left: 0; }
+}
+@keyframes marginFirstButton {
+	0% { margin-left: 200vw;}
+	100% { margin-left: 0; }
+}
+@keyframes marginSecondButton {
+	0% { margin-right: 200vw;}
+	100% { margin-right: 0; }
+}
 
 
 

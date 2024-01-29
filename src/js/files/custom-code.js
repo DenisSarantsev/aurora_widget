@@ -6,15 +6,47 @@ document.addEventListener("DOMContentLoaded", () => {
 		'first_name': "Денис",
 		'telegram_id': 210325718,
 		'password': "5777ef8c7a3f5c32bf2a85814352bc763d063712287a142087225d8a8367f7784b5eb193814fc801eb68",
-		'content': 'Ласкаво просимо до нашого віртуального відділу кадрів! Ми раді, що ви завітали до нас.',
+		'content': 'Хочеш стати частиною команди Аврори? Я маю для тебе кілька вакансій',
 		'visit_website': false,
 	}
+	let currentContent = data.content;
+	let currentUserName = data.first_name;
 	let currentTelegramID = data.telegram_id;
 	let currentPassword = data.password;
 
 	let actualHost = "https://avrora-web.fly.dev";
 	let currentTemplateID = "home-page"; // Изначальное значение домашняя страница. Впоследствии перезаписывается при переходах между страницами
 	let firstEnter = true;
+
+	// Добавляем текст на главную страницу:
+	// Заголовок:
+	const homePageTitleElement = document.querySelector(".home-page__title");
+	const homePageTitleText = `Привіт, ${currentUserName}! `;
+	homePageTitleElement.insertAdjacentText("afterbegin", `${homePageTitleText}`);
+	// Подзаголовок:
+	const homePageSubtitleElement = document.querySelector(".home-page__subtitle");
+	homePageSubtitleElement.insertAdjacentHTML("beforeend", `${currentContent}`);
+	// Функция для анимации появления подзаголовка
+	// function displayStringWithDelay(currentContentReverse, delay) {
+	// 	let index = 0;
+	// 	function displayNextCharacter() {
+	// 		if (index < currentContentReverse.length) {
+	// 			homePageSubtitleElement.insertAdjacentHTML("beforeend", `${currentContentReverse.charAt(index)}`);
+	// 			index++;
+	// 			setTimeout(displayNextCharacter, delay);
+	// 		}
+	// 	}
+	// 	displayNextCharacter();
+	// }
+	// const delay = 10; // Задержка в миллисекундах
+	// displayStringWithDelay(currentContent, delay);
+
+
+
+
+
+	
+
 	
 	// Проходимся по всем кнопкам с роутами, чтобы повесить на них событие клика и при необходимости включить функцию переключения шаблона
 	if (document.querySelector(".route-button")) {
@@ -362,9 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const headerUserName = document.querySelector(".header__user-name-text");
 	headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
 
-	// Работа с шаблоном home-page (вставляем актуальный контент на главную страницу)
-	const homePageSubtitle = document.querySelector(".home-page__subtitle");
-	homePageSubtitle.insertAdjacentText("afterbegin", `${data.content}`);
+
 
 
 

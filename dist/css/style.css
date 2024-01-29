@@ -214,11 +214,11 @@ section {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  gap: 1.25rem;
+  gap: 0.625rem;
 }
 
 .content-width-limiter {
-  max-width: 37.5rem;
+  max-width: 31.25rem;
 }
 
 .title-main-style {
@@ -543,12 +543,34 @@ section {
   border: 1px solid rgb(28, 189, 17);
 }
 
+@-webkit-keyframes headerMargin {
+  0% {
+    margin-top: -9.375rem;
+  }
+
+  100% {
+    margin-top: 0;
+  }
+}
+
+@keyframes headerMargin {
+  0% {
+    margin-top: -9.375rem;
+  }
+
+  100% {
+    margin-top: 0;
+  }
+}
+
 .header {
   z-index: 100;
   background-color: #FFFFFF;
   box-shadow: 0px 0px 15px 5px rgba(194, 194, 194, 0.75);
   -webkit-box-shadow: 0px 0px 15px 5px rgba(194, 194, 194, 0.75);
   -moz-box-shadow: 0px 0px 15px 5px rgba(194, 194, 194, 0.75);
+  -webkit-animation: headerMargin 1s;
+          animation: headerMargin 1s;
 }
 
 .header__container {
@@ -695,6 +717,113 @@ section {
 
 .home-page__main-image {
   max-width: 12.5rem;
+  -webkit-animation: marginImage 0.9s cubic-bezier(0, 1.17, 0.67, 0.94);
+          animation: marginImage 0.9s cubic-bezier(0, 1.17, 0.67, 0.94);
+}
+
+.home-page__title {
+  -webkit-animation: 2s opacityText;
+          animation: 2s opacityText;
+}
+
+.home-page__subtitle {
+  max-width: 25rem;
+  -webkit-animation: 2s opacityText;
+          animation: 2s opacityText;
+}
+
+.home-page__buttons-block {
+  position: relative;
+}
+
+.find-vacancy-main-page-button {
+  -webkit-animation: marginFirstButton 1s cubic-bezier(0, 1.17, 0.67, 0.94);
+          animation: marginFirstButton 1s cubic-bezier(0, 1.17, 0.67, 0.94);
+}
+
+.about-company-main-page-button {
+  -webkit-animation: marginSecondButton 1s cubic-bezier(0, 1.17, 0.67, 0.94);
+          animation: marginSecondButton 1s cubic-bezier(0, 1.17, 0.67, 0.94);
+}
+
+@-webkit-keyframes opacityText {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes opacityText {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes marginImage {
+  0% {
+    margin-left: -200vw;
+  }
+
+  100% {
+    margin-left: 0;
+  }
+}
+
+@keyframes marginImage {
+  0% {
+    margin-left: -200vw;
+  }
+
+  100% {
+    margin-left: 0;
+  }
+}
+
+@-webkit-keyframes marginFirstButton {
+  0% {
+    margin-left: 200vw;
+  }
+
+  100% {
+    margin-left: 0;
+  }
+}
+
+@keyframes marginFirstButton {
+  0% {
+    margin-left: 200vw;
+  }
+
+  100% {
+    margin-left: 0;
+  }
+}
+
+@-webkit-keyframes marginSecondButton {
+  0% {
+    margin-right: 200vw;
+  }
+
+  100% {
+    margin-right: 0;
+  }
+}
+
+@keyframes marginSecondButton {
+  0% {
+    margin-right: 200vw;
+  }
+
+  100% {
+    margin-right: 0;
+  }
 }
 
 .directions-page {

@@ -1,9 +1,16 @@
+@keyframes headerMargin {
+	0% { margin-top: toRem(-150); }
+	100% { margin-top: 0; }
+}
+
+
 .header {
 	z-index: 100;
 	background-color: $headerBackGround;
 	box-shadow: 0px 0px 15px 5px rgba(194,194,194,0.75);
 	-webkit-box-shadow: 0px 0px 15px 5px rgba(194,194,194,0.75);
 	-moz-box-shadow: 0px 0px 15px 5px rgba(194,194,194,0.75);
+	animation: headerMargin 1s;
 	&__container {
 		display: flex;
 		justify-content: space-between;
