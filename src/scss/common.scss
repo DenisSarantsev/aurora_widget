@@ -34,49 +34,156 @@ section {
 
 // Анимация кружков на фоне
 .bg-one-circle-element {
+	z-index: -1;
 	position: absolute;
 	top: 10vh;
-	left: 25vw;
+	left: 5vw;
 	background-color: $backgoundYellowCircle;
-	width: toRem(180);
-	height: toRem(180);
+	width: 4vh;
+	height: 4vh;
 	border-radius: 50%;
+	animation: moveAround 45s infinite;
 }
 .bg-two-circle-element {
+	z-index: -1;
 	position: absolute;
 	top: 81vh;
-	left: 58vw;
+	left: 79vw;
 	background-color: $backgoundYellowCircle;
-	width: toRem(110);
-	height: toRem(110);
+	width: 7vh;
+	height: 7vh;
 	border-radius: 50%;
+	animation: moveAroundTwo 90s infinite;
 }
 .bg-three-circle-element {
+	z-index: -1;
 	position: absolute;
-	bottom: 40vh;
+	top: 60vh;
 	right: 40vw;
 	background-color: $backgoundYellowCircle;
-	width: toRem(70);
-	height: toRem(70);
+	width: 5vh;
+	height: 5vh;
 	border-radius: 50%;
+	animation: moveAroundTwo 75s infinite;
 }
 .bg-four-circle-element {
+	z-index: -1;
 	position: absolute;
 	top: 20vh;
 	right: 20vw;
 	background-color: $backgoundYellowCircle;
-	width: toRem(190);
-	height: toRem(190);
+	width: 9vh;
+	height: 9vh;
 	border-radius: 50%;
+	animation: moveAround 30s infinite;
 }
 .bg-five-circle-element {
+	z-index: -1;
 	position: absolute;
-	bottom: 10vh;
+	top: 80vh;
 	left: 20vw;
 	background-color: $backgoundYellowCircle;
-	width: toRem(90);
-	height: toRem(90);
+	width: 16vh;
+	height: 16vh;
 	border-radius: 50%;
+	animation: moveAround 15s infinite;
+}
+.bg-six-circle-element {
+	z-index: -1;
+	position: absolute;
+	top: 5vh;
+	right: 28vh;
+	background-color: $backgoundYellowCircle;
+	width: 12vh;
+	height: 12vh;
+	border-radius: 50%;
+	animation: moveAroundTwo 60s infinite;
+}
+.bg-seven-circle-element {
+	z-index: -1;
+	position: absolute;
+	top: 11vh;
+	right: 8vh;
+	background-color: $backgoundYellowCircle;
+	width: 3vh;
+	height: 3vh;
+	border-radius: 50%;
+	animation: moveAround 40s infinite;
+}
+.bg-eight-circle-element {
+	z-index: -1;
+	position: absolute;
+	top: -3vh;
+	left: 11vh;
+	background-color: $backgoundYellowCircle;
+	width: 6vh;
+	height: 6vh;
+	border-radius: 50%;
+	animation: moveAround 40s infinite;
+}
+.bg-nine-circle-element {
+	z-index: -1;
+	position: absolute;
+	top: 27vh;
+	left: -8vh;
+	background-color: $backgoundYellowCircle;
+	width: 11vh;
+	height: 11vh;
+	border-radius: 50%;
+	animation: moveAround 40s infinite;
+}
+.bg-ten-circle-element {
+	z-index: -1;
+	position: absolute;
+	top: 40vh;
+	right: 14vh;
+	background-color: $backgoundYellowCircle;
+	width: 7vh;
+	height: 7vh;
+	border-radius: 50%;
+	animation: moveAround 40s infinite;
+}
+
+@keyframes moveAround {
+	0% {
+		transform: translate(0, 0);
+	}
+	25% {
+		transform: translate(40px, 0);
+	}
+	35% {
+		transform: translate(40px, 20px);
+	}
+	50% {
+		transform: translate(40px, 40px);
+	}
+	75% {
+		transform: translate(0, 30px);
+	}
+	100% {
+		transform: translate(0, 0);
+	}
+}
+
+@keyframes moveAroundTwo {
+	0% {
+		transform: translate(0, 0);
+	}
+	25% {
+		transform: translate(20px, 0);
+	}
+	35% {
+		transform: translate(60px, 0px);
+	}
+	50% {
+		transform: translate(30px, 20px);
+	}
+	75% {
+		transform: translate(0, 30px);
+	}
+	100% {
+		transform: translate(0, 0);
+	}
 }
 
 
