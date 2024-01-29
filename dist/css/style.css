@@ -237,6 +237,7 @@ section {
 }
 
 .route-button-main-style {
+  min-height: 41.97px;
   font-weight: 500;
   background-color: rgb(255, 221, 0);
   border-radius: 100px;
@@ -259,6 +260,57 @@ section {
 .route-button-main-style:hover {
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
+}
+
+.opacity-animation-button-text {
+  -webkit-animation: opacityButtonText 1.5s ease;
+          animation: opacityButtonText 1.5s ease;
+}
+
+@-webkit-keyframes opacityButtonText {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+
+  50% {
+    opacity: 0;
+    display: none;
+  }
+
+  75% {
+    display: block;
+  }
+
+  100% {
+    opacity: 1;
+    display: block;
+    -webkit-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+  }
+}
+
+@keyframes opacityButtonText {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+
+  50% {
+    opacity: 0;
+    display: none;
+  }
+
+  75% {
+    display: block;
+  }
+
+  100% {
+    opacity: 1;
+    display: block;
+    -webkit-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+  }
 }
 
 .button-effect {

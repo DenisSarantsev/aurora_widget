@@ -68,6 +68,7 @@ section {
 
 // Головний стиль кнопок для вибору
 .route-button-main-style {
+	min-height: 41.97px;
 	font-weight: 500;
 	background-color: $mainYellow;
 	border-radius: 100px;
@@ -84,6 +85,17 @@ section {
 	@media (max-width: em(400)){
 		font-size: toRem(16);
 	}
+}
+
+.opacity-animation-button-text {
+	
+	animation: opacityButtonText 1.5s ease;
+}
+@keyframes opacityButtonText {
+	0% { opacity: 0; display: none; }
+	50% {opacity: 0; display: none;}
+	75% {display: block;}
+	100% { opacity: 1; display: block; transition: all 0.3s ease 0s; }
 }
 
 // Ефект кола при наведенні
