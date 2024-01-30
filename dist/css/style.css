@@ -193,8 +193,8 @@ section {
   width: 4vh;
   height: 4vh;
   border-radius: 50%;
-  -webkit-animation: moveAround 45s infinite;
-          animation: moveAround 45s infinite;
+  -webkit-animation: moveAround 25s infinite;
+          animation: moveAround 25s infinite;
 }
 
 .bg-two-circle-element {
@@ -206,8 +206,8 @@ section {
   width: 11vh;
   height: 11vh;
   border-radius: 50%;
-  -webkit-animation: moveAroundTwo 90s infinite;
-          animation: moveAroundTwo 90s infinite;
+  -webkit-animation: moveAroundTwo 40s infinite;
+          animation: moveAroundTwo 40s infinite;
 }
 
 .bg-three-circle-element {
@@ -219,8 +219,8 @@ section {
   width: 5vh;
   height: 5vh;
   border-radius: 50%;
-  -webkit-animation: moveAroundTwo 75s infinite;
-          animation: moveAroundTwo 75s infinite;
+  -webkit-animation: moveAroundTwo 35s infinite;
+          animation: moveAroundTwo 35s infinite;
 }
 
 .bg-four-circle-element {
@@ -232,8 +232,8 @@ section {
   width: 9vh;
   height: 9vh;
   border-radius: 50%;
-  -webkit-animation: moveAround 30s infinite;
-          animation: moveAround 30s infinite;
+  -webkit-animation: moveAroundThree 20s infinite;
+          animation: moveAroundThree 20s infinite;
 }
 
 .bg-five-circle-element {
@@ -258,8 +258,8 @@ section {
   width: 12vh;
   height: 12vh;
   border-radius: 50%;
-  -webkit-animation: moveAroundTwo 60s infinite;
-          animation: moveAroundTwo 60s infinite;
+  -webkit-animation: moveAroundTwo 10s infinite;
+          animation: moveAroundTwo 10s infinite;
 }
 
 .bg-seven-circle-element {
@@ -271,8 +271,8 @@ section {
   width: 3vh;
   height: 3vh;
   border-radius: 50%;
-  -webkit-animation: moveAround 40s infinite;
-          animation: moveAround 40s infinite;
+  -webkit-animation: moveAround 20s infinite;
+          animation: moveAround 20s infinite;
 }
 
 .bg-eight-circle-element {
@@ -284,8 +284,8 @@ section {
   width: 6vh;
   height: 6vh;
   border-radius: 50%;
-  -webkit-animation: moveAround 50s infinite;
-          animation: moveAround 50s infinite;
+  -webkit-animation: moveAroundThree 23s infinite;
+          animation: moveAroundThree 23s infinite;
 }
 
 .bg-nine-circle-element {
@@ -310,8 +310,8 @@ section {
   width: 7vh;
   height: 7vh;
   border-radius: 50%;
-  -webkit-animation: moveAround 80s infinite;
-          animation: moveAround 80s infinite;
+  -webkit-animation: moveAroundThree 43s infinite;
+          animation: moveAroundThree 43s infinite;
 }
 
 .bg-eleven-circle-element {
@@ -447,6 +447,70 @@ section {
   75% {
     -webkit-transform: translate(0, 30px);
             transform: translate(0, 30px);
+  }
+
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+  }
+}
+
+@-webkit-keyframes moveAroundThree {
+  0% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+  }
+
+  25% {
+    -webkit-transform: translate(10px, 30px);
+            transform: translate(10px, 30px);
+  }
+
+  35% {
+    -webkit-transform: translate(60px, 0px);
+            transform: translate(60px, 0px);
+  }
+
+  50% {
+    -webkit-transform: translate(0px, 40px);
+            transform: translate(0px, 40px);
+  }
+
+  75% {
+    -webkit-transform: translate(20px, 5px);
+            transform: translate(20px, 5px);
+  }
+
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+  }
+}
+
+@keyframes moveAroundThree {
+  0% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+  }
+
+  25% {
+    -webkit-transform: translate(10px, 30px);
+            transform: translate(10px, 30px);
+  }
+
+  35% {
+    -webkit-transform: translate(60px, 0px);
+            transform: translate(60px, 0px);
+  }
+
+  50% {
+    -webkit-transform: translate(0px, 40px);
+            transform: translate(0px, 40px);
+  }
+
+  75% {
+    -webkit-transform: translate(20px, 5px);
+            transform: translate(20px, 5px);
   }
 
   100% {
@@ -1010,8 +1074,8 @@ section {
 }
 
 .animation-hidden-footer {
-  -webkit-animation: hiddenFooter 0.5s ease;
-          animation: hiddenFooter 0.5s ease;
+  -webkit-animation: hiddenFooter 1.2s ease;
+          animation: hiddenFooter 1.2s ease;
 }
 
 .animation-show-footer {

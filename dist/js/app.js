@@ -1173,13 +1173,13 @@
                     setTimeout((function() {
                         footerElement.classList.add("_hidden");
                         footerElement.classList.remove("animation-hidden-footer");
-                    }), 510);
+                    }), 490);
                 } else setTimeout((function() {
                     footerElement.classList.remove("_hidden");
                     footerElement.classList.add("animation-show-footer");
                     setTimeout((function() {
                         footerElement.classList.remove("animation-show-footer");
-                    }), 510);
+                    }), 490);
                 }), 300);
             }
             hiddenOrShowFooter();
