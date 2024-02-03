@@ -527,7 +527,7 @@ section {
 .page {
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
-  height: auto;
+  height: 100dvh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
