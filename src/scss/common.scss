@@ -1,11 +1,7 @@
 // Заголовки, загальні БЕМ блоки та інше...
 body {
 	background-color: $backGroundColor;
-	
 }
-
-
-
 
 section {
 	width: 100%;
@@ -15,7 +11,7 @@ section {
 }
 
 ._hidden {
-	display: none;;
+	display: none;
 }
 
 ._hidden-template {
@@ -27,10 +23,9 @@ section {
 }
 
 .wrapper {
-	
+	height: 100%;
+	overflow: scroll;
 }
-
-
 
 // Анимация кружков на фоне
 .bg-one-circle-element {
@@ -222,16 +217,22 @@ section {
 
 
 .page {
-	position: relative;
-	height: 100%;
-
-	// width: 100%;
+	// position: relative;
+	transition: all 0.3s ease 0s;
+	height: auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.white-background {
+	transition: all 0.3s ease 0s;
+	background-color: rgba(255, 255, 255, 0.85);
+}
+
+.section-padding {
 	padding: toRem(20) toRem(0);
-	// gap: toRem(20);
 }
 
 

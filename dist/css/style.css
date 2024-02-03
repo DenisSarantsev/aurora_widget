@@ -184,6 +184,11 @@ section {
   display: block;
 }
 
+.wrapper {
+  height: 100%;
+  overflow: scroll;
+}
+
 .bg-one-circle-element {
   z-index: -1;
   position: absolute;
@@ -520,8 +525,9 @@ section {
 }
 
 .page {
-  position: relative;
-  height: 100%;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  height: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -535,6 +541,15 @@ section {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+.white-background {
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.section-padding {
   padding: 1.25rem 0rem;
 }
 
@@ -921,6 +936,7 @@ section {
 
 .header {
   z-index: 100;
+  position: relative;
   background-color: #FFFFFF;
   box-shadow: 0px 0px 15px 5px rgba(194, 194, 194, 0.75);
   -webkit-box-shadow: 0px 0px 15px 5px rgba(194, 194, 194, 0.75);
@@ -1039,7 +1055,7 @@ section {
       -ms-flex-pack: center;
           justify-content: center;
   gap: 0.625rem;
-  padding: 0.9375rem 0.625rem;
+  padding: 0.625rem 0.625rem;
 }
 
 .main-footer-container {
@@ -1513,6 +1529,150 @@ section {
 .jobs-list__item:hover {
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
+}
+
+.post-request-vacancy-page {
+  height: 100%;
+  max-width: 767.98px;
+  top: 0;
+  left: 0;
+}
+
+.post-request-vacancy-page__chat-container {
+  height: 100%;
+  width: 768px;
+  position: relative;
+}
+
+.post-request-vacancy-page__main-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: end;
+}
+
+.post-request-vacancy-page__messages-container {
+  width: 100%;
+  padding: 0.9375rem 0.9375rem 6.25rem 0.9375rem;
+  display: block;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: end;
+  position: absolute;
+  z-index: 1;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.post-request-vacancy-page__messages-container::-webkit-scrollbar {
+  width: 0.5em;
+  /* Ширина полосы прокрутки */
+}
+
+.post-request-vacancy-page__messages-container::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  /* Цвет бегунка (перемещаемой части) */
+}
+
+.post-request-vacancy-page__messages-container::-webkit-scrollbar-track {
+  background-color: transparent;
+  /* Цвет фона полосы прокрутки */
+}
+
+.post-request-vacancy-page__input-container {
+  position: absolute;
+  bottom: 0;
+  height: auto;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0.9375rem 0.9375rem;
+  gap: 0.9375rem;
+  background-color: #FFFFFF;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  z-index: 5;
+}
+
+.post-request-vacancy-page__input {
+  width: 100%;
+  height: 100%;
+  padding: 0.625rem 0.9375rem;
+  outline: none;
+  font-size: 1.125rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 100px;
+  background-color: inherit;
+}
+
+.post-request-vacancy-page__send-message-image {
+  max-height: 1.875rem;
+  padding-right: 0.3125rem;
+  -webkit-filter: invert(80%) sepia(65%) saturate(2048%) hue-rotate(3deg) brightness(106%) contrast(109%);
+          filter: invert(80%) sepia(65%) saturate(2048%) hue-rotate(3deg) brightness(106%) contrast(109%);
+}
+
+.main-message-style {
+  padding: 0.9375rem 0.9375rem;
+  width: auto;
+  border-radius: 100px;
+}
+
+.app-message {
+  background-color: rgb(255, 221, 0);
+}
+
+.app-message__container {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+}
+
+.user-message {
+  background-color: rgba(255, 229, 61, 0.3);
+}
+
+.user-message__container {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: end;
+}
+
+@media (min-width: 47.99875em) {
+  .post-request-vacancy-page__input-container {
+    border-radius: 100px;
+    -webkit-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+  }
 }
 
 @media (max-width: 25em) {

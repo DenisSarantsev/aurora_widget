@@ -24,7 +24,7 @@ $fontSize: toRem(14); // де 14(px) - розмір шрифту за замов
 // Основні кольори
 $mainColor: #000; // Колір шрифту за замовчуванням
 $mainRed: rgb(255 0 0); // Основний червоний
-$mainYellow: rgb(255 221 0); // Основний жовтий
+$mainYellow: rgb(255 221 0); // Основний жовтий #ffdd00
 $backGroundColor: #f8f9f9; // Головний колір фону
 $headerBackGround: #FFFFFF; // Колір фону шапки
 $backgoundYellowCircle: rgba(255, 221, 0, 0.2); // Жовтий light
@@ -162,3 +162,4 @@ body {
 @import "search-type";
 @import "about-company";
 @import "jobs-list";
+@import "chat";

@@ -1,0 +1,103 @@
+.post-request-vacancy-page {
+		height: 100%;
+		max-width: 767.98px;
+		top: 0;
+		left: 0;
+		&__chat-container {
+			height: 100%;
+			width: 768px;
+			position: relative;
+		}
+		&__main-container {
+			height: 100%;
+			width: 100%;
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			justify-content: end;
+		}
+		&__messages-container {
+			width: 100%;
+			padding: toRem(15) toRem(15) toRem(100) toRem(15);
+			display: block;
+			flex-direction: column;
+			justify-content: end;
+			position: absolute;
+			z-index: 1;
+			overflow-y: auto;
+			height: 100%;
+			&::-webkit-scrollbar {
+				width: 0.5em; /* Ширина полосы прокрутки */
+			}
+			
+			&::-webkit-scrollbar-thumb {
+					background-color: transparent; /* Цвет бегунка (перемещаемой части) */
+			}
+			
+			&::-webkit-scrollbar-track {
+					background-color: transparent; /* Цвет фона полосы прокрутки */
+			}
+		}
+		&__input-container {
+			position: absolute;
+			bottom: 0;
+			height: auto;
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			padding: toRem(15) toRem(15);
+			gap: toRem(15);
+			background-color: #FFFFFF;
+			transition: all 0.3s ease 0s;
+			z-index: 5;
+			@media (min-width:$mobile){
+				border-radius: 100px;
+				transition: all 0.3s ease 0s;
+			}
+		}
+		&__input {
+			width: 100%;
+			height: 100%;
+			padding: toRem(10) toRem(15);
+			outline: none;
+			font-size: toRem(18);
+			border: 1px solid rgba(0, 0, 0, 0.20);
+			border-radius: 100px;
+			background-color: inherit;
+		}
+		&__send-message {
+		}
+		&__send-message-image {
+			max-height: toRem(30);
+			padding-right: toRem(5);
+			// filter: invert(100%) sepia(0%) saturate(7460%) hue-rotate(92deg) brightness(113%) contrast(109%);
+			filter: invert(80%) sepia(65%) saturate(2048%) hue-rotate(3deg) brightness(106%) contrast(109%);
+		}
+}
+
+.main-message-style {
+
+	padding: toRem(15) toRem(15);
+	width: auto;
+	border-radius: 100px;
+}
+
+.app-message {
+	background-color: $mainYellow;
+	&__container {
+		width: 100%;
+		display: flex;
+		justify-content: start;
+	}
+}
+
+.user-message {
+	background-color: rgba(255, 229, 61, 0.3);
+
+	&__container {
+		width: 100%;
+		display: flex;
+		justify-content: end;
+	}
+}

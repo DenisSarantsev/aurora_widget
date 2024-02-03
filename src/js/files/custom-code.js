@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		'content': 'Хочеш стати частиною команди Аврори? Я маю для тебе кілька вакансій',
 		'visit_website': false,
 	}
+
+	let currentOrder = data.cabinet;
 	let currentContent = data.content;
 	let currentUserName = data.first_name;
 	let currentTelegramID = data.telegram_id;
@@ -28,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Скрываем футер на главной странице
 	const allButtons = document.querySelectorAll(".button");
-	console.log(allButtons)
 	const footerElement = document.querySelector(".footer");
 	function hiddenOrShowFooter() {
 		if ( currentTemplateID === "home-page" ) {
@@ -58,6 +59,25 @@ document.addEventListener("DOMContentLoaded", () => {
 		currentTemplateID = "home-page";
 	})
 
+	// Прокрутка страницы в самый верх
+	function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+	}
+
+	// Добавляем полупрозрачный белый фон на блок page при открытии шаблона chat\
+	const mainPageContainer = document.querySelector(".page");
+	function addWhiteBackground(button) {
+		let itemID = removeDigitsAndUnderscore(button.id);
+		if ( itemID === "post-request-vacancy-page" ) {
+			mainPageContainer.classList.add("white-background");
+		} else {
+			mainPageContainer.classList.remove("white-background");
+		}
+	}
+
 	
 	// Проходимся по всем кнопкам с роутами, чтобы повесить на них событие клика и при необходимости включить функцию переключения шаблона
 	if (document.querySelector(".route-button")) {
@@ -70,7 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
 				currentTemplateID = removeDigitsAndUnderscore(e.target.id);
 				firstEnter = false;
 				includeCurrentTemplate(currentTemplateID);
+				addWhiteBackground(item);
 				hiddenOrShowFooter();
+				scrollToTop();
 			})
 		}
 	}
@@ -83,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Находим все шаблоны
 	const allWidgetTemplates = document.querySelectorAll(".page-template");
-	console.log(allWidgetTemplates)
 	// Функция для включения нужного шаблона (выполняется по клике кнопки роута)
 	const includeCurrentTemplate = (currentTemplateID) => {
 		for ( let item of allWidgetTemplates ) {
@@ -129,9 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		return response.json();
 	})
 	.then(data => {
-
-		// console.log(data)
-
 	})
 	.catch(error => { console.error('Ошибка при выполнении запроса:', error); });
 
@@ -211,6 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const allJobItemsButtons = document.querySelectorAll(".jobs-list__item");
 		for ( let item of allJobItemsButtons ) {
 			item.addEventListener("click", function(){
+				scrollToTop();
 				let vacancyTitle = "";
 				let vacancyContent = "";
 				// Проходимя по массиву со всеми вакансиями и ищем в нем ту, у которой id такой же, как и у вакансии, по которой мы кликнули
@@ -223,7 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
 				// Запускаем функцию включения нужного шаблона по id из кнопки ( предварительно очищаем id от префикса при помощи функции removeDigitsAndUnderscore() )
 				includeCurrentTemplate(removeDigitsAndUnderscore(item.id));
 				currentVacancyID = item.getAttribute(`data-vacancy-id`);
-				console.log(currentVacancyID)
 				// Очищаем шаблон вакансии от предыдущего контента
 				document.querySelector(".vacancy-page__title").innerHTML = "";
 				document.querySelector(".vacancy-page__content").innerHTML = "";
@@ -243,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	let actualGenderRadioInput = ""; // Актуальний вибранный инпут, который будет отправляться на бэк
 	const aboutMeFormTextaea = document.querySelector(".post-request-vacancy-form__about-me-input"); // Текстареа для ввода информации о себе
 	const wishFormTextarea = document.querySelector(".post-request-vacancy-form__wish-input"); // Текстареа для ввода пожеланий
-	const requestButton = document.querySelector(".post-request-vacancy-page__request-button"); // Кнопка для отправки данных на бэк
+	// const requestButton = document.querySelector(".post-request-vacancy-page__request-button"); // Кнопка для отправки данных на бэк
 
 	const allFormInputs = document.querySelectorAll(".js-form-input"); // Все инпуты
 	for ( let item of allFormInputs ) {
@@ -321,15 +339,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		input.classList.add("green-border");
 	}
 
-	requestButton.addEventListener("click", () => {
-		fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID);
-	})
+	// requestButton.addEventListener("click", () => {
+	// 	fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID);
+	// })
 
 
 	// Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
 	function fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID) {
 	const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${currentVacancyID}`;
-	console.log(currentTelegramID, currentPassword, currentVacancyID);
 	const dataRequest = {
 		'telegram_id': currentTelegramID,
 		'name': dataName,
@@ -397,36 +414,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Работа с data (вставляем актуальное имя)
 	const headerUserName = document.querySelector(".header__user-name-text");
 	headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
-
-
-
-
-
-	// const url = 'https://avrora-web.fly.dev/questionnaire/620527199/579bf1b2fa799036260e643dbd1546ba608f0e3a8cfb6174dc488661fa2824388baaf09c3f0315d3d17831/65a569ea42f8319f053cb632';
-	// const dataToSend = {
-  //       'telegram_id': 620527199,
-  //       "create_at": "",
-  //       'name': "Сергій",
-  //       'age': 35,
-  //       'about_self': 'Працездатний. Розумний. Чемний.',
-  //       'gender': "чоловік",
-  //       'wish': 'Стабільності. Поваги. Мотивації.',
-  //       'kind': "офіс",
-  //       'title': "!Фахівець технічної підтримки (лінія 2)",
-  //       'status': null,
-  //       'is_active': true
-  //   };
-
-	// fetch(url, {
-	// 	method: 'POST',
-	// 	headers: {
-	// 		'Content-Type': 'application/json', // Важливо вказати, що ви відправляєте JSON
-	// 	},
-	// 	body: JSON.stringify(dataToSend), // Перетворення об'єкта в JSON-рядок
-	// })
-	// 	.then(response => response.json())
-	// 	.then(json => console.log(json))
-	// 	.catch(error => console.error('Error:', error));
 
 
 })

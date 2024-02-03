@@ -1152,10 +1152,11 @@
                 content: "Хочеш стати частиною команди Аврори? Я маю для тебе кілька вакансій",
                 visit_website: false
             };
+            data.cabinet;
             let currentContent = data.content;
             let currentUserName = data.first_name;
             let currentTelegramID = data.telegram_id;
-            let currentPassword = data.password;
+            data.password;
             let actualHost = "https://avrora-web.fly.dev";
             let currentTemplateID = "home-page";
             let firstEnter = true;
@@ -1164,8 +1165,7 @@
             homePageTitleElement.insertAdjacentText("afterbegin", `${homePageTitleText}`);
             const homePageSubtitleElement = document.querySelector(".home-page__subtitle");
             homePageSubtitleElement.insertAdjacentHTML("beforeend", `${currentContent}`);
-            const allButtons = document.querySelectorAll(".button");
-            console.log(allButtons);
+            document.querySelectorAll(".button");
             const footerElement = document.querySelector(".footer");
             function hiddenOrShowFooter() {
                 if (currentTemplateID === "home-page") {
@@ -1189,13 +1189,26 @@
                 firstEnter = true;
                 currentTemplateID = "home-page";
             }));
+            function scrollToTop() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+            const mainPageContainer = document.querySelector(".page");
+            function addWhiteBackground(button) {
+                let itemID = removeDigitsAndUnderscore(button.id);
+                if (itemID === "post-request-vacancy-page") mainPageContainer.classList.add("white-background"); else mainPageContainer.classList.remove("white-background");
+            }
             if (document.querySelector(".route-button")) {
                 const allRouteButtons = document.querySelectorAll(".route-button");
                 for (let item of allRouteButtons) item.addEventListener("click", (e => {
                     currentTemplateID = removeDigitsAndUnderscore(e.target.id);
                     firstEnter = false;
                     includeCurrentTemplate(currentTemplateID);
+                    addWhiteBackground(item);
                     hiddenOrShowFooter();
+                    scrollToTop();
                 }));
             }
             function removeDigitsAndUnderscore(inputString) {
@@ -1203,7 +1216,6 @@
                 return resultString;
             }
             const allWidgetTemplates = document.querySelectorAll(".page-template");
-            console.log(allWidgetTemplates);
             const includeCurrentTemplate = currentTemplateID => {
                 for (let item of allWidgetTemplates) if (item.id !== currentTemplateID && !firstEnter) {
                     item.classList.add("position-left");
@@ -1250,6 +1262,7 @@
                 for (let i = 0; i < stockVacancies.length; i++) stockVacanciesElement.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<button id="${i}2_vacancy-page" data-vacancy-id="${stockVacancies[i]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>${stockVacancies[i].title}</div>\n\t\t\t\t\t</button>\n\t\t\t\t`);
                 const allJobItemsButtons = document.querySelectorAll(".jobs-list__item");
                 for (let item of allJobItemsButtons) item.addEventListener("click", (function() {
+                    scrollToTop();
                     let vacancyTitle = "";
                     let vacancyContent = "";
                     for (let i = 0; i < globalVacancies.vacancies.length; i++) if (globalVacancies.vacancies[i]._id === item.getAttribute(`data-vacancy-id`)) {
@@ -1258,7 +1271,6 @@
                     }
                     includeCurrentTemplate(removeDigitsAndUnderscore(item.id));
                     currentVacancyID = item.getAttribute(`data-vacancy-id`);
-                    console.log(currentVacancyID);
                     document.querySelector(".vacancy-page__title").innerHTML = "";
                     document.querySelector(".vacancy-page__content").innerHTML = "";
                     document.querySelector(".vacancy-page__title").insertAdjacentHTML("afterbegin", `${vacancyTitle}`);
@@ -1272,7 +1284,6 @@
             document.querySelectorAll(".post-request-vacancy-form__gender-label");
             document.querySelector(".post-request-vacancy-form__about-me-input");
             document.querySelector(".post-request-vacancy-form__wish-input");
-            const requestButton = document.querySelector(".post-request-vacancy-page__request-button");
             const allFormInputs = document.querySelectorAll(".js-form-input");
             for (let item of allFormInputs) item.addEventListener("change", (() => {
                 writeInputDataToRequestData(item);
@@ -1282,8 +1293,6 @@
             let dataAboutSelf = "";
             let dataGender = "неважливо";
             let dataWish = "";
-            let dataKind = "склад";
-            let dataTitle = "Назва вакансії";
             const writeInputDataToRequestData = input => {
                 if (input.getAttribute("type") === "text") {
                     if (input.classList.contains("post-request-vacancy-form__age-input")) validateAgeInput(input); else if (input.classList.contains("post-request-vacancy-form__name-input")) dataName = validateTextInput(input); else if (input.classList.contains("post-request-vacancy-form__about-me-input")) dataAboutSelf = validateTextInput(input); else if (input.classList.contains("post-request-vacancy-form__wish-input")) dataWish = validateTextInput(input);
@@ -1313,38 +1322,6 @@
                 input.classList.remove("red-border");
                 input.classList.add("green-border");
             };
-            requestButton.addEventListener("click", (() => {
-                fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID);
-            }));
-            function fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID) {
-                const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${currentVacancyID}`;
-                console.log(currentTelegramID, currentPassword, currentVacancyID);
-                const dataRequest = {
-                    telegram_id: currentTelegramID,
-                    name: dataName,
-                    age: dataAge,
-                    about_self: dataAboutSelf,
-                    gender: dataGender,
-                    wish: dataWish,
-                    kind: dataKind,
-                    title: dataTitle
-                };
-                const requestOptions = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(dataRequest)
-                };
-                fetch(apiPostDataURL, requestOptions).then((response => {
-                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                    return response.json();
-                })).then((data => {
-                    console.log("Отримано дані від сервера:", data);
-                })).catch((error => {
-                    console.error("Помилка під час виконання POST-запиту:", error);
-                }));
-            }
             fetch(`${actualHost}/cabinet/${currentTelegramID}/${data.password}`).then((response => {
                 if (!response.ok) throw new Error("Network response was not ok");
                 return response.json();
