@@ -219,7 +219,7 @@ section {
 .page {
 	// position: relative;
 	transition: all 0.3s ease 0s;
-	height: 100dvh;
+	height: auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
