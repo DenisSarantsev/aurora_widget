@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Прокрутка страницы в самый верх
 	function scrollToTop() {
-		console.log("scroll")
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
@@ -78,6 +77,12 @@ document.addEventListener("DOMContentLoaded", () => {
 			mainPageContainer.classList.remove("white-background");
 		}
 	}
+
+
+	
+
+
+
 
 	
 	// Проходимся по всем кнопкам с роутами, чтобы повесить на них событие клика и при необходимости включить функцию переключения шаблона
@@ -271,118 +276,118 @@ document.addEventListener("DOMContentLoaded", () => {
 		})
 	}
 
-	// Переменные для отправки данных на бэк
-	let dataName = "";
-	let dataAge = "";
-	let dataAboutSelf = "";
-	let dataGender = "неважливо";
-	let dataWish = "";
-	let dataKind = "склад";
-	let dataTitle = "Назва вакансії";
+	// // Переменные для отправки данных на бэк
+	// let dataName = "";
+	// let dataAge = "";
+	// let dataAboutSelf = "";
+	// let dataGender = "неважливо";
+	// let dataWish = "";
+	// let dataKind = "склад";
+	// let dataTitle = "Назва вакансії";
 
-	// Функция для записи данных в переменные, для отправки данных на бэк
-	const writeInputDataToRequestData = (input) => {
-		if ( input.getAttribute("type") === "text" ) {
-			if ( input.classList.contains('post-request-vacancy-form__age-input') ) {
-				validateAgeInput(input)
-			} else {
-				if ( input.classList.contains('post-request-vacancy-form__name-input') ) {
-					dataName = validateTextInput(input);
-				} else if ( input.classList.contains('post-request-vacancy-form__about-me-input') ) {
-					dataAboutSelf = validateTextInput(input);
-				} else if ( input.classList.contains('post-request-vacancy-form__wish-input') ) {
-					dataWish = validateTextInput(input);
-				}
-			}
-		} else if ( input.getAttribute("type" === "radio" ) ) {
-			if ( input.classList.contains('post-request-vacancy-form__gender-radio') ) {
-				dataGender = input.id;
-			}
-		}
-	}
+	// // Функция для записи данных в переменные, для отправки данных на бэк
+	// const writeInputDataToRequestData = (input) => {
+	// 	if ( input.getAttribute("type") === "text" ) {
+	// 		if ( input.classList.contains('post-request-vacancy-form__age-input') ) {
+	// 			validateAgeInput(input)
+	// 		} else {
+	// 			if ( input.classList.contains('post-request-vacancy-form__name-input') ) {
+	// 				dataName = validateTextInput(input);
+	// 			} else if ( input.classList.contains('post-request-vacancy-form__about-me-input') ) {
+	// 				dataAboutSelf = validateTextInput(input);
+	// 			} else if ( input.classList.contains('post-request-vacancy-form__wish-input') ) {
+	// 				dataWish = validateTextInput(input);
+	// 			}
+	// 		}
+	// 	} else if ( input.getAttribute("type" === "radio" ) ) {
+	// 		if ( input.classList.contains('post-request-vacancy-form__gender-radio') ) {
+	// 			dataGender = input.id;
+	// 		}
+	// 	}
+	// }
 
-	// Функция для валидации инпута с возрастом
-	const validateAgeInput = (input) => {
-		let inputValue = input.value;
-		let inputValueErrorsCounter = 0;
-		for (let i = 0; i < inputValue.length; i++ ) {
-			if ( !/\d/.test(inputValue[i]) ) {
-				inputValueErrorsCounter++
-			}
-		}
-		if ( inputValueErrorsCounter === 0 && inputValue < 100 && inputValue > 17 ) {
-			makeBorderGreen(input);
-			dataAge = inputValue;
-		} else {
-			makeBorderRed(input);
-		}
-	}
+	// // Функция для валидации инпута с возрастом
+	// const validateAgeInput = (input) => {
+	// 	let inputValue = input.value;
+	// 	let inputValueErrorsCounter = 0;
+	// 	for (let i = 0; i < inputValue.length; i++ ) {
+	// 		if ( !/\d/.test(inputValue[i]) ) {
+	// 			inputValueErrorsCounter++
+	// 		}
+	// 	}
+	// 	if ( inputValueErrorsCounter === 0 && inputValue < 100 && inputValue > 17 ) {
+	// 		makeBorderGreen(input);
+	// 		dataAge = inputValue;
+	// 	} else {
+	// 		makeBorderRed(input);
+	// 	}
+	// }
 
-	// Функция для валидации текстового инпута
-	const validateTextInput = (input) => {
-		let inputValue = input.value;
-		if ( inputValue.length > 9 && inputValue.length < 1000 ) {
-			makeBorderGreen(input);
-			return inputValue;
-		} else {
-			makeBorderRed(input);
-		}
-	}
+	// // Функция для валидации текстового инпута
+	// const validateTextInput = (input) => {
+	// 	let inputValue = input.value;
+	// 	if ( inputValue.length > 9 && inputValue.length < 1000 ) {
+	// 		makeBorderGreen(input);
+	// 		return inputValue;
+	// 	} else {
+	// 		makeBorderRed(input);
+	// 	}
+	// }
 
-	// Функция, которая делает обводку окна красной и убирает зеленую (при неправильно введенных данных)
-	const makeBorderRed = (input) => {
-		input.classList.remove("green-border");
-		input.classList.add("red-border");
-	}
-	// Функция, которая делает обводку окна зеленой и убирает красную (при правильно введенных данных)
-	const makeBorderGreen = (input) => {
-		input.classList.remove("red-border");
-		input.classList.add("green-border");
-	}
+	// // Функция, которая делает обводку окна красной и убирает зеленую (при неправильно введенных данных)
+	// const makeBorderRed = (input) => {
+	// 	input.classList.remove("green-border");
+	// 	input.classList.add("red-border");
+	// }
+	// // Функция, которая делает обводку окна зеленой и убирает красную (при правильно введенных данных)
+	// const makeBorderGreen = (input) => {
+	// 	input.classList.remove("red-border");
+	// 	input.classList.add("green-border");
+	// }
 
 	// requestButton.addEventListener("click", () => {
 	// 	fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID);
 	// })
 
 
-	// Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
-	function fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID) {
-	const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${currentVacancyID}`;
-	const dataRequest = {
-		'telegram_id': currentTelegramID,
-		'name': dataName,
-		'age': dataAge,
-		'about_self': dataAboutSelf,
-		'gender': dataGender,
-		'wish': dataWish,
-		'kind': dataKind,
-		'title': dataTitle,
-	};
+	// // Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
+	// function fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID) {
+	// const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${currentVacancyID}`;
+	// const dataRequest = {
+	// 	'telegram_id': currentTelegramID,
+	// 	'name': dataName,
+	// 	'age': dataAge,
+	// 	'about_self': dataAboutSelf,
+	// 	'gender': dataGender,
+	// 	'wish': dataWish,
+	// 	'kind': dataKind,
+	// 	'title': dataTitle,
+	// };
 
-	// Данные POST запроса
-	const requestOptions = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(dataRequest) // Перетворюємо дані у JSON-рядок
-	};
+	// // Данные POST запроса
+	// const requestOptions = {
+	// 	method: 'POST',
+	// 	headers: {
+	// 		'Content-Type': 'application/json'
+	// 	},
+	// 	body: JSON.stringify(dataRequest) // Перетворюємо дані у JSON-рядок
+	// };
 
-	// Відправляємо POST-запит за допомогою Fetch API
-	fetch(apiPostDataURL, requestOptions)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.json(); // Перетворюємо отриману відповідь у JSON
-		})
-		.then(data => {
-			console.log('Отримано дані від сервера:', data);
-		})
-		.catch(error => {
-			console.error('Помилка під час виконання POST-запиту:', error);
-		});
-	}
+	// // Відправляємо POST-запит за допомогою Fetch API
+	// fetch(apiPostDataURL, requestOptions)
+	// 	.then(response => {
+	// 		if (!response.ok) {
+	// 			throw new Error(`HTTP error! Status: ${response.status}`);
+	// 		}
+	// 		return response.json(); // Перетворюємо отриману відповідь у JSON
+	// 	})
+	// 	.then(data => {
+	// 		console.log('Отримано дані від сервера:', data);
+	// 	})
+	// 	.catch(error => {
+	// 		console.error('Помилка під час виконання POST-запиту:', error);
+	// 	});
+	// }
 
 
 
@@ -415,6 +420,170 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Работа с data (вставляем актуальное имя)
 	const headerUserName = document.querySelector(".header__user-name-text");
 	headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
+
+
+	// Работа с чатом
+	// При переходе на страницу с чатом обнуляем все переменные
+	// Переменные для отправки на бэк
+	let dataName = "";
+	let dataAge = "";
+	let dataAboutSelf = "";
+	let dataGender = "неважливо";
+	let dataWish = "";
+	let dataKind = "склад";
+	let dataTitle = "Назва вакансії";
+
+	// Счетчики вопросов и ответов
+	let questionsCounter = 0;
+	let answersCounter = 0;
+
+  // Вешаем событие клика на кнопки "Откликнуться на вакансию" для того, чтобы запустить цепочку чата
+	const requestButtonsArray = document.querySelectorAll(".vacancy-page__request-button");
+	for ( let button of requestButtonsArray ) {
+		button.addEventListener("click", () => {
+			addQuestionsToChat()
+		})
+	}
+
+	// Cписок основних питань
+	const questionsArray = [
+		`Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`,
+		`Дякуємо, відповідь прийнята! Тепер вкажіть актуальний номер телефону для зв'язку:`,
+		`Вкажіть місто проживання:`,
+		`Вкажіть дату народження:`,
+	]
+
+	// Отримуємо список додаткових питань
+	let additionalQuestions;
+	function addQuestionsToChat() {
+		fetch(`${actualHost}/forms/${currentTelegramID}/${data.password}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		})
+		.then(data => {
+			// Обработка данных, передача их в общий массив с вопросами
+			additionalQuestions = data;
+			return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
+		})
+		.then (array => {
+			// Функционал последовательного добавления вопросов в чат по мере записи ответов
+			addMessagesAfterUserAnswers(array);
+		})
+		.catch(error => { console.error('Fetch error:', error); });
+	}
+
+
+	
+
+	// Функционал последовательного добавления вопросов в чат по мере записи ответов
+	const addMessagesAfterUserAnswers = (questionsArray) => {
+		if ( answersCounter === questionsCounter ) {
+			addMessageToChat(questionsArray[questionsCounter]);
+			questionsCounter++;
+		}
+	}
+
+	// Получаем инпут для ввода текста, и записываем значение при отправке сообщения и вызываем функция для вывода нового вопроса в чате
+	const chatInput = document.querySelector(".post-request-vacancy-page__input");
+	chatInput.addEventListener("keyup", (event) => {
+		if ( event.key === "Enter" ) {
+			dataName = chatInput.value;
+			chatInput.value = "";
+			addUserAnswers(dataName);
+			console.log(answersCounter);
+			console.log(questionsCounter);
+			addMessagesAfterUserAnswers(questionsArray)
+		}
+	})
+
+	// Функционал обновления счетчика при добавлении ответа + вызов функции для добавления ответа в чат
+	const addUserAnswers = (userMessageText) => {
+		addUserMessageToChat(userMessageText);
+		answersCounter++;
+	}
+
+	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+	// Прокручиваем содержимое в самый низ
+	// function scrollToBottom() {
+	// 	chatMessagesBlock.scrollTo(0, chatMessagesBlock.scrollHeight);
+	// }
+
+	function addUserMessageToChat(userMessage) {
+		chatMessagesBlock.insertAdjacentHTML("beforeend", `
+			<div class="post-request-vacancy-page__message-element user-message__container">
+				<div class="main-message-style user-message">${userMessage}</div>
+			</div>
+		`);
+	}
+
+	// Вставляем вопрос в чат и скроллим вниз
+	function addMessageToChat(question) {
+		function delayedFunction() {
+			chatMessagesBlock.insertAdjacentHTML("beforeend", `
+			<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">
+				<div class="main-message-style app-message">${question}</div>
+			</div>
+		`);
+		}
+		setTimeout(delayedFunction, 500);
+	}
+
+	// Проходимся по всем второстепенным вопросам и добавляем их в массив со всеми вопросами questionsArray
+	const addAdditionalQuestionsToMainQuestionsArray = (questionsObject, arrayToWrite) => {
+		for (var key in questionsObject.forms) {
+			if (key.startsWith('q')) {
+					arrayToWrite.push(questionsObject.forms[key]);
+			}
+		}
+		return arrayToWrite;
+	}
+
+
+	// Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
+	function fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID) {
+		const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${currentVacancyID}`;
+		const dataRequest = {
+			'telegram_id': currentTelegramID,
+			'name': dataName,
+			'age': dataAge,
+			'about_self': dataAboutSelf,
+			'gender': dataGender,
+			'wish': dataWish,
+			'kind': dataKind,
+			'title': dataTitle,
+		};
+	
+		// Данные POST запроса
+		const requestOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(dataRequest) // Перетворюємо дані у JSON-рядок
+		};
+	
+		// Відправляємо POST-запит за допомогою Fetch API
+		fetch(apiPostDataURL, requestOptions)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.json(); // Перетворюємо отриману відповідь у JSON
+			})
+			.then(data => {
+				console.log('Отримано дані від сервера:', data);
+			})
+			.catch(error => {
+				console.error('Помилка під час виконання POST-запиту:', error);
+			});
+		}
+
+
+
+
 
 
 })

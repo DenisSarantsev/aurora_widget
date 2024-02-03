@@ -19,11 +19,13 @@
 		&__messages-container {
 			width: 100%;
 			padding: toRem(15) toRem(5) toRem(100) toRem(5);
-			display: block;
+			display: flex;
+			max-height: 100%;
 			flex-direction: column;
 			justify-content: end;
 			position: absolute;
 			z-index: 1;
+			gap: toRem(10);
 			overflow-y: auto;
 			height: 100%;
 			&::-webkit-scrollbar {
@@ -78,14 +80,20 @@
 }
 
 .main-message-style {
-
-	padding: toRem(15) toRem(15);
+	padding: toRem(10) toRem(20);
 	width: auto;
 	border-radius: 100px;
+	font-size: toRem(15);
+	line-height: 110%;
+}
+
+.bot-message-animation {
+	animation: chatMessageEffect 0.7s ease;
 }
 
 .app-message {
 	background-color: $mainYellow;
+	max-width: 80%;
 	&__container {
 		width: 100%;
 		display: flex;
@@ -95,10 +103,23 @@
 
 .user-message {
 	background-color: rgba(255, 229, 61, 0.3);
+	max-width: 80%;
 
 	&__container {
 		width: 100%;
 		display: flex;
 		justify-content: end;
+	}
+}
+
+@keyframes chatMessageEffect {
+	0% {
+		transform: translate(0, 100vh);
+		transition: all 0.3s ease 0s;
+	}
+	100% {
+		height: auto;
+		transform: translate(0, 0);
+		transition: all 0.3s ease 0s;
 	}
 }

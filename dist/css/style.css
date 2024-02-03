@@ -1562,7 +1562,10 @@ section {
 .post-request-vacancy-page__messages-container {
   width: 100%;
   padding: 0.9375rem 0.3125rem 6.25rem 0.3125rem;
-  display: block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  max-height: 100%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -1572,6 +1575,7 @@ section {
           justify-content: end;
   position: absolute;
   z-index: 1;
+  gap: 0.625rem;
   overflow-y: auto;
   height: 100%;
 }
@@ -1633,13 +1637,21 @@ section {
 }
 
 .main-message-style {
-  padding: 0.9375rem 0.9375rem;
+  padding: 0.625rem 1.25rem;
   width: auto;
   border-radius: 100px;
+  font-size: 0.9375rem;
+  line-height: 110%;
+}
+
+.bot-message-animation {
+  -webkit-animation: chatMessageEffect 0.7s ease;
+          animation: chatMessageEffect 0.7s ease;
 }
 
 .app-message {
   background-color: rgb(255, 221, 0);
+  max-width: 80%;
 }
 
 .app-message__container {
@@ -1654,6 +1666,7 @@ section {
 
 .user-message {
   background-color: rgba(255, 229, 61, 0.3);
+  max-width: 80%;
 }
 
 .user-message__container {
@@ -1664,6 +1677,40 @@ section {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: end;
+}
+
+@-webkit-keyframes chatMessageEffect {
+  0% {
+    -webkit-transform: translate(0, 100vh);
+            transform: translate(0, 100vh);
+    -webkit-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+  }
+
+  100% {
+    height: auto;
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+    -webkit-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+  }
+}
+
+@keyframes chatMessageEffect {
+  0% {
+    -webkit-transform: translate(0, 100vh);
+            transform: translate(0, 100vh);
+    -webkit-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+  }
+
+  100% {
+    height: auto;
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+    -webkit-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+  }
 }
 
 @media (min-width: 47.99875em) {

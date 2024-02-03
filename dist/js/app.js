@@ -1190,7 +1190,6 @@
                 currentTemplateID = "home-page";
             }));
             function scrollToTop() {
-                console.log("scroll");
                 window.scrollTo({
                     top: 0,
                     behavior: "smooth"
@@ -1289,40 +1288,6 @@
             for (let item of allFormInputs) item.addEventListener("change", (() => {
                 writeInputDataToRequestData(item);
             }));
-            let dataName = "";
-            let dataAge = "";
-            let dataAboutSelf = "";
-            let dataGender = "неважливо";
-            let dataWish = "";
-            const writeInputDataToRequestData = input => {
-                if (input.getAttribute("type") === "text") {
-                    if (input.classList.contains("post-request-vacancy-form__age-input")) validateAgeInput(input); else if (input.classList.contains("post-request-vacancy-form__name-input")) dataName = validateTextInput(input); else if (input.classList.contains("post-request-vacancy-form__about-me-input")) dataAboutSelf = validateTextInput(input); else if (input.classList.contains("post-request-vacancy-form__wish-input")) dataWish = validateTextInput(input);
-                } else if (input.getAttribute("type" === "radio")) if (input.classList.contains("post-request-vacancy-form__gender-radio")) dataGender = input.id;
-            };
-            const validateAgeInput = input => {
-                let inputValue = input.value;
-                let inputValueErrorsCounter = 0;
-                for (let i = 0; i < inputValue.length; i++) if (!/\d/.test(inputValue[i])) inputValueErrorsCounter++;
-                if (inputValueErrorsCounter === 0 && inputValue < 100 && inputValue > 17) {
-                    makeBorderGreen(input);
-                    dataAge = inputValue;
-                } else makeBorderRed(input);
-            };
-            const validateTextInput = input => {
-                let inputValue = input.value;
-                if (inputValue.length > 9 && inputValue.length < 1e3) {
-                    makeBorderGreen(input);
-                    return inputValue;
-                } else makeBorderRed(input);
-            };
-            const makeBorderRed = input => {
-                input.classList.remove("green-border");
-                input.classList.add("red-border");
-            };
-            const makeBorderGreen = input => {
-                input.classList.remove("red-border");
-                input.classList.add("green-border");
-            };
             fetch(`${actualHost}/cabinet/${currentTelegramID}/${data.password}`).then((response => {
                 if (!response.ok) throw new Error("Network response was not ok");
                 return response.json();
@@ -1333,8 +1298,66 @@
             }));
             const headerUserName = document.querySelector(".header__user-name-text");
             headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
+            let dataName = "";
+            let questionsCounter = 0;
+            let answersCounter = 0;
+            const requestButtonsArray = document.querySelectorAll(".vacancy-page__request-button");
+            for (let button of requestButtonsArray) button.addEventListener("click", (() => {
+                addQuestionsToChat();
+            }));
+            const questionsArray = [ `Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`, `Дякуємо, відповідь прийнята! Тепер вкажіть актуальний номер телефону для зв'язку:`, `Вкажіть місто проживання:`, `Вкажіть дату народження:` ];
+            let additionalQuestions;
+            function addQuestionsToChat() {
+                fetch(`${actualHost}/forms/${currentTelegramID}/${data.password}`).then((response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })).then((data => {
+                    additionalQuestions = data;
+                    return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
+                })).then((array => {
+                    addMessagesAfterUserAnswers(array);
+                })).catch((error => {
+                    console.error("Fetch error:", error);
+                }));
+            }
+            const addMessagesAfterUserAnswers = questionsArray => {
+                if (answersCounter === questionsCounter) {
+                    addMessageToChat(questionsArray[questionsCounter]);
+                    questionsCounter++;
+                }
+            };
+            const chatInput = document.querySelector(".post-request-vacancy-page__input");
+            chatInput.addEventListener("keyup", (event => {
+                if (event.key === "Enter") {
+                    dataName = chatInput.value;
+                    chatInput.value = "";
+                    addUserAnswers(dataName);
+                    console.log(answersCounter);
+                    console.log(questionsCounter);
+                    addMessagesAfterUserAnswers(questionsArray);
+                }
+            }));
+            const addUserAnswers = userMessageText => {
+                addUserMessageToChat(userMessageText);
+                answersCounter++;
+            };
+            const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+            function addUserMessageToChat(userMessage) {
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="post-request-vacancy-page__message-element user-message__container">\n\t\t\t\t<div class="main-message-style user-message">${userMessage}</div>\n\t\t\t</div>\n\t\t`);
+            }
+            function addMessageToChat(question) {
+                function delayedFunction() {
+                    chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">\n\t\t\t\t<div class="main-message-style app-message">${question}</div>\n\t\t\t</div>\n\t\t`);
+                }
+                setTimeout(delayedFunction, 500);
+            }
+            const addAdditionalQuestionsToMainQuestionsArray = (questionsObject, arrayToWrite) => {
+                for (var key in questionsObject.forms) if (key.startsWith("q")) arrayToWrite.push(questionsObject.forms[key]);
+                return arrayToWrite;
+            };
         }));
         __webpack_require__(69);
+        document.addEventListener("DOMContentLoaded", (() => {}));
         window["FLS"] = true;
         isWebp();
     })();
