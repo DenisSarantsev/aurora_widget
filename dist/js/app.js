@@ -1190,6 +1190,7 @@
                 currentTemplateID = "home-page";
             }));
             function scrollToTop() {
+                console.log("scroll");
                 window.scrollTo({
                     top: 0,
                     behavior: "smooth"

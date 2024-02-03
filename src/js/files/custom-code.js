@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Прокрутка страницы в самый верх
 	function scrollToTop() {
+		console.log("scroll")
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
