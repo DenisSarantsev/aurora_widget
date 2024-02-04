@@ -1147,6 +1147,7 @@
                 title: "АврорА",
                 cabinet: "",
                 first_name: "Денис",
+                phone_number: "+380675478881",
                 telegram_id: 210325718,
                 password: "5777ef8c7a3f5c32bf2a85814352bc763d063712287a142087225d8a8367f7784b5eb193814fc801eb68",
                 content: "Хочеш стати частиною команди Аврори? Я маю для тебе кілька вакансій",
@@ -1157,9 +1158,12 @@
             let currentUserName = data.first_name;
             let currentTelegramID = data.telegram_id;
             data.password;
+            let currentUserPhone = data.phone_number;
             let actualHost = "https://avrora-web.fly.dev";
             let currentTemplateID = "home-page";
             let firstEnter = true;
+            let currentVacancyID = "";
+            let globalVacancies;
             const homePageTitleElement = document.querySelector(".home-page__title");
             const homePageTitleText = `Привіт, ${currentUserName}! `;
             homePageTitleElement.insertAdjacentText("afterbegin", `${homePageTitleText}`);
@@ -1239,11 +1243,9 @@
             })).then((data => {})).catch((error => {
                 console.error("Ошибка при выполнении запроса:", error);
             }));
-            let globalVacancies;
             let officeVacancies = [];
             let shopVacancies = [];
             let stockVacancies = [];
-            let currentVacancyID = "";
             const officeVacanciesElement = document.querySelector(".jobs-list__office");
             const shopVacanciesElement = document.querySelector(".jobs-list__shop");
             const stockVacanciesElement = document.querySelector(".jobs-list__stock");
@@ -1279,15 +1281,6 @@
             })).catch((error => {
                 console.error("Ошибка при выполнении запроса:", error);
             }));
-            document.querySelector(".post-request-vacancy-form__name-input");
-            document.querySelector(".post-request-vacancy-form__age-input");
-            document.querySelectorAll(".post-request-vacancy-form__gender-label");
-            document.querySelector(".post-request-vacancy-form__about-me-input");
-            document.querySelector(".post-request-vacancy-form__wish-input");
-            const allFormInputs = document.querySelectorAll(".js-form-input");
-            for (let item of allFormInputs) item.addEventListener("change", (() => {
-                writeInputDataToRequestData(item);
-            }));
             fetch(`${actualHost}/cabinet/${currentTelegramID}/${data.password}`).then((response => {
                 if (!response.ok) throw new Error("Network response was not ok");
                 return response.json();
@@ -1298,14 +1291,30 @@
             }));
             const headerUserName = document.querySelector(".header__user-name-text");
             headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
+            let dataKind = "склад";
             let dataName = "";
-            let questionsCounter = 0;
-            let answersCounter = 0;
+            let dataPhone = currentUserPhone;
+            let dataCity = "";
+            let dataBornDate = "";
+            let postVariablesArray = [ dataName, dataPhone, dataCity, dataBornDate ];
+            let objectKeys = [ "name", "feedback_phone", "city", "birthday" ];
+            const postVacancyObject = {
+                kind: dataKind,
+                name: dataName,
+                feedback_phone: dataPhone,
+                city: dataCity,
+                birthday: dataBornDate
+            };
+            let fixedQuestionsCounter = 4;
+            let allQuestionsCounter = 4;
+            let questionsCounter = -1;
+            let answersCounter = -1;
             const requestButtonsArray = document.querySelectorAll(".vacancy-page__request-button");
             for (let button of requestButtonsArray) button.addEventListener("click", (() => {
                 addQuestionsToChat();
             }));
             const questionsArray = [ `Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`, `Дякуємо, відповідь прийнята! Тепер вкажіть актуальний номер телефону для зв'язку:`, `Вкажіть місто проживання:`, `Вкажіть дату народження:` ];
+            const finalMessage = "Дякуємо за терпіння! Залишилось перевірити правильність введених даних і можна надсилати заявку)";
             let additionalQuestions;
             function addQuestionsToChat() {
                 fetch(`${actualHost}/forms/${currentTelegramID}/${data.password}`).then((response => {
@@ -1313,6 +1322,7 @@
                     return response.json();
                 })).then((data => {
                     additionalQuestions = data;
+                    addAdditionalQuestionsToMainPostObject(additionalQuestions, postVacancyObject);
                     return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
                 })).then((array => {
                     addMessagesAfterUserAnswers(array);
@@ -1321,39 +1331,216 @@
                 }));
             }
             const addMessagesAfterUserAnswers = questionsArray => {
-                if (answersCounter === questionsCounter) {
-                    addMessageToChat(questionsArray[questionsCounter]);
+                if (answersCounter === questionsCounter && questionsArray[questionsCounter + 1] !== void 0) {
+                    addMessageToChat(questionsArray[questionsCounter + 1]);
                     questionsCounter++;
                 }
             };
             const chatInput = document.querySelector(".post-request-vacancy-page__input");
             chatInput.addEventListener("keyup", (event => {
-                if (event.key === "Enter") {
-                    dataName = chatInput.value;
-                    chatInput.value = "";
-                    addUserAnswers(dataName);
-                    console.log(answersCounter);
-                    console.log(questionsCounter);
+                if (event.key === "Enter") addAnswersAndQuestionsToChat();
+            }));
+            const sendMessageButton = document.querySelector(".post-request-vacancy-page__send-message");
+            sendMessageButton.addEventListener("click", (() => {
+                addAnswersAndQuestionsToChat();
+            }));
+            const addAnswersAndQuestionsToChat = () => {
+                if (questionsCounter + 1 <= fixedQuestionsCounter) {
+                    postVariablesArray[questionsCounter] = chatInput.value;
+                    postVacancyObject[objectKeys[questionsCounter]] = postVariablesArray[questionsCounter];
+                    addUserAnswers(postVariablesArray[questionsCounter]);
+                    scrollChatToBottom();
                     addMessagesAfterUserAnswers(questionsArray);
+                    addPhoneAnswerBlock();
+                    addBirthDateAnswerBlock();
+                } else if (questionsCounter + 1 > fixedQuestionsCounter && answersCounter < allQuestionsCounter) {
+                    let currentQuestionKey = `q${questionsCounter + 1 - fixedQuestionsCounter}`;
+                    let currentAdditionalQuestion = additionalQuestions.forms[`${currentQuestionKey}`];
+                    postVacancyObject[`${currentQuestionKey}`] = {
+                        [currentAdditionalQuestion]: `${chatInput.value}`
+                    };
+                    addUserAnswers(chatInput.value);
+                    addMessagesAfterUserAnswers(questionsArray);
+                    checkFinalAnswerMessage();
+                }
+                chatInput.value = "";
+            };
+            const checkFinalAnswerMessage = () => {
+                scrollChatToBottom();
+                let keys = Object.keys(postVacancyObject);
+                let lastKey = keys[keys.length - 1];
+                if (postVacancyObject[lastKey] !== void 0 && postVacancyObject[lastKey] !== null && postVacancyObject[lastKey] !== "") {
+                    addFinalMessageAfterAnswers(finalMessage);
+                    scrollChatToBottom();
+                } else console.log("Последний ключ есть, но у него нет значения.");
+            };
+            const addPhoneAnswerBlock = () => {
+                if (objectKeys[questionsCounter] === "feedback_phone") {
+                    hiddenTextInput();
+                    new Promise((function(resolve, reject) {
+                        function showButtons() {
+                            const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                            chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="change-number-container phone-buttons-show-animations">\n\t\t\t\t\t\t<button class="route-button route-button-main-style button-effect actual-number-button">\n\t\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t\t<div>Так, ${dataPhone} - це актуальный номер</div>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t<button class="route-button route-button-main-style button-effect no-actual-number-button">\n\t\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t\t<div>Ні, хочу вказати інший номер</div>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t\t`);
+                            const actualNumberButton = document.querySelector(".actual-number-button");
+                            const noActualNumberButton = document.querySelector(".no-actual-number-button");
+                            const numberButtonsArray = [ actualNumberButton, noActualNumberButton ];
+                            resolve(numberButtonsArray);
+                        }
+                        setTimeout(showButtons, 1e3);
+                    })).then((buttons => {
+                        buttons[0].addEventListener("click", (() => {
+                            writeCurrentNumber(currentUserPhone);
+                            hiddenPhoneNumberInput();
+                            deleteNumbersButtons();
+                            answersCounter++;
+                            function delayedFunction() {
+                                addUserMessageToChat(currentUserPhone);
+                                addMessagesAfterUserAnswers(questionsArray);
+                                scrollChatToBottom();
+                                showTextInput();
+                            }
+                            setTimeout(delayedFunction, 300);
+                        }));
+                        buttons[1].addEventListener("click", (() => {
+                            showPhoneNumberInput();
+                        }));
+                    }));
+                }
+            };
+            const addBirthDateAnswerBlock = () => {
+                if (objectKeys[questionsCounter] === "birthday") console.log("ok");
+            };
+            const sendNumberAsMessageInput = document.querySelector(".post-request-vacancy-page__phone-input");
+            const sendNumberAsMessageButton = document.querySelector(".post-request-vacancy-page__send-phone");
+            sendNumberAsMessageButton.addEventListener("click", (() => {
+                writeCurrentNumber(sendNumberAsMessageInput.value);
+                hiddenPhoneNumberInput();
+                deleteNumbersButtons();
+                answersCounter++;
+                function delayedFunction() {
+                    addUserMessageToChat(sendNumberAsMessageInput.value);
+                    addMessagesAfterUserAnswers(questionsArray);
+                    scrollChatToBottom();
+                    showTextInput();
+                }
+                setTimeout(delayedFunction, 300);
+            }));
+            sendNumberAsMessageInput.addEventListener("keyup", (event => {
+                if (event.key === "Enter") {
+                    writeCurrentNumber(sendNumberAsMessageInput.value);
+                    hiddenPhoneNumberInput();
+                    deleteNumbersButtons();
+                    answersCounter++;
+                    function delayedFunction() {
+                        addUserMessageToChat(sendNumberAsMessageInput.value);
+                        addMessagesAfterUserAnswers(questionsArray);
+                        scrollChatToBottom();
+                        showTextInput();
+                    }
+                    setTimeout(delayedFunction, 300);
                 }
             }));
+            const deleteNumbersButtons = () => {
+                document.querySelector(".change-number-container").classList.remove("phone-buttons-show-animations");
+                document.querySelector(".change-number-container").classList.add("phone-buttons-hidden-animations");
+                function delayedFunction() {
+                    document.querySelector(".change-number-container").classList.remove("phone-buttons-hidden-animations");
+                    document.querySelector(".change-number-container").innerHTML = "";
+                }
+                setTimeout(delayedFunction, 300);
+            };
+            const showPhoneNumberInput = () => {
+                document.querySelector(".post-request-vacancy-page__phone-input-container").classList.remove("input-hidden-animation");
+                document.querySelector(".post-request-vacancy-page__phone-input-container").classList.add("input-show-animation");
+                function delayedFunction() {
+                    document.querySelector(".post-request-vacancy-page__phone-input-container").classList.remove("input-hidden");
+                    document.querySelector(".post-request-vacancy-page__phone-input").focus();
+                }
+                setTimeout(delayedFunction, 300);
+            };
+            const hiddenPhoneNumberInput = () => {
+                document.querySelector(".post-request-vacancy-page__phone-input-container").classList.remove("input-show-animation");
+                document.querySelector(".post-request-vacancy-page__phone-input-container").classList.add("input-hidden-animation");
+                function delayedFunction() {
+                    document.querySelector(".post-request-vacancy-page__phone-input-container").classList.add("input-hidden");
+                    document.querySelector(".post-request-vacancy-page__phone-input-container").classList.remove("input-visible");
+                }
+                setTimeout(delayedFunction, 300);
+            };
+            const writeCurrentNumber = number => {
+                dataPhone = number;
+            };
+            const inactiveMessageButton = () => {
+                document.querySelector(".post-request-vacancy-page__send-message").disabled = true;
+            };
+            const activeMesssageButton = () => {
+                document.querySelector(".post-request-vacancy-page__send-message").disabled = false;
+            };
+            const inactiveInput = () => {
+                document.querySelector(".post-request-vacancy-page__input").disabled = true;
+            };
+            const activeInput = () => {
+                document.querySelector(".post-request-vacancy-page__input").disabled = false;
+                document.querySelector(".post-request-vacancy-page__input").focus();
+            };
+            const hiddenTextInput = () => {
+                document.querySelector(".post-request-vacancy-page__input-container").classList.remove("input-visible");
+                document.querySelector(".post-request-vacancy-page__input-container").classList.add("input-hidden-animation");
+                function delayedFunction() {
+                    document.querySelector(".post-request-vacancy-page__input-container").classList.add("input-hidden");
+                }
+                setTimeout(delayedFunction, 300);
+            };
+            const showTextInput = () => {
+                document.querySelector(".post-request-vacancy-page__input-container").classList.remove("input-hidden-animation");
+                document.querySelector(".post-request-vacancy-page__input-container").classList.add("input-show-animation");
+                function delayedFunction() {
+                    document.querySelector(".post-request-vacancy-page__input-container").classList.remove("input-hidden");
+                }
+                setTimeout(delayedFunction, 300);
+            };
+            const addFinalMessageAfterAnswers = message => {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                console.log("addFinalMessageAfterAnswers");
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element final-message__container">\n\t\t\t<div class="main-message-style final-message">${message}</div>\n\t\t\t<button class="route-button final-message__button route-button-main-style button-effect">\n\t\t\t\t<div id="circle"></div>\n\t\t\t\t<div>Продовжити</div>\n\t\t\t</button>\n\t\t</div>\n\t\t`);
+                scrollChatToBottom();
+                hiddenTextInput();
+            };
             const addUserAnswers = userMessageText => {
+                inactiveInput();
+                inactiveMessageButton();
                 addUserMessageToChat(userMessageText);
                 answersCounter++;
             };
-            const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+            function scrollChatToBottom() {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                chatMessagesBlock.scrollTo(0, chatMessagesBlock.scrollHeight);
+            }
             function addUserMessageToChat(userMessage) {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
                 chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="post-request-vacancy-page__message-element user-message__container">\n\t\t\t\t<div class="main-message-style user-message">${userMessage}</div>\n\t\t\t</div>\n\t\t`);
             }
             function addMessageToChat(question) {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
                 function delayedFunction() {
                     chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">\n\t\t\t\t<div class="main-message-style app-message">${question}</div>\n\t\t\t</div>\n\t\t`);
                 }
-                setTimeout(delayedFunction, 500);
+                setTimeout(delayedFunction, 1);
+                function onInput() {
+                    activeInput();
+                    activeMesssageButton();
+                }
+                setTimeout(onInput, 800);
             }
             const addAdditionalQuestionsToMainQuestionsArray = (questionsObject, arrayToWrite) => {
                 for (var key in questionsObject.forms) if (key.startsWith("q")) arrayToWrite.push(questionsObject.forms[key]);
                 return arrayToWrite;
+            };
+            const addAdditionalQuestionsToMainPostObject = (questionsObject, objectToWrite) => {
+                for (var key in questionsObject.forms) {
+                    allQuestionsCounter++;
+                    if (key.startsWith("q")) objectToWrite[`${key}`] = "";
+                }
             };
         }));
         __webpack_require__(69);

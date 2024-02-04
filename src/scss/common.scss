@@ -25,6 +25,14 @@ section {
 .wrapper {
 	height: 100%;
 	overflow-y: scroll;
+	scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+	&::-webkit-scrollbar {
+		width: 0px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: transparent;
+	}
 }
 
 // Анимация кружков на фоне
@@ -237,7 +245,7 @@ section {
 
 .white-background {
 	transition: all 0.3s ease 0s;
-	background-color: rgba(255, 255, 255, 0.85);
+	background-color: rgba(255, 255, 255, 0.7);
 }
 
 .section-padding {
@@ -256,6 +264,14 @@ section {
 	gap: toRem(10);
 	overflow: scroll;
 	z-index: 3;
+	scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+	&::-webkit-scrollbar {
+		width: 0px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: transparent;
+	}
 }
 
 .content-width-limiter {

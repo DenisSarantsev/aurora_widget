@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		'title': 'АврорА',
 		'cabinet': '',
 		'first_name': "Денис",
+		'phone_number': '+380675478881',
 		'telegram_id': 210325718,
 		'password': "5777ef8c7a3f5c32bf2a85814352bc763d063712287a142087225d8a8367f7784b5eb193814fc801eb68",
 		'content': 'Хочеш стати частиною команди Аврори? Я маю для тебе кілька вакансій',
@@ -15,9 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	let currentUserName = data.first_name;
 	let currentTelegramID = data.telegram_id;
 	let currentPassword = data.password;
+	let currentUserPhone = data.phone_number;
 	let actualHost = "https://avrora-web.fly.dev";
 	let currentTemplateID = "home-page"; // Изначальное значение домашняя страница. Впоследствии перезаписывается при переходах между страницами
 	let firstEnter = true;
+	let currentVacancyID = ""; // Актуальный id вакансии (последняя вакансия, на которую зашел человек). Записывается при клике на кнопку вакансии и используется для отправки POST запроса
+	let globalVacancies; // Глобальная переменная для всех вакансий
+	let currentVacancyKind; // Глобальная переменная, в которую записываем вид вакансии при клике на него
 
 	// Добавляем текст на главную страницу:
 	// Заголовок:
@@ -132,20 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			} else {}
 		}
 	}
-
 	includeCurrentTemplate(currentTemplateID);
-
-
-	//  Названия шаблонов:
-
-	//  Главная страница - home-page
-	//  Страница "О нас" - about-company
-	//  Страница "Выбрать направление" - directions-page
-	//  Страница со списком офисных вакансий - office-jobs-list-page
-	//  Страница со списком вакансий для магазина - shop-jobs-list-page
-	//  Страница со списком вакансий для склада - stock-jobs-list-page
-	//  Страница вакансии - vacancy-page
-	
 
 	// Вызов API USER
 	const apiUserUrl = `${actualHost}/user/${data.telegram_id}/${data.password}`;
@@ -159,16 +151,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	})
 	.catch(error => { console.error('Ошибка при выполнении запроса:', error); });
 
-
-
-
-
 	// Вызов API VACANCIES
-	let globalVacancies; // Глобальная переменная для всех вакансий
 	let officeVacancies = []; // Масив з офісними вакансіями
 	let shopVacancies = []; // Масив з вакансіями для магазинів
 	let stockVacancies = []; // Масив з вакансіями для складу
-	let currentVacancyID = ""; // Актуальный id вакансии (последняя вакансия, на которую зашел человек). Записывается при клике на кнопку вакансии и используется для отправки POST запроса
+	
 	const officeVacanciesElement = document.querySelector(".jobs-list__office");
 	const shopVacanciesElement = document.querySelector(".jobs-list__shop");
 	const stockVacanciesElement = document.querySelector(".jobs-list__stock");
@@ -260,142 +247,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	})
 	.catch(error => { console.error('Ошибка при выполнении запроса:', error); });
 
-	// Сбор данных с формы отправки заявки
-	const nameFormInput = document.querySelector(".post-request-vacancy-form__name-input"); // Инпут формы для ввода имени
-	const ageFormInput = document.querySelector(".post-request-vacancy-form__age-input"); // Инпут формы для ввода возраста
-	const genderRadioInputs = document.querySelectorAll(".post-request-vacancy-form__gender-label"); // Радио кнопки для выбора пола (label)
-	let actualGenderRadioInput = ""; // Актуальний вибранный инпут, который будет отправляться на бэк
-	const aboutMeFormTextaea = document.querySelector(".post-request-vacancy-form__about-me-input"); // Текстареа для ввода информации о себе
-	const wishFormTextarea = document.querySelector(".post-request-vacancy-form__wish-input"); // Текстареа для ввода пожеланий
-	// const requestButton = document.querySelector(".post-request-vacancy-page__request-button"); // Кнопка для отправки данных на бэк
-
-	const allFormInputs = document.querySelectorAll(".js-form-input"); // Все инпуты
-	for ( let item of allFormInputs ) {
-		item.addEventListener("change", ()=> {
-			writeInputDataToRequestData(item);
-		})
-	}
-
-	// // Переменные для отправки данных на бэк
-	// let dataName = "";
-	// let dataAge = "";
-	// let dataAboutSelf = "";
-	// let dataGender = "неважливо";
-	// let dataWish = "";
-	// let dataKind = "склад";
-	// let dataTitle = "Назва вакансії";
-
-	// // Функция для записи данных в переменные, для отправки данных на бэк
-	// const writeInputDataToRequestData = (input) => {
-	// 	if ( input.getAttribute("type") === "text" ) {
-	// 		if ( input.classList.contains('post-request-vacancy-form__age-input') ) {
-	// 			validateAgeInput(input)
-	// 		} else {
-	// 			if ( input.classList.contains('post-request-vacancy-form__name-input') ) {
-	// 				dataName = validateTextInput(input);
-	// 			} else if ( input.classList.contains('post-request-vacancy-form__about-me-input') ) {
-	// 				dataAboutSelf = validateTextInput(input);
-	// 			} else if ( input.classList.contains('post-request-vacancy-form__wish-input') ) {
-	// 				dataWish = validateTextInput(input);
-	// 			}
-	// 		}
-	// 	} else if ( input.getAttribute("type" === "radio" ) ) {
-	// 		if ( input.classList.contains('post-request-vacancy-form__gender-radio') ) {
-	// 			dataGender = input.id;
-	// 		}
-	// 	}
-	// }
-
-	// // Функция для валидации инпута с возрастом
-	// const validateAgeInput = (input) => {
-	// 	let inputValue = input.value;
-	// 	let inputValueErrorsCounter = 0;
-	// 	for (let i = 0; i < inputValue.length; i++ ) {
-	// 		if ( !/\d/.test(inputValue[i]) ) {
-	// 			inputValueErrorsCounter++
-	// 		}
-	// 	}
-	// 	if ( inputValueErrorsCounter === 0 && inputValue < 100 && inputValue > 17 ) {
-	// 		makeBorderGreen(input);
-	// 		dataAge = inputValue;
-	// 	} else {
-	// 		makeBorderRed(input);
-	// 	}
-	// }
-
-	// // Функция для валидации текстового инпута
-	// const validateTextInput = (input) => {
-	// 	let inputValue = input.value;
-	// 	if ( inputValue.length > 9 && inputValue.length < 1000 ) {
-	// 		makeBorderGreen(input);
-	// 		return inputValue;
-	// 	} else {
-	// 		makeBorderRed(input);
-	// 	}
-	// }
-
-	// // Функция, которая делает обводку окна красной и убирает зеленую (при неправильно введенных данных)
-	// const makeBorderRed = (input) => {
-	// 	input.classList.remove("green-border");
-	// 	input.classList.add("red-border");
-	// }
-	// // Функция, которая делает обводку окна зеленой и убирает красную (при правильно введенных данных)
-	// const makeBorderGreen = (input) => {
-	// 	input.classList.remove("red-border");
-	// 	input.classList.add("green-border");
-	// }
-
-	// requestButton.addEventListener("click", () => {
-	// 	fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID);
-	// })
-
-
-	// // Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
-	// function fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID) {
-	// const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${currentVacancyID}`;
-	// const dataRequest = {
-	// 	'telegram_id': currentTelegramID,
-	// 	'name': dataName,
-	// 	'age': dataAge,
-	// 	'about_self': dataAboutSelf,
-	// 	'gender': dataGender,
-	// 	'wish': dataWish,
-	// 	'kind': dataKind,
-	// 	'title': dataTitle,
-	// };
-
-	// // Данные POST запроса
-	// const requestOptions = {
-	// 	method: 'POST',
-	// 	headers: {
-	// 		'Content-Type': 'application/json'
-	// 	},
-	// 	body: JSON.stringify(dataRequest) // Перетворюємо дані у JSON-рядок
-	// };
-
-	// // Відправляємо POST-запит за допомогою Fetch API
-	// fetch(apiPostDataURL, requestOptions)
-	// 	.then(response => {
-	// 		if (!response.ok) {
-	// 			throw new Error(`HTTP error! Status: ${response.status}`);
-	// 		}
-	// 		return response.json(); // Перетворюємо отриману відповідь у JSON
-	// 	})
-	// 	.then(data => {
-	// 		console.log('Отримано дані від сервера:', data);
-	// 	})
-	// 	.catch(error => {
-	// 		console.error('Помилка під час виконання POST-запиту:', error);
-	// 	});
-	// }
-
-
-
-
-
-	
-
-
 
 	// Запрос на получение текущей заявки (заполненной и отправленной пользователемм)
 	fetch(`${actualHost}/cabinet/${currentTelegramID}/${data.password}`)
@@ -425,17 +276,32 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Работа с чатом
 	// При переходе на страницу с чатом обнуляем все переменные
 	// Переменные для отправки на бэк
-	let dataName = "";
-	let dataAge = "";
-	let dataAboutSelf = "";
-	let dataGender = "неважливо";
-	let dataWish = "";
 	let dataKind = "склад";
-	let dataTitle = "Назва вакансії";
+
+	let dataName = "";
+	let dataPhone = currentUserPhone;
+	let dataCity = "";
+	let dataBornDate = "";
+
+	// Массив с переменными, которым пользователь задает значения в чате:
+	let postVariablesArray = [dataName, dataPhone, dataCity, dataBornDate,]
+	// Список ключей обьекта
+	let objectKeys = ["name", "feedback_phone", "city", "birthday",]
+
+	// Формируем обьект для отправки на бэк
+	const postVacancyObject = {
+		'kind': dataKind,
+		'name': dataName,
+		'feedback_phone': dataPhone,
+		'city': dataCity,
+		'birthday': dataBornDate,
+	}
 
 	// Счетчики вопросов и ответов
-	let questionsCounter = 0;
-	let answersCounter = 0;
+	let fixedQuestionsCounter = 4// Фиксированное количество вопросов (переменная не изменяется нигде в коде, а используется для понимания, когда переходить к формированию обьектов из ответов по дополнительным вопросам)
+	let allQuestionsCounter = 4; // Общее количество вопросов (изначально указываем количество фиксированных вопросов). Считаем именнок количество вопросов, на которые отвечает ппользователь, а не количество данных
+	let questionsCounter = -1; // Считаем количество заданных пользователю вопросов (по умолчанию -1, так как считаем по индексу)
+	let answersCounter = -1; // Количество написаннхы пользователем ответов. По счетчику определяем, когда задавать пользователю следующий вопрос
 
   // Вешаем событие клика на кнопки "Откликнуться на вакансию" для того, чтобы запустить цепочку чата
 	const requestButtonsArray = document.querySelectorAll(".vacancy-page__request-button");
@@ -445,13 +311,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		})
 	}
 
-	// Cписок основних питань
+	// Cписок основных вопросов
 	const questionsArray = [
 		`Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`,
 		`Дякуємо, відповідь прийнята! Тепер вкажіть актуальний номер телефону для зв'язку:`,
 		`Вкажіть місто проживання:`,
 		`Вкажіть дату народження:`,
 	]
+
+	// Финальное сообщение после ответа на все вопросы
+	const finalMessage = "Дякуємо за терпіння! Залишилось перевірити правильність введених даних і можна надсилати заявку)"
 
 	// Отримуємо список додаткових питань
 	let additionalQuestions;
@@ -464,54 +333,277 @@ document.addEventListener("DOMContentLoaded", () => {
 			return response.json();
 		})
 		.then(data => {
-			// Обработка данных, передача их в общий массив с вопросами
 			additionalQuestions = data;
+			// Добавляем нужное количество свойств в обьект, который отправляется на бэк
+			addAdditionalQuestionsToMainPostObject(additionalQuestions, postVacancyObject);
+			// Обработка данных, передача их в общий массив с вопросами
 			return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
 		})
 		.then (array => {
-			// Функционал последовательного добавления вопросов в чат по мере записи ответов
+			// Активируем функционал последовательного добавления вопросов в чат по мере записи ответов для появления первого вопроса
 			addMessagesAfterUserAnswers(array);
 		})
 		.catch(error => { console.error('Fetch error:', error); });
 	}
 
 
-	
-
 	// Функционал последовательного добавления вопросов в чат по мере записи ответов
 	const addMessagesAfterUserAnswers = (questionsArray) => {
-		if ( answersCounter === questionsCounter ) {
-			addMessageToChat(questionsArray[questionsCounter]);
+		if ( answersCounter === questionsCounter && questionsArray[questionsCounter+1] !== undefined ) {
+			addMessageToChat(questionsArray[questionsCounter+1]);
 			questionsCounter++;
 		}
 	}
 
 	// Получаем инпут для ввода текста, и записываем значение при отправке сообщения и вызываем функция для вывода нового вопроса в чате
 	const chatInput = document.querySelector(".post-request-vacancy-page__input");
+	// При нажатии кнопки Enter
 	chatInput.addEventListener("keyup", (event) => {
 		if ( event.key === "Enter" ) {
-			dataName = chatInput.value;
-			chatInput.value = "";
-			addUserAnswers(dataName);
-			console.log(answersCounter);
-			console.log(questionsCounter);
+			addAnswersAndQuestionsToChat();
+		}
+	})
+	// При клике на стрелочку
+	const sendMessageButton = document.querySelector(".post-request-vacancy-page__send-message");
+	sendMessageButton.addEventListener("click", () => {
+		addAnswersAndQuestionsToChat();
+	})
+
+	// Данная функция отвечает за добавление вопросов и ответов в чат, записывает данные в обьект для отправки на бэк и вызывает функицю для перехода к следующей странице после ответа не все вопросы
+	const addAnswersAndQuestionsToChat = () => {
+		if ( questionsCounter+1 <= fixedQuestionsCounter ) {
+			postVariablesArray[questionsCounter] = chatInput.value;
+			postVacancyObject[objectKeys[questionsCounter]] = postVariablesArray[questionsCounter];
+			addUserAnswers(postVariablesArray[questionsCounter]);
+			scrollChatToBottom();
+			addMessagesAfterUserAnswers(questionsArray);
+			addPhoneAnswerBlock();
+			addBirthDateAnswerBlock();
+		} else if ( questionsCounter+1 > fixedQuestionsCounter && answersCounter < allQuestionsCounter ){
+			let currentQuestionKey = `q${(questionsCounter+1)-fixedQuestionsCounter}`;
+			let currentAdditionalQuestion = additionalQuestions.forms[`${currentQuestionKey}`];
+			postVacancyObject[`${currentQuestionKey}`] = {[currentAdditionalQuestion]: `${chatInput.value}`}
+			addUserAnswers(chatInput.value);
 			addMessagesAfterUserAnswers(questionsArray)
+			checkFinalAnswerMessage();
+		}
+		chatInput.value = "";
+	}
+
+	// Ждем ответ на финальный вопрос и выводим финальное сообщение
+	const checkFinalAnswerMessage = () => {
+		scrollChatToBottom()
+		let keys = Object.keys(postVacancyObject);
+		// Получаем самый последний ключ
+		let lastKey = keys[keys.length - 1];
+		// Проверяем, есть ли у последнего ключа значение
+		if (postVacancyObject[lastKey] !== undefined && postVacancyObject[lastKey] !== null && postVacancyObject[lastKey] !== "") {
+			addFinalMessageAfterAnswers(finalMessage)
+			scrollChatToBottom()
+		} else {
+			console.log("Последний ключ есть, но у него нет значения.");
+		}
+	}
+
+	// Делаем проверку номера телефона и даем пользователю две кнопки на выбор
+	const addPhoneAnswerBlock = () => {
+		if ( objectKeys[questionsCounter] === "feedback_phone" ) {
+			hiddenTextInput();
+			const promise = new Promise(function(resolve, reject){
+				function showButtons() {
+					const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+					chatMessagesBlock.insertAdjacentHTML("beforeend", `
+					<div class="change-number-container phone-buttons-show-animations">
+						<button class="route-button route-button-main-style button-effect actual-number-button">
+							<div id="circle"></div>
+							<div>Так, ${dataPhone} - це актуальный номер</div>
+						</button>
+						<button class="route-button route-button-main-style button-effect no-actual-number-button">
+							<div id="circle"></div>
+							<div>Ні, хочу вказати інший номер</div>
+						</button>
+					</div>
+					`);
+
+					const actualNumberButton = document.querySelector(".actual-number-button");
+					const noActualNumberButton = document.querySelector(".no-actual-number-button");
+					const numberButtonsArray = [actualNumberButton, noActualNumberButton]
+					resolve (numberButtonsArray);
+				}
+				setTimeout(showButtons, 1000)
+			})
+			.then (buttons => {
+				buttons[0].addEventListener("click", () => {
+					writeCurrentNumber(currentUserPhone);
+					hiddenPhoneNumberInput();
+					deleteNumbersButtons();
+					answersCounter++;
+					function delayedFunction() {
+						addUserMessageToChat(currentUserPhone);
+						addMessagesAfterUserAnswers(questionsArray);
+						scrollChatToBottom();
+						showTextInput();
+					}
+					setTimeout(delayedFunction, 300);
+				})
+				buttons[1].addEventListener("click", () => {
+					showPhoneNumberInput();
+				})
+			})
+		}
+	}
+
+	const addBirthDateAnswerBlock = () => {
+		if ( objectKeys[questionsCounter] === "birthday" ) {
+			console.log("ok")
+		}
+	}
+
+	// Вешаем событие клика на кнопку отправку телефона (инпут с номером)
+	const sendNumberAsMessageInput = document.querySelector(".post-request-vacancy-page__phone-input");
+	const sendNumberAsMessageButton = document.querySelector(".post-request-vacancy-page__send-phone");
+	sendNumberAsMessageButton.addEventListener("click", () => {
+		writeCurrentNumber(sendNumberAsMessageInput.value);
+		hiddenPhoneNumberInput();
+		deleteNumbersButtons();
+		answersCounter++;
+		function delayedFunction() {
+			addUserMessageToChat(sendNumberAsMessageInput.value);
+			addMessagesAfterUserAnswers(questionsArray);
+			scrollChatToBottom();
+			showTextInput();
+		}
+		setTimeout(delayedFunction, 300);
+	})
+	
+	// Вешаем событие на нажатие Enter на инпуте номера телефона
+	sendNumberAsMessageInput.addEventListener("keyup", (event) => {
+		if ( event.key === "Enter" ) {
+			writeCurrentNumber(sendNumberAsMessageInput.value);
+			hiddenPhoneNumberInput();
+			deleteNumbersButtons();
+			answersCounter++;
+			function delayedFunction() {
+				addUserMessageToChat(sendNumberAsMessageInput.value);
+				addMessagesAfterUserAnswers(questionsArray);
+				scrollChatToBottom();
+				showTextInput();
+			}
+			setTimeout(delayedFunction, 300);
 		}
 	})
 
-	// Функционал обновления счетчика при добавлении ответа + вызов функции для добавления ответа в чат
+	// Функция для удаления кнопок подтвержения номера телефона
+	const deleteNumbersButtons = () => {
+		document.querySelector(".change-number-container").classList.remove("phone-buttons-show-animations");
+		document.querySelector(".change-number-container").classList.add("phone-buttons-hidden-animations");
+		function delayedFunction() {
+			document.querySelector(".change-number-container").classList.remove("phone-buttons-hidden-animations");
+			document.querySelector(".change-number-container").innerHTML = "";
+		}
+		setTimeout(delayedFunction, 300);
+	}
+
+	// Функция для включения поля ввода телефона
+	const showPhoneNumberInput = () => {
+		document.querySelector(".post-request-vacancy-page__phone-input-container").classList.remove("input-hidden-animation");
+		document.querySelector(".post-request-vacancy-page__phone-input-container").classList.add("input-show-animation");
+	function delayedFunction() {
+		document.querySelector(".post-request-vacancy-page__phone-input-container").classList.remove("input-hidden");
+		document.querySelector(".post-request-vacancy-page__phone-input").focus();
+	}
+	setTimeout(delayedFunction, 300);
+	}
+
+	// Функция для выключения поля ввода телефона
+	const hiddenPhoneNumberInput = () => {
+		document.querySelector(".post-request-vacancy-page__phone-input-container").classList.remove("input-show-animation");
+		document.querySelector(".post-request-vacancy-page__phone-input-container").classList.add("input-hidden-animation");
+	function delayedFunction() {
+		document.querySelector(".post-request-vacancy-page__phone-input-container").classList.add("input-hidden");
+		document.querySelector(".post-request-vacancy-page__phone-input-container").classList.remove("input-visible");
+	}
+	setTimeout(delayedFunction, 300);
+	}
+
+	// Функция для записи текущего актуального номера в обьект для отправки на бэк и продолжения алгоритма
+	const writeCurrentNumber = (number) => {
+		dataPhone = number;
+	}
+
+	// Делаем кнопку отправки сообщения неактивной
+	const inactiveMessageButton = () => {
+		document.querySelector(".post-request-vacancy-page__send-message").disabled = true;
+	}
+	// Делаем кнопку отправки сообщения активной
+	const activeMesssageButton = () => {
+		document.querySelector(".post-request-vacancy-page__send-message").disabled = false;
+	}
+
+	// Делаем инпут неактивным
+	const inactiveInput = () => {
+		document.querySelector(".post-request-vacancy-page__input").disabled = true;
+	}
+	// Делаем инпут активным
+	const activeInput = () => {
+		document.querySelector(".post-request-vacancy-page__input").disabled = false;
+		document.querySelector(".post-request-vacancy-page__input").focus();
+	}
+
+	// Скрываем контейнер с инпутом
+	const hiddenTextInput = () => {
+			document.querySelector(".post-request-vacancy-page__input-container").classList.remove("input-visible");
+			document.querySelector(".post-request-vacancy-page__input-container").classList.add("input-hidden-animation");
+		function delayedFunction() {
+			document.querySelector(".post-request-vacancy-page__input-container").classList.add("input-hidden");
+		}
+		setTimeout(delayedFunction, 300);
+	}
+
+	// Возвращаем контейнер с инпутом
+	const showTextInput = () => {
+		document.querySelector(".post-request-vacancy-page__input-container").classList.remove("input-hidden-animation");
+		document.querySelector(".post-request-vacancy-page__input-container").classList.add("input-show-animation");
+	function delayedFunction() {
+		document.querySelector(".post-request-vacancy-page__input-container").classList.remove("input-hidden");
+	}
+	setTimeout(delayedFunction, 300);
+	}
+
+	// Функционал вывода финального сообщения после ответа на все вопросы
+	const addFinalMessageAfterAnswers = (message) => {
+		const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+		console.log("addFinalMessageAfterAnswers")
+		chatMessagesBlock.insertAdjacentHTML("beforeend", `
+		<div class="post-request-vacancy-page__message-element final-message__container">
+			<div class="main-message-style final-message">${message}</div>
+			<button class="route-button final-message__button route-button-main-style button-effect">
+				<div id="circle"></div>
+				<div>Продовжити</div>
+			</button>
+		</div>
+		`);
+		scrollChatToBottom();
+		hiddenTextInput();
+	}
+
+	// Функционал обновления счетчика при добавлении ответа + вызов функции для добавления ответа в чат + вызов функции для деактивации инпута
 	const addUserAnswers = (userMessageText) => {
+		inactiveInput();
+		inactiveMessageButton();
 		addUserMessageToChat(userMessageText);
 		answersCounter++;
 	}
 
-	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-	// Прокручиваем содержимое в самый низ
-	// function scrollToBottom() {
-	// 	chatMessagesBlock.scrollTo(0, chatMessagesBlock.scrollHeight);
-	// }
+	
+	//Прокручиваем содержимое в самый низ
+	function scrollChatToBottom() {
+		const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+		chatMessagesBlock.scrollTo(0, chatMessagesBlock.scrollHeight);
+	}
 
 	function addUserMessageToChat(userMessage) {
+		const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
 		chatMessagesBlock.insertAdjacentHTML("beforeend", `
 			<div class="post-request-vacancy-page__message-element user-message__container">
 				<div class="main-message-style user-message">${userMessage}</div>
@@ -519,8 +611,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		`);
 	}
 
-	// Вставляем вопрос в чат и скроллим вниз
+	// Вставляем вопрос в чат и вызываем функцию активации инпута
 	function addMessageToChat(question) {
+		const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
 		function delayedFunction() {
 			chatMessagesBlock.insertAdjacentHTML("beforeend", `
 			<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">
@@ -528,7 +621,12 @@ document.addEventListener("DOMContentLoaded", () => {
 			</div>
 		`);
 		}
-		setTimeout(delayedFunction, 500);
+		setTimeout(delayedFunction, 1);
+		function onInput() {
+			activeInput();
+			activeMesssageButton();
+		}
+		setTimeout(onInput, 800);
 	}
 
 	// Проходимся по всем второстепенным вопросам и добавляем их в массив со всеми вопросами questionsArray
@@ -541,20 +639,19 @@ document.addEventListener("DOMContentLoaded", () => {
 		return arrayToWrite;
 	}
 
+	const addAdditionalQuestionsToMainPostObject = (questionsObject, objectToWrite) => {
+		for (var key in questionsObject.forms) {
+			allQuestionsCounter++; // Добавляем +1 в счетчик общего количество вопросов
+			if (key.startsWith('q')) {
+				objectToWrite[`${key}`] = "";
+			}
+		}
+	}
+
 
 	// Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
-	function fetchPostData(dataName, dataAge, dataAboutSelf, dataGender, dataWish, dataKind, dataTitle, currentVacancyID) {
+	function fetchPostData() {
 		const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${currentVacancyID}`;
-		const dataRequest = {
-			'telegram_id': currentTelegramID,
-			'name': dataName,
-			'age': dataAge,
-			'about_self': dataAboutSelf,
-			'gender': dataGender,
-			'wish': dataWish,
-			'kind': dataKind,
-			'title': dataTitle,
-		};
 	
 		// Данные POST запроса
 		const requestOptions = {
@@ -562,7 +659,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(dataRequest) // Перетворюємо дані у JSON-рядок
+			body: JSON.stringify(postVacancyObject) // Перетворюємо дані у JSON-рядок
 		};
 	
 		// Відправляємо POST-запит за допомогою Fetch API
@@ -580,11 +677,5 @@ document.addEventListener("DOMContentLoaded", () => {
 				console.error('Помилка під час виконання POST-запиту:', error);
 			});
 		}
-
-
-
-
-
-
 })
 

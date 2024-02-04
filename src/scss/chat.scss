@@ -18,15 +18,16 @@
 		}
 		&__messages-container {
 			width: 100%;
-			padding: toRem(15) toRem(5) toRem(100) toRem(5);
-			display: flex;
+			padding: toRem(15) toRem(5) toRem(140) toRem(5);
+			display: block;
 			max-height: 100%;
+			height: 100%;
 			flex-direction: column;
 			justify-content: end;
 			position: absolute;
 			z-index: 1;
 			gap: toRem(10);
-			overflow-y: auto;
+			overflow-y: scroll;
 			height: 100%;
 			&::-webkit-scrollbar {
 				width: 0.5em; /* Ширина полосы прокрутки */
@@ -42,7 +43,6 @@
 		}
 		&__input-container {
 			position: absolute;
-			bottom: 0;
 			height: auto;
 			width: 100%;
 			display: flex;
@@ -77,14 +77,71 @@
 			// filter: invert(100%) sepia(0%) saturate(7460%) hue-rotate(92deg) brightness(113%) contrast(109%);
 			filter: invert(80%) sepia(65%) saturate(2048%) hue-rotate(3deg) brightness(106%) contrast(109%);
 		}
+
+		&__phone-input-container {
+			position: absolute;
+			height: auto;
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			padding: toRem(10) toRem(15);
+			gap: toRem(15);
+			background-color: #FFFFFF;
+			transition: all 0.3s ease 0s;
+			z-index: 4;
+			@media (min-width:$mobile){
+				border-radius: 100px;
+				transition: all 0.3s ease 0s;
+			}
+			&:first-child {
+				width: 100%;
+			}
+		}
+		&__phone-input {
+			width: 100%;
+			height: 100%;
+			padding: toRem(7) toRem(15);
+			outline: none;
+			font-size: toRem(18);
+			border: 1px solid rgba(0, 0, 0, 0.20);
+			border-radius: 100px;
+			background-color: inherit;
+		}
+		&__send-phone {
+
+		}
+		&__send-phone-image {
+			max-height: toRem(30);
+			padding-right: toRem(5);
+			// filter: invert(100%) sepia(0%) saturate(7460%) hue-rotate(92deg) brightness(113%) contrast(109%);
+			filter: invert(80%) sepia(65%) saturate(2048%) hue-rotate(3deg) brightness(106%) contrast(109%);
+		}
+}
+
+.iti {
+	width: 100%;
+	&__flag-container {
+		padding-left: toRem(10);
+	}
+	&__dropdown-content {
+		display: none;
+	}
+	&__country-list {
+		display: none;
+	}
+	&__arrow {
+		display: none;
+	}
 }
 
 .main-message-style {
-	padding: toRem(10) toRem(20);
+	padding: toRem(10) toRem(15);
 	width: auto;
-	border-radius: 100px;
+	border-radius: 20px;
 	font-size: toRem(15);
 	line-height: 110%;
+	margin-top: toRem(10);
 }
 
 .bot-message-animation {
@@ -94,6 +151,7 @@
 .app-message {
 	background-color: $mainYellow;
 	max-width: 80%;
+	text-align: left;
 	&__container {
 		width: 100%;
 		display: flex;
@@ -104,11 +162,33 @@
 .user-message {
 	background-color: rgba(255, 229, 61, 0.3);
 	max-width: 80%;
-
+	text-align: right;
 	&__container {
 		width: 100%;
 		display: flex;
 		justify-content: end;
+	}
+}
+
+.final-message {
+	margin-top: toRem(10);
+	background-color: $mainYellow;
+	max-width: 80%;
+	text-align: center;
+
+	&__container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: toRem(10);
+	}
+	&__button {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: toRem(10);
 	}
 }
 
@@ -123,3 +203,76 @@
 		transition: all 0.3s ease 0s;
 	}
 }
+
+.input-visible {
+	margin-bottom: 0vh;
+	display: flex;
+}
+
+.input-hidden {
+	display: none;
+	visibility: hidden;
+}
+
+.input-hidden-animation {
+	animation: inputContainerHiddenEffect 0.3s ease;
+}
+@keyframes inputContainerHiddenEffect {
+	0% {
+		
+	}
+	100% {
+		margin-bottom: -10vh;
+	}
+}
+
+.input-show-animation {
+	animation: inputContainerShowEffect 0.3s ease;
+}
+@keyframes inputContainerShowEffect {
+	0% {
+		margin-bottom: -10vh;
+	}
+	100% {
+		margin-bottom: 0vh;
+	}
+}
+
+.change-number-container {
+	display: flex;
+	flex-direction: column;
+	margin-top: toRem(10);
+	gap: toRem(10);
+	font-size: toRem(16);
+	padding: toRem(0) toRem(10);
+	&>* {
+		font-size: toRem(16);
+	}
+}
+
+.phone-buttons-hidden-animations {
+	animation: inputButtonsHiddenAnimations 0.3s ease;
+}
+@keyframes inputButtonsHiddenAnimations {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+.phone-buttons-show-animations {
+	animation: inputButtonsShowAnimations 0.3s ease;
+}
+@keyframes inputButtonsShowAnimations {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+
+
