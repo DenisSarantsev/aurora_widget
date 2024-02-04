@@ -274,6 +274,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 	// Работа с чатом
+	document.addEventListener("click", () => {
+		if ( currentTemplateID === "post-request-vacancy-page" ) {
+			document.querySelector(".page").classList.add("page-chat-height");
+		} else {
+			document.querySelector(".page").classList.remove("page-chat-height");
+		}
+	})
+
+
+
 	// При переходе на страницу с чатом обнуляем все переменные
 	// Переменные для отправки на бэк
 	let dataKind = "склад";
@@ -455,8 +465,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	const addBirthDateAnswerBlock = () => {
 		if ( objectKeys[questionsCounter] === "birthday" ) {
-			console.log("ok")
+			
 		}
+	}
+
+	// Показываем календарь
+	const showCalendarInput = () => {
+
+	}
+	// Скрываем календарь
+	const hiddenCalendarInput = () => {
+		
 	}
 
 	// Вешаем событие клика на кнопку отправку телефона (инпут с номером)

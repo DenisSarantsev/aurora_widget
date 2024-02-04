@@ -2013,6 +2013,10 @@ section {
   }
 }
 
+.page-chat-height {
+  height: 100dvh;
+}
+
 @media (min-width: 47.99875em) {
   .post-request-vacancy-page__input-container {
     border-radius: 100px;

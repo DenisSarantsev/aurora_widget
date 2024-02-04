@@ -1291,6 +1291,9 @@
             }));
             const headerUserName = document.querySelector(".header__user-name-text");
             headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
+            document.addEventListener("click", (() => {
+                if (currentTemplateID === "post-request-vacancy-page") document.querySelector(".page").classList.add("page-chat-height"); else document.querySelector(".page").classList.remove("page-chat-height");
+            }));
             let dataKind = "склад";
             let dataName = "";
             let dataPhone = currentUserPhone;
@@ -1408,7 +1411,7 @@
                 }
             };
             const addBirthDateAnswerBlock = () => {
-                if (objectKeys[questionsCounter] === "birthday") console.log("ok");
+                if (objectKeys[questionsCounter] === "birthday") ;
             };
             const sendNumberAsMessageInput = document.querySelector(".post-request-vacancy-page__phone-input");
             const sendNumberAsMessageButton = document.querySelector(".post-request-vacancy-page__send-phone");
