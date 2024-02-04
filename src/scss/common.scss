@@ -34,8 +34,8 @@ section {
 	left: 0;
 	height: 100%;
 	width: 100%;
-	overflow: auto;
-
+	overflow: hidden;
+	z-index: -1;
 }
 .bg-one-circle-element {
 	z-index: -1;
@@ -254,6 +254,8 @@ section {
 	align-items: center;
 	justify-content: center;
 	gap: toRem(10);
+	overflow: scroll;
+	z-index: 3;
 }
 
 .content-width-limiter {
