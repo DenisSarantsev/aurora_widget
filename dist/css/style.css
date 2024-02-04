@@ -189,6 +189,15 @@ section {
   overflow-y: scroll;
 }
 
+.bg-circles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
 .bg-one-circle-element {
   z-index: -1;
   position: absolute;
