@@ -1710,6 +1710,50 @@ section {
           filter: invert(80%) sepia(65%) saturate(2048%) hue-rotate(3deg) brightness(106%) contrast(109%);
 }
 
+.post-request-vacancy-page__date-input-container {
+  position: absolute;
+  height: auto;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0.625rem 0.9375rem;
+  gap: 0.9375rem;
+  background-color: #FFFFFF;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  z-index: 4;
+}
+
+.post-request-vacancy-page__date-input {
+  width: 100%;
+  height: 100%;
+  padding: 0.4375rem 0.9375rem;
+  outline: none;
+  font-size: 1.125rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 100px;
+  background-color: inherit;
+}
+
+.post-request-vacancy-page__date-input:hover {
+  cursor: pointer;
+}
+
+.post-request-vacancy-page__send-date-image {
+  max-height: 1.875rem;
+  padding-right: 0.3125rem;
+  -webkit-filter: invert(80%) sepia(65%) saturate(2048%) hue-rotate(3deg) brightness(106%) contrast(109%);
+          filter: invert(80%) sepia(65%) saturate(2048%) hue-rotate(3deg) brightness(106%) contrast(109%);
+}
+
 .iti {
   width: 100%;
 }
@@ -1977,6 +2021,12 @@ section {
   }
 
   .post-request-vacancy-page__phone-input-container {
+    border-radius: 100px;
+    -webkit-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+  }
+
+  .post-request-vacancy-page__date-input-container {
     border-radius: 100px;
     -webkit-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
