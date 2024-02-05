@@ -389,6 +389,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			addMessagesAfterUserAnswers(questionsArray);
 			addPhoneAnswerBlock();
 			addBirthDateAnswerBlock();
+			console.log(postVacancyObject)
 		} else if ( questionsCounter+1 > fixedQuestionsCounter && answersCounter < allQuestionsCounter ){
 			let currentQuestionKey = `q${(questionsCounter+1)-fixedQuestionsCounter}`;
 			let currentAdditionalQuestion = additionalQuestions.forms[`${currentQuestionKey}`];
@@ -396,23 +397,79 @@ document.addEventListener("DOMContentLoaded", () => {
 			addUserAnswers(chatInput.value);
 			addMessagesAfterUserAnswers(questionsArray)
 			checkFinalAnswerMessage();
+			console.log(postVacancyObject)
 		}
 		chatInput.value = "";
+		console.log(postVacancyObject)
 	}
 
-	// Ждем ответ на финальный вопрос и выводим финальное сообщение
-	const checkFinalAnswerMessage = () => {
-		scrollChatToBottom()
-		let keys = Object.keys(postVacancyObject);
-		// Получаем самый последний ключ
-		let lastKey = keys[keys.length - 1];
-		// Проверяем, есть ли у последнего ключа значение
-		if (postVacancyObject[lastKey] !== undefined && postVacancyObject[lastKey] !== null && postVacancyObject[lastKey] !== "") {
-			addFinalMessageAfterAnswers(finalMessage)
-			scrollChatToBottom()
-		} else {
-			console.log("Последний ключ есть, но у него нет значения.");
+	// Проверяем, когда появится вопрос про дату рождения
+	const addBirthDateAnswerBlock = () => {
+		if ( objectKeys[questionsCounter] === "birthday" ) {
+			hiddenTextInput()
+			function delayedFunction() {
+				showCalendarInput()
+			}
+			setTimeout(delayedFunction, 300);
+		} else {}
+	}
+
+	// Вешаем события на инпут даты и кнопку отправки даты
+	const dateInput = document.querySelector(".post-request-vacancy-page__date-input");
+	const dateSendButton =  document.querySelector(".post-request-vacancy-page__send-date");
+	dateSendButton.addEventListener("click", () => {
+		writeActualBirthDate(dateInput.value);
+		addUserMessageToChat(dateInput.value);
+		hiddenCalendarInput();
+		answersCounter++;
+		function delayedFunction() {
+			addMessagesAfterUserAnswers(questionsArray);
+			scrollChatToBottom();
+			showTextInput();
 		}
+		setTimeout(delayedFunction, 300);
+	})
+	dateInput.addEventListener("keyup", (event) => {
+		if ( event.key === "Enter" ) {
+			writeActualBirthDate(dateInput.value);
+			addUserMessageToChat(dateInput.value);
+			hiddenCalendarInput();
+			answersCounter++;
+			function delayedFunction() {
+				addMessagesAfterUserAnswers(questionsArray);
+				scrollChatToBottom();
+				showTextInput();
+			}
+			setTimeout(delayedFunction, 300);
+		}
+	})
+
+	// Показываем календарь
+	const showCalendarInput = () => {
+		document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-hidden-animation");
+		document.querySelector(".post-request-vacancy-page__date-input-container").classList.add("input-show-animation");
+		function delayedFunction() {
+			document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-hidden");
+		}
+		setTimeout(delayedFunction, 300);
+	}
+	// Скрываем календарь
+	const hiddenCalendarInput = () => {
+		document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-show-animation");
+		document.querySelector(".post-request-vacancy-page__date-input-container").classList.add("input-hidden-animation");
+		function delayedFunction() {
+			document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-visible");
+			document.querySelector(".post-request-vacancy-page__date-input-container").classList.add("input-hidden");
+		}
+		setTimeout(delayedFunction, 300);
+	}
+
+	// Записываем актуальную дату рождения в переменную и в обьект + обрабатываем данные перед записью
+	const writeActualBirthDate = (date) => {
+		let parts = date.split("-");
+		let formattedDate = parts[2] + "." + parts[1] + "." + parts[0];
+		dataBornDate = formattedDate;
+		postVacancyObject.birthday = formattedDate;
 	}
 
 	// Делаем проверку номера телефона и даем пользователю две кнопки на выбор
@@ -463,20 +520,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
-	const addBirthDateAnswerBlock = () => {
-		if ( objectKeys[questionsCounter] === "birthday" ) {
-			
-		}
-	}
 
-	// Показываем календарь
-	const showCalendarInput = () => {
-
-	}
-	// Скрываем календарь
-	const hiddenCalendarInput = () => {
-		
-	}
 
 	// Вешаем событие клика на кнопку отправку телефона (инпут с номером)
 	const sendNumberAsMessageInput = document.querySelector(".post-request-vacancy-page__phone-input");
@@ -548,6 +592,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Функция для записи текущего актуального номера в обьект для отправки на бэк и продолжения алгоритма
 	const writeCurrentNumber = (number) => {
 		dataPhone = number;
+		postVacancyObject.feedback_phone = number;
 	}
 
 	// Делаем кнопку отправки сообщения неактивной
@@ -589,22 +634,58 @@ document.addEventListener("DOMContentLoaded", () => {
 	setTimeout(delayedFunction, 300);
 	}
 
+	// Ждем ответ на финальный вопрос и выводим финальное сообщение
+	const checkFinalAnswerMessage = () => {
+		scrollChatToBottom()
+		let keys = Object.keys(postVacancyObject);
+		// Получаем самый последний ключ
+		let lastKey = keys[keys.length - 1];
+		// Проверяем, есть ли у последнего ключа значение
+		if (postVacancyObject[lastKey] !== undefined && postVacancyObject[lastKey] !== null && postVacancyObject[lastKey] !== "") {
+			addFinalMessageAfterAnswers(finalMessage)
+			scrollChatToBottom()
+			hiddenTextInput();
+		} else {
+			console.log("Последний ключ есть, но у него нет значения.");
+		}
+	}
+
 	// Функционал вывода финального сообщения после ответа на все вопросы
 	const addFinalMessageAfterAnswers = (message) => {
 		const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-		console.log("addFinalMessageAfterAnswers")
-		chatMessagesBlock.insertAdjacentHTML("beforeend", `
-		<div class="post-request-vacancy-page__message-element final-message__container">
-			<div class="main-message-style final-message">${message}</div>
-			<button class="route-button final-message__button route-button-main-style button-effect">
-				<div id="circle"></div>
-				<div>Продовжити</div>
-			</button>
-		</div>
-		`);
-		scrollChatToBottom();
-		hiddenTextInput();
+		function delayedFunction() {
+			chatMessagesBlock.insertAdjacentHTML("beforeend", `
+			<div class="post-request-vacancy-page__message-element final-message__container input-hidden">
+				<div class="main-message-style final-message">${message}</div>
+				<button class="route-button final-message__button route-button-main-style button-effect">
+					<div id="circle"></div>
+					<div>Продовжити</div>
+				</button>
+			</div>
+			`);
+			changeMessageContainerPadding();
+			showFinalBlock();
+		}
+		setTimeout(delayedFunction, 300);
 	}
+
+	// Уменьшаем отступ внизу чата после появления финального сообщения
+	const changeMessageContainerPadding = () => {
+		document.querySelector(".post-request-vacancy-page__messages-container").classList.remove("padding-message-container-chat");
+		document.querySelector(".post-request-vacancy-page__messages-container").classList.add("padding-message-container-final");
+	}
+
+	// Анимация появления блока с финальным сообщением и кнопкой Продолжить
+	const showFinalBlock = () => {
+		document.querySelector(".final-message__container").classList.add("show-final-message");
+		function delayedFunction() {
+			document.querySelector(".final-message__container").classList.remove("input-hidden");
+			document.querySelector(".final-message__container").classList.add("input-visible");
+			scrollChatToBottom();
+		}
+		setTimeout(delayedFunction, 300);
+	}
+
 
 	// Функционал обновления счетчика при добавлении ответа + вызов функции для добавления ответа в чат + вызов функции для деактивации инпута
 	const addUserAnswers = (userMessageText) => {
@@ -614,7 +695,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		answersCounter++;
 	}
 
-	
 	//Прокручиваем содержимое в самый низ
 	function scrollChatToBottom() {
 		const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");

@@ -1356,6 +1356,7 @@
                     addMessagesAfterUserAnswers(questionsArray);
                     addPhoneAnswerBlock();
                     addBirthDateAnswerBlock();
+                    console.log(postVacancyObject);
                 } else if (questionsCounter + 1 > fixedQuestionsCounter && answersCounter < allQuestionsCounter) {
                     let currentQuestionKey = `q${questionsCounter + 1 - fixedQuestionsCounter}`;
                     let currentAdditionalQuestion = additionalQuestions.forms[`${currentQuestionKey}`];
@@ -1365,17 +1366,70 @@
                     addUserAnswers(chatInput.value);
                     addMessagesAfterUserAnswers(questionsArray);
                     checkFinalAnswerMessage();
+                    console.log(postVacancyObject);
                 }
                 chatInput.value = "";
+                console.log(postVacancyObject);
             };
-            const checkFinalAnswerMessage = () => {
-                scrollChatToBottom();
-                let keys = Object.keys(postVacancyObject);
-                let lastKey = keys[keys.length - 1];
-                if (postVacancyObject[lastKey] !== void 0 && postVacancyObject[lastKey] !== null && postVacancyObject[lastKey] !== "") {
-                    addFinalMessageAfterAnswers(finalMessage);
+            const addBirthDateAnswerBlock = () => {
+                if (objectKeys[questionsCounter] === "birthday") {
+                    hiddenTextInput();
+                    function delayedFunction() {
+                        showCalendarInput();
+                    }
+                    setTimeout(delayedFunction, 300);
+                }
+            };
+            const dateInput = document.querySelector(".post-request-vacancy-page__date-input");
+            const dateSendButton = document.querySelector(".post-request-vacancy-page__send-date");
+            dateSendButton.addEventListener("click", (() => {
+                writeActualBirthDate(dateInput.value);
+                addUserMessageToChat(dateInput.value);
+                hiddenCalendarInput();
+                answersCounter++;
+                function delayedFunction() {
+                    addMessagesAfterUserAnswers(questionsArray);
                     scrollChatToBottom();
-                } else console.log("Последний ключ есть, но у него нет значения.");
+                    showTextInput();
+                }
+                setTimeout(delayedFunction, 300);
+            }));
+            dateInput.addEventListener("keyup", (event => {
+                if (event.key === "Enter") {
+                    writeActualBirthDate(dateInput.value);
+                    addUserMessageToChat(dateInput.value);
+                    hiddenCalendarInput();
+                    answersCounter++;
+                    function delayedFunction() {
+                        addMessagesAfterUserAnswers(questionsArray);
+                        scrollChatToBottom();
+                        showTextInput();
+                    }
+                    setTimeout(delayedFunction, 300);
+                }
+            }));
+            const showCalendarInput = () => {
+                document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-hidden-animation");
+                document.querySelector(".post-request-vacancy-page__date-input-container").classList.add("input-show-animation");
+                function delayedFunction() {
+                    document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-hidden");
+                }
+                setTimeout(delayedFunction, 300);
+            };
+            const hiddenCalendarInput = () => {
+                document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-show-animation");
+                document.querySelector(".post-request-vacancy-page__date-input-container").classList.add("input-hidden-animation");
+                function delayedFunction() {
+                    document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-visible");
+                    document.querySelector(".post-request-vacancy-page__date-input-container").classList.add("input-hidden");
+                }
+                setTimeout(delayedFunction, 300);
+            };
+            const writeActualBirthDate = date => {
+                let parts = date.split("-");
+                let formattedDate = parts[2] + "." + parts[1] + "." + parts[0];
+                dataBornDate = formattedDate;
+                postVacancyObject.birthday = formattedDate;
             };
             const addPhoneAnswerBlock = () => {
                 if (objectKeys[questionsCounter] === "feedback_phone") {
@@ -1409,9 +1463,6 @@
                         }));
                     }));
                 }
-            };
-            const addBirthDateAnswerBlock = () => {
-                if (objectKeys[questionsCounter] === "birthday") ;
             };
             const sendNumberAsMessageInput = document.querySelector(".post-request-vacancy-page__phone-input");
             const sendNumberAsMessageButton = document.querySelector(".post-request-vacancy-page__send-phone");
@@ -1472,6 +1523,7 @@
             };
             const writeCurrentNumber = number => {
                 dataPhone = number;
+                postVacancyObject.feedback_phone = number;
             };
             const inactiveMessageButton = () => {
                 document.querySelector(".post-request-vacancy-page__send-message").disabled = true;
@@ -1502,12 +1554,37 @@
                 }
                 setTimeout(delayedFunction, 300);
             };
+            const checkFinalAnswerMessage = () => {
+                scrollChatToBottom();
+                let keys = Object.keys(postVacancyObject);
+                let lastKey = keys[keys.length - 1];
+                if (postVacancyObject[lastKey] !== void 0 && postVacancyObject[lastKey] !== null && postVacancyObject[lastKey] !== "") {
+                    addFinalMessageAfterAnswers(finalMessage);
+                    scrollChatToBottom();
+                    hiddenTextInput();
+                } else console.log("Последний ключ есть, но у него нет значения.");
+            };
             const addFinalMessageAfterAnswers = message => {
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-                console.log("addFinalMessageAfterAnswers");
-                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element final-message__container">\n\t\t\t<div class="main-message-style final-message">${message}</div>\n\t\t\t<button class="route-button final-message__button route-button-main-style button-effect">\n\t\t\t\t<div id="circle"></div>\n\t\t\t\t<div>Продовжити</div>\n\t\t\t</button>\n\t\t</div>\n\t\t`);
-                scrollChatToBottom();
-                hiddenTextInput();
+                function delayedFunction() {
+                    chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="post-request-vacancy-page__message-element final-message__container input-hidden">\n\t\t\t\t<div class="main-message-style final-message">${message}</div>\n\t\t\t\t<button class="route-button final-message__button route-button-main-style button-effect">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Продовжити</div>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t`);
+                    changeMessageContainerPadding();
+                    showFinalBlock();
+                }
+                setTimeout(delayedFunction, 300);
+            };
+            const changeMessageContainerPadding = () => {
+                document.querySelector(".post-request-vacancy-page__messages-container").classList.remove("padding-message-container-chat");
+                document.querySelector(".post-request-vacancy-page__messages-container").classList.add("padding-message-container-final");
+            };
+            const showFinalBlock = () => {
+                document.querySelector(".final-message__container").classList.add("show-final-message");
+                function delayedFunction() {
+                    document.querySelector(".final-message__container").classList.remove("input-hidden");
+                    document.querySelector(".final-message__container").classList.add("input-visible");
+                    scrollChatToBottom();
+                }
+                setTimeout(delayedFunction, 300);
             };
             const addUserAnswers = userMessageText => {
                 inactiveInput();
