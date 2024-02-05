@@ -1204,17 +1204,20 @@
                 let itemID = removeDigitsAndUnderscore(button.id);
                 if (itemID === "post-request-vacancy-page") mainPageContainer.classList.add("white-background"); else mainPageContainer.classList.remove("white-background");
             }
-            if (document.querySelector(".route-button")) {
-                const allRouteButtons = document.querySelectorAll(".route-button");
-                for (let item of allRouteButtons) item.addEventListener("click", (e => {
-                    currentTemplateID = removeDigitsAndUnderscore(e.target.id);
-                    firstEnter = false;
-                    includeCurrentTemplate(currentTemplateID);
-                    addWhiteBackground(item);
-                    hiddenOrShowFooter();
-                    scrollToTop();
-                }));
-            }
+            const addListenerToAllRouteButtons = () => {
+                if (document.querySelector(".route-button")) {
+                    const allRouteButtons = document.querySelectorAll(".route-button");
+                    for (let item of allRouteButtons) item.addEventListener("click", (e => {
+                        currentTemplateID = removeDigitsAndUnderscore(e.target.id);
+                        firstEnter = false;
+                        includeCurrentTemplate(currentTemplateID);
+                        addWhiteBackground(item);
+                        hiddenOrShowFooter();
+                        scrollToTop();
+                    }));
+                }
+            };
+            addListenerToAllRouteButtons();
             function removeDigitsAndUnderscore(inputString) {
                 var resultString = inputString.replace(/[0-9_]/g, "");
                 return resultString;
@@ -1316,7 +1319,7 @@
             for (let button of requestButtonsArray) button.addEventListener("click", (() => {
                 addQuestionsToChat();
             }));
-            const questionsArray = [ `Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`, `Дякуємо, відповідь прийнята! Тепер вкажіть актуальний номер телефону для зв'язку:`, `Вкажіть місто проживання:`, `Вкажіть дату народження:` ];
+            const questionsArray = [ `Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`, `Вкажіть актуальний номер телефону для зв'язку:`, `Вкажіть місто проживання:`, `Вкажіть дату народження:` ];
             const finalMessage = "Дякуємо за терпіння! Залишилось перевірити правильність введених даних і можна надсилати заявку)";
             let additionalQuestions;
             function addQuestionsToChat() {
@@ -1326,6 +1329,7 @@
                 })).then((data => {
                     additionalQuestions = data;
                     addAdditionalQuestionsToMainPostObject(additionalQuestions, postVacancyObject);
+                    addAdditionalQuestionsToMainCheckQuestionsArray(additionalQuestions, checkQuestionsArray);
                     return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
                 })).then((array => {
                     addMessagesAfterUserAnswers(array);
@@ -1356,7 +1360,6 @@
                     addMessagesAfterUserAnswers(questionsArray);
                     addPhoneAnswerBlock();
                     addBirthDateAnswerBlock();
-                    console.log(postVacancyObject);
                 } else if (questionsCounter + 1 > fixedQuestionsCounter && answersCounter < allQuestionsCounter) {
                     let currentQuestionKey = `q${questionsCounter + 1 - fixedQuestionsCounter}`;
                     let currentAdditionalQuestion = additionalQuestions.forms[`${currentQuestionKey}`];
@@ -1366,10 +1369,8 @@
                     addUserAnswers(chatInput.value);
                     addMessagesAfterUserAnswers(questionsArray);
                     checkFinalAnswerMessage();
-                    console.log(postVacancyObject);
                 }
                 chatInput.value = "";
-                console.log(postVacancyObject);
             };
             const addBirthDateAnswerBlock = () => {
                 if (objectKeys[questionsCounter] === "birthday") {
@@ -1567,9 +1568,11 @@
             const addFinalMessageAfterAnswers = message => {
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
                 function delayedFunction() {
-                    chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="post-request-vacancy-page__message-element final-message__container input-hidden">\n\t\t\t\t<div class="main-message-style final-message">${message}</div>\n\t\t\t\t<button class="route-button final-message__button route-button-main-style button-effect">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Продовжити</div>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t`);
+                    chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="post-request-vacancy-page__message-element final-message__container input-hidden">\n\t\t\t\t<div class="main-message-style final-message">${message}</div>\n\t\t\t\t<button id="001_check-request-vacancy-page" class="route-button final-message__button route-button-main-style button-effect">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Продовжити</div>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t`);
                     changeMessageContainerPadding();
                     showFinalBlock();
+                    addListenerToAllRouteButtons();
+                    addInputFieldsToCheckPage();
                 }
                 setTimeout(delayedFunction, 300);
             };
@@ -1620,6 +1623,19 @@
                 for (var key in questionsObject.forms) {
                     allQuestionsCounter++;
                     if (key.startsWith("q")) objectToWrite[`${key}`] = "";
+                }
+            };
+            const checkQuestionsArray = [ `Ім'я та прізвище:`, `Номер телефону для зв'язку:`, `Місто проживання:`, `Дата народження:` ];
+            const addAdditionalQuestionsToMainCheckQuestionsArray = (questionsObject, arrayToWrite) => {
+                for (var key in questionsObject.forms) if (key.startsWith("q")) arrayToWrite.push(questionsObject.forms[key]);
+            };
+            const addInputFieldsToCheckPage = () => {
+                const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
+                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`); else {
+                    let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i + 1]];
+                    console.log(postVacancyObject);
+                    let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
+                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input value="${objectElementAnswer}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`);
                 }
             };
         }));

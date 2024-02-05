@@ -1,0 +1,44 @@
+
+.check-request-vacancy-page {
+		&__container {
+			display: flex;
+			flex-direction: column;
+			gap: toRem(20);
+			height: 100%;
+			width: 100%;
+			padding: toRem(25) toRem(25) toRem(25) toRem(25);
+		}
+		&__items-container {
+			display: flex;
+			flex-direction: column;
+			gap: toRem(10);
+		}
+		&__check-item {
+			width: 100%;
+			position: relative;
+			// border: 1px solid rgba(0, 0, 0, 0.20);
+			padding: toRem(10) toRem(15) toRem(10) toRem(15);
+			border-radius: 20px;
+			background-color: rgba($color:#FFFFFF, $alpha: 0.95);
+		}
+		&__check-question {
+			opacity: 0.7;
+		}
+		&__check-input {
+			margin-top: toRem(5);
+			width: 100%;
+			background-color: transparent;
+			outline: none;
+		}
+		&__edit-button {
+			position: absolute;
+			right: toRem(10);
+			bottom: toRem(10);
+
+		}
+		&__edit-button-image {
+			max-width: toRem(25);
+			filter: invert(84%) sepia(1%) saturate(0%) hue-rotate(70deg) brightness(90%) contrast(92%);
+		}
+}
+

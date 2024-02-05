@@ -83,30 +83,27 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
-
-	
-
-
-
-
-	
 	// Проходимся по всем кнопкам с роутами, чтобы повесить на них событие клика и при необходимости включить функцию переключения шаблона
-	if (document.querySelector(".route-button")) {
-		// Находим все кнопки с роутами
-		const allRouteButtons = document.querySelectorAll(".route-button");
-		// Вешаем события на все кнопки с роутами в виджете
-		for ( let item of allRouteButtons ) {
-			// Отменяем всплытие и задаем событие при клике на дочерние элементы
-			item.addEventListener("click", (e) => {
-				currentTemplateID = removeDigitsAndUnderscore(e.target.id);
-				firstEnter = false;
-				includeCurrentTemplate(currentTemplateID);
-				addWhiteBackground(item);
-				hiddenOrShowFooter();
-				scrollToTop();
-			})
+	const addListenerToAllRouteButtons = () => {
+		if (document.querySelector(".route-button")) {
+			// Находим все кнопки с роутами
+			const allRouteButtons = document.querySelectorAll(".route-button");
+			// Вешаем события на все кнопки с роутами в виджете
+			for ( let item of allRouteButtons ) {
+				// Отменяем всплытие и задаем событие при клике на дочерние элементы
+				item.addEventListener("click", (e) => {
+					currentTemplateID = removeDigitsAndUnderscore(e.target.id);
+					firstEnter = false;
+					includeCurrentTemplate(currentTemplateID);
+					addWhiteBackground(item);
+					hiddenOrShowFooter();
+					scrollToTop();
+				})
+			}
 		}
 	}
+	addListenerToAllRouteButtons();
+
 
 	// Функция удаления префикса из ID
 	function removeDigitsAndUnderscore(inputString) {
@@ -273,7 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
 
 
-	// Работа с чатом
+	// ------------------------------------------------------------------------------------------------------------ Работа с чатом
 	document.addEventListener("click", () => {
 		if ( currentTemplateID === "post-request-vacancy-page" ) {
 			document.querySelector(".page").classList.add("page-chat-height");
@@ -281,8 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			document.querySelector(".page").classList.remove("page-chat-height");
 		}
 	})
-
-
 
 	// При переходе на страницу с чатом обнуляем все переменные
 	// Переменные для отправки на бэк
@@ -324,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Cписок основных вопросов
 	const questionsArray = [
 		`Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`,
-		`Дякуємо, відповідь прийнята! Тепер вкажіть актуальний номер телефону для зв'язку:`,
+		`Вкажіть актуальний номер телефону для зв'язку:`,
 		`Вкажіть місто проживання:`,
 		`Вкажіть дату народження:`,
 	]
@@ -346,6 +341,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			additionalQuestions = data;
 			// Добавляем нужное количество свойств в обьект, который отправляется на бэк
 			addAdditionalQuestionsToMainPostObject(additionalQuestions, postVacancyObject);
+			// Запісь дополнительных вопросов в массив с вопросами для проверочной страницы
+			addAdditionalQuestionsToMainCheckQuestionsArray(additionalQuestions, checkQuestionsArray);
 			// Обработка данных, передача их в общий массив с вопросами
 			return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
 		})
@@ -389,7 +386,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			addMessagesAfterUserAnswers(questionsArray);
 			addPhoneAnswerBlock();
 			addBirthDateAnswerBlock();
-			console.log(postVacancyObject)
 		} else if ( questionsCounter+1 > fixedQuestionsCounter && answersCounter < allQuestionsCounter ){
 			let currentQuestionKey = `q${(questionsCounter+1)-fixedQuestionsCounter}`;
 			let currentAdditionalQuestion = additionalQuestions.forms[`${currentQuestionKey}`];
@@ -397,10 +393,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			addUserAnswers(chatInput.value);
 			addMessagesAfterUserAnswers(questionsArray)
 			checkFinalAnswerMessage();
-			console.log(postVacancyObject)
 		}
 		chatInput.value = "";
-		console.log(postVacancyObject)
 	}
 
 	// Проверяем, когда появится вопрос про дату рождения
@@ -519,8 +513,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			})
 		}
 	}
-
-
 
 	// Вешаем событие клика на кнопку отправку телефона (инпут с номером)
 	const sendNumberAsMessageInput = document.querySelector(".post-request-vacancy-page__phone-input");
@@ -657,7 +649,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			chatMessagesBlock.insertAdjacentHTML("beforeend", `
 			<div class="post-request-vacancy-page__message-element final-message__container input-hidden">
 				<div class="main-message-style final-message">${message}</div>
-				<button class="route-button final-message__button route-button-main-style button-effect">
+				<button id="001_check-request-vacancy-page" class="route-button final-message__button route-button-main-style button-effect">
 					<div id="circle"></div>
 					<div>Продовжити</div>
 				</button>
@@ -665,6 +657,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			`);
 			changeMessageContainerPadding();
 			showFinalBlock();
+			addListenerToAllRouteButtons();
+			addInputFieldsToCheckPage();
 		}
 		setTimeout(delayedFunction, 300);
 	}
@@ -747,6 +741,55 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
+	// ---------------------------------------------------------------------------------------------------- Логика для страницы проверки введенных данных
+
+	// Список вопросов для проверочной страницы
+	const checkQuestionsArray = [
+		`Ім'я та прізвище:`,
+		`Номер телефону для зв'язку:`,
+		`Місто проживання:`,
+		`Дата народження:`,
+	]
+
+	const addAdditionalQuestionsToMainCheckQuestionsArray = (questionsObject, arrayToWrite) => {
+		for (var key in questionsObject.forms) {
+			if (key.startsWith('q')) {
+					arrayToWrite.push(questionsObject.forms[key]);
+			}
+		}
+	}
+
+	// Получаем объект и выводим данные на странице в инпутах
+	const addInputFieldsToCheckPage = () => {
+		const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
+		for ( let i = 0; i < Object.keys(postVacancyObject).length-1; i++ ) {
+			if ( i < fixedQuestionsCounter ) {
+				checkPageMainContainer.insertAdjacentHTML("beforeend", `
+					<div class="check-request-vacancy-page__check-item">
+						<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>
+						<input value="${postVacancyObject[Object.keys(postVacancyObject)[i+1]]}" type="text" class="check-request-vacancy-page__check-input">
+						<button class="check-request-vacancy-page__edit-button">
+							<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image">
+						</button>
+					</div>
+				`)
+			} else {
+				let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i+1]];
+				console.log(postVacancyObject)
+				let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
+				checkPageMainContainer.insertAdjacentHTML("beforeend", `
+					<div class="check-request-vacancy-page__check-item">
+						<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>
+						<input value="${objectElementAnswer}" type="text" class="check-request-vacancy-page__check-input">
+						<button class="check-request-vacancy-page__edit-button">
+							<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image">
+						</button>
+					</div>
+				`)
+			}
+			
+		}
+	}
 
 	// Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
 	function fetchPostData() {
