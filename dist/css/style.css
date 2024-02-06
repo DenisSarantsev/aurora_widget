@@ -2154,19 +2154,9 @@ section {
           filter: invert(47%) sepia(23%) saturate(5429%) hue-rotate(84deg) brightness(102%) contrast(102%);
 }
 
-.save-icon:hover {
-  -webkit-filter: invert(74%) sepia(98%) saturate(498%) hue-rotate(359deg) brightness(102%) contrast(103%);
-          filter: invert(74%) sepia(98%) saturate(498%) hue-rotate(359deg) brightness(102%) contrast(103%);
-}
-
 .edit-icon {
   -webkit-filter: invert(84%) sepia(1%) saturate(0%) hue-rotate(70deg) brightness(90%) contrast(92%);
           filter: invert(84%) sepia(1%) saturate(0%) hue-rotate(70deg) brightness(90%) contrast(92%);
-}
-
-.edit-icon:hover {
-  -webkit-filter: invert(74%) sepia(98%) saturate(498%) hue-rotate(359deg) brightness(102%) contrast(103%);
-          filter: invert(74%) sepia(98%) saturate(498%) hue-rotate(359deg) brightness(102%) contrast(103%);
 }
 
 .check-textarea {

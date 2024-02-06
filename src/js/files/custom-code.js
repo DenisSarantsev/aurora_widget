@@ -331,7 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			additionalQuestions = data;
 			// Добавляем нужное количество свойств в обьект, который отправляется на бэк
 			addAdditionalQuestionsToMainPostObject(additionalQuestions, postVacancyObject);
-			// Запісь дополнительных вопросов в массив с вопросами для проверочной страницы
+			// Запись дополнительных вопросов в массив с вопросами для проверочной страницы
 			addAdditionalQuestionsToMainCheckQuestionsArray(additionalQuestions, checkQuestionsArray);
 			// Обработка данных, передача их в общий массив с вопросами
 			return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
@@ -342,6 +342,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		})
 		.catch(error => { console.error('Fetch error:', error); });
 	}
+
+
 
 
 	// Функционал последовательного добавления вопросов в чат по мере записи ответов
@@ -747,11 +749,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
-	// Получаем заголовок текущей вакансии
-	const findCurrentVacancyTitle = () => {
-
-	}
-
 	// Получаем объект и выводим данные на странице в инпутах
 	const addInputFieldsToCheckPage = () => {
 		const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
@@ -767,13 +764,13 @@ document.addEventListener("DOMContentLoaded", () => {
 			if ( i < fixedQuestionsCounter ) {
 				checkPageMainContainer.insertAdjacentHTML("beforeend", `
 					<div class="check-request-vacancy-page__check-item">
-						<div class="check-request-vacancy-page__question-input-container inactive-input-container-border">
+						<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
 							<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>
 							<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i+1]]}" type="text" class="check-request-vacancy-page__check-input">
 						</div>
 						<button class="check-request-vacancy-page__edit-button">
 							<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
-							<img src="../../img/icons/save.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
+							<img src="../../img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
 						</button>
 					</div>
 				`)
@@ -782,13 +779,13 @@ document.addEventListener("DOMContentLoaded", () => {
 				let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
 				checkPageMainContainer.insertAdjacentHTML("beforeend", `
 					<div class="check-request-vacancy-page__check-item">
-						<div class="check-request-vacancy-page__question-input-container inactive-input-container-border">
+						<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
 							<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>
 							<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>
 						</div>
 						<button class="check-request-vacancy-page__edit-button">
 							<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
-							<img src="../../img/icons/save.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
+							<img src="../../img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
 						</button>
 					</div>
 				`)
@@ -807,6 +804,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					activeCheckInput(item);
 				} else {
 					inactiveCheckInput(item);
+					writeNewDataToPostVacancyObject(item);
 				}
 			})
 		}
@@ -835,17 +833,46 @@ document.addEventListener("DOMContentLoaded", () => {
 		button.firstElementChild.classList.toggle("_hidden-icon");
 	}
 
-	// Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
-	function fetchPostData() {
-		const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${currentVacancyID}`;
+	// Перезапись новых данных в обьекте для отправки
+	const writeNewDataToPostVacancyObject = (button) => {
+		let inputElement = button.previousElementSibling.lastElementChild;
+		let currentObjectKey = button.previousElementSibling.dataset.key;
+		if ( currentObjectKey[0] === "q" && currentObjectKey.length === 2 ) {
+			let objectElement = postVacancyObject[currentObjectKey];
+			let currentQuestion = Object.keys(objectElement)[0];
+			objectElement[currentQuestion] = inputElement.value;
+		} else {
+			postVacancyObject[currentObjectKey] = inputElement.value;
+		}
+	}
+
+	// Вешаем событие на кнопку отправки заявки
+	const sendObjectDataToServer = () => {
+		const checkRequestVacancyButton = document.querySelector(".check-request-vacancy-page__request-button");
+		checkRequestVacancyButton.addEventListener("click", () => {
+			fetchPostData(postVacancyObject, currentVacancyID);
+		})
+	}
+	sendObjectDataToServer();
+
+	// Добавляем в обьект для отправки  на бэк поле, содержащее информацию о резюме
+	const addCVObjectToMainObject = (cvObject) => {
+		cvObject.cv = {};
+		return cvObject
+	}
 	
+
+	// Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
+	function fetchPostData(objectData, vacancyID) {
+		const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`;
 		// Данные POST запроса
+		const data = addCVObjectToMainObject(objectData);
 		const requestOptions = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(postVacancyObject) // Перетворюємо дані у JSON-рядок
+			body: JSON.stringify(data) // Перетворюємо дані у JSON-рядок
 		};
 	
 		// Відправляємо POST-запит за допомогою Fetch API
@@ -865,3 +892,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 })
 
+// Вызываем сообщение о том, что заяка отправлена (с кнопкой на главную страницу)
+const showMessageAfterRequest = () => {
+	
+}
+
+// События после отправки заявки на сервер

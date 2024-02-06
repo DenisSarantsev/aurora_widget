@@ -1157,7 +1157,7 @@
             let currentContent = data.content;
             let currentUserName = data.first_name;
             let currentTelegramID = data.telegram_id;
-            data.password;
+            let currentPassword = data.password;
             let currentUserPhone = data.phone_number;
             let actualHost = "https://avrora-web.fly.dev";
             let currentTemplateID = "home-page";
@@ -1627,10 +1627,10 @@
             const addInputFieldsToCheckPage = () => {
                 const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
                 checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">Назва вакансії:</div>\n\t\t\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t`);
-                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t\t<img src="../../img/icons/save.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`); else {
+                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t\t<img src="../../img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`); else {
                     let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i + 1]];
                     let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
-                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t\t<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t\t<img src="../../img/icons/save.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`);
+                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t\t<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t\t<img src="../../img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`);
                 }
                 addListenerOnEditButtons();
             };
@@ -1638,7 +1638,10 @@
                 const allEditButtons = document.querySelectorAll(".check-request-vacancy-page__edit-button");
                 for (let item of allEditButtons) item.addEventListener("click", (() => {
                     changeButtonImage(item);
-                    if (item.previousElementSibling.lastElementChild.hasAttribute("disabled")) activeCheckInput(item); else inactiveCheckInput(item);
+                    if (item.previousElementSibling.lastElementChild.hasAttribute("disabled")) activeCheckInput(item); else {
+                        inactiveCheckInput(item);
+                        writeNewDataToPostVacancyObject(item);
+                    }
                 }));
             };
             const activeCheckInput = button => {
@@ -1659,6 +1662,45 @@
                 button.lastElementChild.classList.toggle("_hidden-icon");
                 button.firstElementChild.classList.toggle("_hidden-icon");
             };
+            const writeNewDataToPostVacancyObject = button => {
+                let inputElement = button.previousElementSibling.lastElementChild;
+                let currentObjectKey = button.previousElementSibling.dataset.key;
+                if (currentObjectKey[0] === "q" && currentObjectKey.length === 2) {
+                    let objectElement = postVacancyObject[currentObjectKey];
+                    let currentQuestion = Object.keys(objectElement)[0];
+                    objectElement[currentQuestion] = inputElement.value;
+                } else postVacancyObject[currentObjectKey] = inputElement.value;
+            };
+            const sendObjectDataToServer = () => {
+                const checkRequestVacancyButton = document.querySelector(".check-request-vacancy-page__request-button");
+                checkRequestVacancyButton.addEventListener("click", (() => {
+                    fetchPostData(postVacancyObject, currentVacancyID);
+                }));
+            };
+            sendObjectDataToServer();
+            const addCVObjectToMainObject = cvObject => {
+                cvObject.cv = {};
+                return cvObject;
+            };
+            function fetchPostData(objectData, vacancyID) {
+                const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`;
+                const data = addCVObjectToMainObject(objectData);
+                const requestOptions = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                };
+                fetch(apiPostDataURL, requestOptions).then((response => {
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                    return response.json();
+                })).then((data => {
+                    console.log("Отримано дані від сервера:", data);
+                })).catch((error => {
+                    console.error("Помилка під час виконання POST-запиту:", error);
+                }));
+            }
         }));
         __webpack_require__(69);
         document.addEventListener("DOMContentLoaded", (() => {}));

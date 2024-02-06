@@ -65,16 +65,16 @@
 
 .save-icon {
 	filter: invert(47%) sepia(23%) saturate(5429%) hue-rotate(84deg) brightness(102%) contrast(102%);
-	&:hover {
-		filter: invert(74%) sepia(98%) saturate(498%) hue-rotate(359deg) brightness(102%) contrast(103%);
-	}
+	// &:hover {
+	// 	filter: invert(74%) sepia(98%) saturate(498%) hue-rotate(359deg) brightness(102%) contrast(103%);
+	// }
 }
 
 .edit-icon {
 	filter: invert(84%) sepia(1%) saturate(0%) hue-rotate(70deg) brightness(90%) contrast(92%);
-	&:hover {
-		filter: invert(74%) sepia(98%) saturate(498%) hue-rotate(359deg) brightness(102%) contrast(103%);
-	}
+	// &:hover {
+	// 	filter: invert(74%) sepia(98%) saturate(498%) hue-rotate(359deg) brightness(102%) contrast(103%);
+	// }
 }
 
 .check-textarea {
