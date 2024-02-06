@@ -2062,10 +2062,6 @@ section {
   }
 }
 
-.page-chat-height {
-  height: 100dvh;
-}
-
 .check-request-vacancy-page__container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2174,6 +2170,44 @@ section {
 
 .active-input-container-border {
   border: 1px solid greenyellow;
+}
+
+.main-message-template-style {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 221, 0, 0.8);
+  z-index: 1000;
+}
+
+.main-message-template-style__wrapper {
+  max-width: 18.75rem;
+  background-color: #FFFFFF;
+  padding: 0.9375rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.625rem;
+  border-radius: 1.25rem;
+}
+
+.main-message-template-style__message {
+  font-size: 1rem;
+  line-height: 110%;
+  text-align: center;
+}
+
+.main-message-template-style__home-button {
+  width: 100%;
 }
 
 @media (min-width: 47.99875em) {

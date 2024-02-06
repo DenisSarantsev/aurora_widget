@@ -266,13 +266,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 	// ------------------------------------------------------------------------------------------------------------ Работа с чатом
-	document.addEventListener("click", () => {
-		if ( currentTemplateID === "post-request-vacancy-page" ) {
-			document.querySelector(".page").classList.add("page-chat-height");
-		} else {
-			document.querySelector(".page").classList.remove("page-chat-height");
-		}
-	})
+	
+	// document.addEventListener("click", () => {
+	// 	if ( currentTemplateID === "post-request-vacancy-page" ) {
+	// 		document.querySelector(".page").classList.add("page-chat-height");
+	// 	} else {
+	// 		document.querySelector(".page").classList.remove("page-chat-height");
+	// 	}
+	// })
 
 	// При переходе на страницу с чатом обнуляем все переменные
 	// Переменные для отправки на бэк
