@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	let currentTemplateID = "home-page"; // Изначальное значение домашняя страница. Впоследствии перезаписывается при переходах между страницами
 	let firstEnter = true;
 	let currentVacancyID = ""; // Актуальный id вакансии (последняя вакансия, на которую зашел человек). Записывается при клике на кнопку вакансии и используется для отправки POST запроса
+	let currentVacancyTitle = "";
 	let globalVacancies; // Глобальная переменная для всех вакансий
 	let currentVacancyKind; // Глобальная переменная, в которую записываем вид вакансии при клике на него
 
@@ -136,18 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	includeCurrentTemplate(currentTemplateID);
 
-	// Вызов API USER
-	const apiUserUrl = `${actualHost}/user/${data.telegram_id}/${data.password}`;
-	// Выполняем GET-запрос к API
-	fetch(apiUserUrl)
-	.then(response => {
-		if (!response.ok) { throw new Error(`Ошибка HTTP: ${response.status}`); }
-		return response.json();
-	})
-	.then(data => {
-	})
-	.catch(error => { console.error('Ошибка при выполнении запроса:', error); });
-
 	// Вызов API VACANCIES
 	let officeVacancies = []; // Масив з офісними вакансіями
 	let shopVacancies = []; // Масив з вакансіями для магазинів
@@ -232,6 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				// Запускаем функцию включения нужного шаблона по id из кнопки ( предварительно очищаем id от префикса при помощи функции removeDigitsAndUnderscore() )
 				includeCurrentTemplate(removeDigitsAndUnderscore(item.id));
 				currentVacancyID = item.getAttribute(`data-vacancy-id`);
+				currentVacancyTitle = item.lastElementChild.textContent;
 				// Очищаем шаблон вакансии от предыдущего контента
 				document.querySelector(".vacancy-page__title").innerHTML = "";
 				document.querySelector(".vacancy-page__content").innerHTML = "";
@@ -637,9 +627,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			addFinalMessageAfterAnswers(finalMessage)
 			scrollChatToBottom()
 			hiddenTextInput();
-		} else {
-			console.log("Последний ключ есть, но у него нет значения.");
-		}
+		} else {}
 	}
 
 	// Функционал вывода финального сообщения после ответа на все вопросы
@@ -759,36 +747,92 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
+	// Получаем заголовок текущей вакансии
+	const findCurrentVacancyTitle = () => {
+
+	}
+
 	// Получаем объект и выводим данные на странице в инпутах
 	const addInputFieldsToCheckPage = () => {
 		const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
+		checkPageMainContainer.insertAdjacentHTML("beforeend", `
+					<div class="check-request-vacancy-page__check-item">
+						<div class="check-request-vacancy-page__question-input-container">
+							<div class="check-request-vacancy-page__check-question">Назва вакансії:</div>
+							<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>
+						</div>
+					</div>
+				`)
 		for ( let i = 0; i < Object.keys(postVacancyObject).length-1; i++ ) {
 			if ( i < fixedQuestionsCounter ) {
 				checkPageMainContainer.insertAdjacentHTML("beforeend", `
 					<div class="check-request-vacancy-page__check-item">
-						<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>
-						<input value="${postVacancyObject[Object.keys(postVacancyObject)[i+1]]}" type="text" class="check-request-vacancy-page__check-input">
+						<div class="check-request-vacancy-page__question-input-container inactive-input-container-border">
+							<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>
+							<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i+1]]}" type="text" class="check-request-vacancy-page__check-input">
+						</div>
 						<button class="check-request-vacancy-page__edit-button">
-							<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image">
+							<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
+							<img src="../../img/icons/save.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
 						</button>
 					</div>
 				`)
 			} else {
 				let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i+1]];
-				console.log(postVacancyObject)
 				let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
 				checkPageMainContainer.insertAdjacentHTML("beforeend", `
 					<div class="check-request-vacancy-page__check-item">
-						<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>
-						<input value="${objectElementAnswer}" type="text" class="check-request-vacancy-page__check-input">
+						<div class="check-request-vacancy-page__question-input-container inactive-input-container-border">
+							<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>
+							<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>
+						</div>
 						<button class="check-request-vacancy-page__edit-button">
-							<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image">
+							<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
+							<img src="../../img/icons/save.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
 						</button>
 					</div>
 				`)
 			}
-			
 		}
+		addListenerOnEditButtons();
+	}
+
+	// Вешаем событие клика на все кнопки "редактировать" для каждого инпута
+	const addListenerOnEditButtons = () => {
+		const allEditButtons = document.querySelectorAll(".check-request-vacancy-page__edit-button");
+		for ( let item of allEditButtons ) {
+			item.addEventListener("click", () => {
+				changeButtonImage(item);
+				if ( item.previousElementSibling.lastElementChild.hasAttribute("disabled") ) {
+					activeCheckInput(item);
+				} else {
+					inactiveCheckInput(item);
+				}
+			})
+		}
+	}
+
+	// Разблокируем текущий инпут для редактирования при клике на кнопку редактирования
+	const activeCheckInput = (button) => {
+		let inputContainer = button.previousElementSibling;
+		inputContainer.lastElementChild.disabled = false;
+		inputContainer.lastElementChild.focus();
+		inputContainer.parentElement.classList.remove("inactive-input-container-border");
+		inputContainer.parentElement.classList.add("active-input-container-border");
+	}
+	// Блокируем текущий инпут для редактирования при клике на дискету
+	const inactiveCheckInput = (button) => {
+		let inputContainer = button.previousElementSibling;
+		inputContainer.lastElementChild.disabled = true;
+		inputContainer.lastElementChild.blur();
+		inputContainer.parentElement.classList.remove("active-input-container-border");
+		inputContainer.parentElement.classList.add("inactive-input-container-border");
+	}
+
+	// Заменяем картинку на кнопке на дискету
+	const changeButtonImage = (button) => {
+		button.lastElementChild.classList.toggle("_hidden-icon");
+		button.firstElementChild.classList.toggle("_hidden-icon");
 	}
 
 	// Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)

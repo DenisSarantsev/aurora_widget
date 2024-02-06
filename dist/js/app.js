@@ -1163,6 +1163,7 @@
             let currentTemplateID = "home-page";
             let firstEnter = true;
             let currentVacancyID = "";
+            let currentVacancyTitle = "";
             let globalVacancies;
             const homePageTitleElement = document.querySelector(".home-page__title");
             const homePageTitleText = `Привіт, ${currentUserName}! `;
@@ -1239,13 +1240,6 @@
                 }), 290);
             };
             includeCurrentTemplate(currentTemplateID);
-            const apiUserUrl = `${actualHost}/user/${data.telegram_id}/${data.password}`;
-            fetch(apiUserUrl).then((response => {
-                if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
-                return response.json();
-            })).then((data => {})).catch((error => {
-                console.error("Ошибка при выполнении запроса:", error);
-            }));
             let officeVacancies = [];
             let shopVacancies = [];
             let stockVacancies = [];
@@ -1276,6 +1270,7 @@
                     }
                     includeCurrentTemplate(removeDigitsAndUnderscore(item.id));
                     currentVacancyID = item.getAttribute(`data-vacancy-id`);
+                    currentVacancyTitle = item.lastElementChild.textContent;
                     document.querySelector(".vacancy-page__title").innerHTML = "";
                     document.querySelector(".vacancy-page__content").innerHTML = "";
                     document.querySelector(".vacancy-page__title").insertAdjacentHTML("afterbegin", `${vacancyTitle}`);
@@ -1563,7 +1558,7 @@
                     addFinalMessageAfterAnswers(finalMessage);
                     scrollChatToBottom();
                     hiddenTextInput();
-                } else console.log("Последний ключ есть, но у него нет значения.");
+                }
             };
             const addFinalMessageAfterAnswers = message => {
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
@@ -1631,12 +1626,38 @@
             };
             const addInputFieldsToCheckPage = () => {
                 const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
-                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`); else {
+                checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">Назва вакансії:</div>\n\t\t\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t`);
+                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t\t<img src="../../img/icons/save.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`); else {
                     let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i + 1]];
-                    console.log(postVacancyObject);
                     let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
-                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input value="${objectElementAnswer}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`);
+                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t\t<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t\t<img src="../../img/icons/save.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`);
                 }
+                addListenerOnEditButtons();
+            };
+            const addListenerOnEditButtons = () => {
+                const allEditButtons = document.querySelectorAll(".check-request-vacancy-page__edit-button");
+                for (let item of allEditButtons) item.addEventListener("click", (() => {
+                    changeButtonImage(item);
+                    if (item.previousElementSibling.lastElementChild.hasAttribute("disabled")) activeCheckInput(item); else inactiveCheckInput(item);
+                }));
+            };
+            const activeCheckInput = button => {
+                let inputContainer = button.previousElementSibling;
+                inputContainer.lastElementChild.disabled = false;
+                inputContainer.lastElementChild.focus();
+                inputContainer.parentElement.classList.remove("inactive-input-container-border");
+                inputContainer.parentElement.classList.add("active-input-container-border");
+            };
+            const inactiveCheckInput = button => {
+                let inputContainer = button.previousElementSibling;
+                inputContainer.lastElementChild.disabled = true;
+                inputContainer.lastElementChild.blur();
+                inputContainer.parentElement.classList.remove("active-input-container-border");
+                inputContainer.parentElement.classList.add("inactive-input-container-border");
+            };
+            const changeButtonImage = button => {
+                button.lastElementChild.classList.toggle("_hidden-icon");
+                button.firstElementChild.classList.toggle("_hidden-icon");
             };
         }));
         __webpack_require__(69);
