@@ -159,6 +159,7 @@ h6 {
 
 body {
   background-color: #f8f9f9;
+  overflow: scroll;
 }
 
 section {
@@ -186,7 +187,7 @@ section {
 
 .wrapper {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
 }
@@ -542,6 +543,10 @@ section {
     -webkit-transform: translate(0, 0);
             transform: translate(0, 0);
   }
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 
 .page {

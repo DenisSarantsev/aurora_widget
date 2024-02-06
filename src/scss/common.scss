@@ -1,6 +1,7 @@
 // Заголовки, загальні БЕМ блоки та інше...
 body {
 	background-color: $backGroundColor;
+	overflow: scroll;
 }
 
 section {
@@ -24,7 +25,7 @@ section {
 
 .wrapper {
 	height: 100%;
-	overflow-y: scroll;
+	overflow-y: auto; //// изменено
 	scrollbar-width: thin;
   scrollbar-color: transparent transparent;
 	&::-webkit-scrollbar {
@@ -231,7 +232,9 @@ section {
 
 
 
-
+.overflow-y-scroll {
+	overflow-y: scroll;
+}
 
 .page {
 	// position: relative;
