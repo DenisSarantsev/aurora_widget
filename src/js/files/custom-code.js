@@ -774,8 +774,8 @@ document.addEventListener("DOMContentLoaded", () => {
 							<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i+1]]}" type="text" class="check-request-vacancy-page__check-input">
 						</div>
 						<button class="check-request-vacancy-page__edit-button">
-							<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
-							<img src="../../img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
+							<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
+							<img src="../../src/img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
 						</button>
 					</div>
 				`)
@@ -789,8 +789,8 @@ document.addEventListener("DOMContentLoaded", () => {
 							<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>
 						</div>
 						<button class="check-request-vacancy-page__edit-button">
-							<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
-							<img src="../../img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
+							<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
+							<img src="../../src/img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
 						</button>
 					</div>
 				`)
