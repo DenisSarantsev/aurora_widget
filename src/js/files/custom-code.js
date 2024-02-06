@@ -67,12 +67,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Прокрутка страницы в самый верх
 	function scrollToTop() {
-		document.querySelector(".page").classList.add("overflow-y-scroll");
-		window.scrollTo({
-			top: 0,
-			behavior: 'smooth' // Плавная анимация (поддерживается не всеми браузерами)
-		});
-		document.querySelector(".page").classList.remove("overflow-y-scroll");
+		function delayedFunction() {
+			document.querySelector(".page").classList.add("overflow-y-scroll");
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth' // Плавная анимация (поддерживается не всеми браузерами)
+			});
+			document.querySelector(".page").classList.remove("overflow-y-scroll");
+		}
+		setTimeout(delayedFunction, 300);
 	}
 
 	// Добавляем полупрозрачный белый фон на блок page при открытии шаблона chat\

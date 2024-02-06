@@ -1195,12 +1195,15 @@
                 currentTemplateID = "home-page";
             }));
             function scrollToTop() {
-                document.querySelector(".page").classList.add("overflow-y-scroll");
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-                document.querySelector(".page").classList.remove("overflow-y-scroll");
+                function delayedFunction() {
+                    document.querySelector(".page").classList.add("overflow-y-scroll");
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+                    document.querySelector(".page").classList.remove("overflow-y-scroll");
+                }
+                setTimeout(delayedFunction, 300);
             }
             const mainPageContainer = document.querySelector(".page");
             function addWhiteBackground(button) {
