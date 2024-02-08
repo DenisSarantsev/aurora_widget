@@ -1734,6 +1734,17 @@
             })).catch((error => {
                 console.error("Fetch error:", error);
             }));
+            document.querySelector(".cabinet-page__delete-button").addEventListener("click", (() => {
+                fetch(`${actualHost}/del_order/${currentTelegramID}/${currentPassword}`).then((response => {
+                    if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
+                    return response.json();
+                })).then((data => {
+                    console.log(data);
+                    console.log("Данные удалены");
+                })).catch((error => {
+                    console.error("Fetch error:", error);
+                }));
+            }));
         }));
         __webpack_require__(69);
         document.addEventListener("DOMContentLoaded", (() => {}));

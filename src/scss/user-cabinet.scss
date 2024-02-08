@@ -1,4 +1,53 @@
 
 ._hidden-cabinet-button {
-	
+
+}
+
+.cabinet-page {
+		&__container {
+			height: 100%;
+			padding: toRem(15);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+			gap: toRem(15);
+		}
+		&__title {
+		}
+		&__wrapper {
+			height: 100%;
+			background-color: rgba($color: #FFFFFF, $alpha: 0.95);
+			border-radius: toRem(20);
+			padding: toRem(15);
+		}
+		&__status {
+		}
+		&__buttons-container {
+			display: flex;
+			gap: toRem(10);
+			width: 100%;
+			&>* {
+				width: 100%;
+				background-color: rgba(230, 230, 230, 0.95);
+				&>* {
+					display: flex;
+					align-items: center;
+					gap: toRem(10);
+					& img {
+						max-width: toRem(20);
+					}
+				}
+			}
+		}
+		&__delete-button {
+			&>* {
+				& img {
+					max-width: toRem(17);
+					filter: invert(11%) sepia(79%) saturate(6803%) hue-rotate(359deg) brightness(107%) contrast(107%);
+				}
+			}
+		}
+		&__edit-button {
+		}
 }

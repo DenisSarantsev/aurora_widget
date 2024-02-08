@@ -942,15 +942,44 @@ fetch(`${actualHost}/cabinet/${currentTelegramID}/${currentPassword}`)
 		return response.json();
 	})
 	.then(data => {
-		// Обрабатываем полученные данные
 		console.log(data);
 	})
 	.catch(error => {
 		// Обрабатываем ошибки
 		console.error('Fetch error:', error);
 	});
+
+// Запись данных клиента на страницу кабинета
+const writeDataToCabinet = () => {
 	
-	
+}
+
+
+document.querySelector(".cabinet-page__delete-button").addEventListener("click", () => {
+	fetch(`${actualHost}/del_order/${currentTelegramID}/${currentPassword}`)
+	.then(response => {
+		// Проверяем успешность ответа
+		if (!response.ok) {
+			throw new Error(`Network response was not ok: ${response.status}`);
+		}
+		
+		// Преобразуем ответ в JSON
+		return response.json();
+	})
+	.then(data => {
+		console.log(data);
+		console.log("Данные удалены")
+	})
+	.catch(error => {
+		// Обрабатываем ошибки
+		console.error('Fetch error:', error);
+	});
+})
+
+
+// Вывод сообщения об удаленной заявке
+
+
 
 
 

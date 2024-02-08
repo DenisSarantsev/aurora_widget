@@ -6,9 +6,9 @@
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
 	<!-- <style>body{opacity: 0;}</style> -->
-	<link rel="stylesheet" href="css/style.min.css?_v=20240208224530">
+	<link rel="stylesheet" href="css/style.min.css?_v=20240209010517">
 	<link rel="shortcut icon" href="favicon.ico">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css?_v=20240208224530">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css?_v=20240209010517">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -206,7 +206,7 @@
 					</h3>
 					<div class="check-request-vacancy-page__items-container">
 					</div>
-					<button class="route-button check-request-vacancy-page__request-button route-button-main-style button-effect">
+					<button class="check-request-vacancy-page__request-button route-button-main-style button-effect">
 						<div id="circle"></div>
 						<div>Надіслати заявку</div>
 					</button>
@@ -228,29 +228,34 @@
 
 			<section id="cabinet-page" class="page-template page__cabinet-page cabinet-page _hidden-template">
 				<div class="cabinet-page__container">
-					<h2 class="cabinet-page__title">
-
+					<h2 class="cabinet-page__title title-main-style">
+						Ваша поточна заявка:
 					</h2>
 					<div class="cabinet-page__wrapper">
-
+						<div class="cabinet-page__status"></div>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio vero quod aliquid excepturi dolorum nemo laboriosam aliquam veritatis? Accusantium velit voluptatum, exercitationem laborum magni a repellat quisquam vel obcaecati ducimus!
 					</div>
 					<div class="cabinet-page__buttons-container">
-						<button class="route-button cabinet-page__delete-button route-button-main-style button-effect">
+						<button class="cabinet-page__delete-button route-button-main-style button-effect">
 							<div id="circle"></div>
-							<div>Видалити</div>
+							<div>Видалити
+								<img src="img/icons/cross.png" alt="edit icon">
+							</div>
 						</button>
-						<button class="route-button cabinet-page__edit-button route-button-main-style button-effect">
+						<button class="cabinet-page__edit-button route-button-main-style button-effect">
 							<div id="circle"></div>
-							<div>Редагувати</div>
+							<div>Редагувати
+								<img src="img/icons/edit.png" alt="cross icon">
+							</div>
 						</button>
 					</div>
 				</div>
 			</section>
 
 		</main>
-		<script src="https://cdn.jsdelivr.net/npm/@barba/core?_v=20240208224530"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js?_v=20240208224530"></script>
-		<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js?_v=20240208224530"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@barba/core?_v=20240209010517"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js?_v=20240209010517"></script>
+		<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js?_v=20240209010517"></script>
 		<script>
 			const input = document.querySelector("#phone");
 			window.intlTelInput(input, {
@@ -271,7 +276,7 @@
 			</div>
 		</footer>
 	</div>
-	<script src="js/app.min.js?_v=20240208224530"></script>
+	<script src="js/app.min.js?_v=20240209010517"></script>
 </body>
 
 </html>
