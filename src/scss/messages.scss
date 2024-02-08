@@ -5,7 +5,6 @@
 	left: 0;
 	height: 100%;
 	width: 100%;
-	background-color: rgba(255, 221, 0, 0.8);
 	z-index: 1000;
 		&__container {
 
@@ -30,3 +29,40 @@
 		}
 }
 
+.yellow-bg-color-animation {
+	animation: messageBgAnimation 1s ease;
+}
+
+@keyframes messageBgAnimation {
+  0% {
+    background-color: rgba(255, 221, 0, 0);
+  }
+  100% {
+    background-color: rgba(255, 221, 0, 0.8);
+  }
+}
+
+.bg-yellow-color {
+	background-color: rgba(255, 221, 0, 0.8);
+}
+
+.position-message-animation {
+	animation: messagePositionAnimation 1s ease;
+}
+
+@keyframes messagePositionAnimation {
+  0% {
+    margin-top: 200vh;
+  }
+  100% {
+    margin-top: 0vh;
+  }
+}
+
+.margin-top {
+	margin-top: 200vh;
+}
+
+.hidden-message {
+	display: none;
+}

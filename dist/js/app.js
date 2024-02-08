@@ -1165,6 +1165,8 @@
             let currentVacancyID = "";
             let currentVacancyTitle = "";
             let globalVacancies;
+            const successfullMessage = "Ваша заявка успішно надіслана. Ми зв'яжемося з вами, як тільки наші спеціалісти її розглянуть. Перевірити статус заявки, відредагувати або видалити її ви можете у вашому профілі";
+            const errorMessage = "Нажаль сталась помилка під час відправки заявки. Спробуйте ще раз, або зв'яжіться з нами по телефону";
             const homePageTitleElement = document.querySelector(".home-page__title");
             const homePageTitleText = `Привіт, ${currentUserName}! `;
             homePageTitleElement.insertAdjacentText("afterbegin", `${homePageTitleText}`);
@@ -1261,9 +1263,9 @@
                     let currentVacancy = globalVacancies.vacancies[i];
                     if (currentVacancy.kind === "офіс") officeVacancies.push(currentVacancy); else if (currentVacancy.kind === "магазин") shopVacancies.push(currentVacancy); else if (currentVacancy.kind === "склад") stockVacancies.push(currentVacancy);
                 }
-                for (let i = 0; i < officeVacancies.length; i++) officeVacanciesElement.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<button id="${i}0_vacancy-page" data-vacancy-id="${officeVacancies[i]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>${officeVacancies[i].title}</div>\n\t\t\t\t\t</button>\n\t\t\t\t`);
-                for (let i = 0; i < shopVacancies.length; i++) shopVacanciesElement.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<button id="${i}1_vacancy-page" data-vacancy-id="${shopVacancies[i]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>${shopVacancies[i].title}</div>\n\t\t\t\t\t</button>\n\t\t\t\t`);
-                for (let i = 0; i < stockVacancies.length; i++) stockVacanciesElement.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<button id="${i}2_vacancy-page" data-vacancy-id="${stockVacancies[i]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>${stockVacancies[i].title}</div>\n\t\t\t\t\t</button>\n\t\t\t\t`);
+                for (let i = 0; i < officeVacancies.length; i++) officeVacanciesElement.insertAdjacentHTML("beforeend", `\n\t\t\t\t<button id="${i}0_vacancy-page" data-vacancy-id="${officeVacancies[i]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>${officeVacancies[i].title}</div>\n\t\t\t\t</button>\n\t\t\t`);
+                for (let i = 0; i < shopVacancies.length; i++) shopVacanciesElement.insertAdjacentHTML("beforeend", `\n\t\t\t\t<button id="${i}1_vacancy-page" data-vacancy-id="${shopVacancies[i]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>${shopVacancies[i].title}</div>\n\t\t\t\t</button>\n\t\t\t`);
+                for (let i = 0; i < stockVacancies.length; i++) stockVacanciesElement.insertAdjacentHTML("beforeend", `\n\t\t\t\t<button id="${i}2_vacancy-page" data-vacancy-id="${stockVacancies[i]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>${stockVacancies[i].title}</div>\n\t\t\t\t</button>\n\t\t\t`);
                 const allJobItemsButtons = document.querySelectorAll(".jobs-list__item");
                 for (let item of allJobItemsButtons) item.addEventListener("click", (function() {
                     scrollToTop();
@@ -1283,14 +1285,6 @@
                 }));
             })).catch((error => {
                 console.error("Ошибка при выполнении запроса:", error);
-            }));
-            fetch(`${actualHost}/cabinet/${currentTelegramID}/${data.password}`).then((response => {
-                if (!response.ok) throw new Error("Network response was not ok");
-                return response.json();
-            })).then((data => {
-                console.log(data);
-            })).catch((error => {
-                console.error("Fetch error:", error);
             }));
             const headerUserName = document.querySelector(".header__user-name-text");
             headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
@@ -1435,7 +1429,7 @@
                     new Promise((function(resolve, reject) {
                         function showButtons() {
                             const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-                            chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="change-number-container phone-buttons-show-animations">\n\t\t\t\t\t\t<button class="route-button route-button-main-style button-effect actual-number-button">\n\t\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t\t<div>Так, ${dataPhone} - це актуальный номер</div>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t<button class="route-button route-button-main-style button-effect no-actual-number-button">\n\t\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t\t<div>Ні, хочу вказати інший номер</div>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t\t`);
+                            chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="change-number-container phone-buttons-show-animations">\n\t\t\t\t\t<button class="route-button route-button-main-style button-effect actual-number-button">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Так, ${dataPhone} - це актуальный номер</div>\n\t\t\t\t\t</button>\n\t\t\t\t\t<button class="route-button route-button-main-style button-effect no-actual-number-button">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Ні, хочу вказати інший номер</div>\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t\t`);
                             const actualNumberButton = document.querySelector(".actual-number-button");
                             const noActualNumberButton = document.querySelector(".no-actual-number-button");
                             const numberButtonsArray = [ actualNumberButton, noActualNumberButton ];
@@ -1565,7 +1559,7 @@
             const addFinalMessageAfterAnswers = message => {
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
                 function delayedFunction() {
-                    chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="post-request-vacancy-page__message-element final-message__container input-hidden">\n\t\t\t\t<div class="main-message-style final-message">${message}</div>\n\t\t\t\t<button id="001_check-request-vacancy-page" class="route-button final-message__button route-button-main-style button-effect">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Продовжити</div>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t`);
+                    chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element final-message__container input-hidden">\n\t\t\t<div class="main-message-style final-message">${message}</div>\n\t\t\t<button id="001_check-request-vacancy-page" class="route-button final-message__button route-button-main-style button-effect">\n\t\t\t\t<div id="circle"></div>\n\t\t\t\t<div>Продовжити</div>\n\t\t\t</button>\n\t\t</div>\n\t\t`);
                     changeMessageContainerPadding();
                     showFinalBlock();
                     addListenerToAllRouteButtons();
@@ -1598,12 +1592,12 @@
             }
             function addUserMessageToChat(userMessage) {
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="post-request-vacancy-page__message-element user-message__container">\n\t\t\t\t<div class="main-message-style user-message">${userMessage}</div>\n\t\t\t</div>\n\t\t`);
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element user-message__container">\n\t\t\t<div class="main-message-style user-message">${userMessage}</div>\n\t\t</div>\n\t`);
             }
             function addMessageToChat(question) {
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
                 function delayedFunction() {
-                    chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">\n\t\t\t\t<div class="main-message-style app-message">${question}</div>\n\t\t\t</div>\n\t\t`);
+                    chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">\n\t\t\t<div class="main-message-style app-message">${question}</div>\n\t\t</div>\n\t`);
                 }
                 setTimeout(delayedFunction, 1);
                 function onInput() {
@@ -1628,11 +1622,11 @@
             };
             const addInputFieldsToCheckPage = () => {
                 const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
-                checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">Назва вакансії:</div>\n\t\t\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t`);
-                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t\t<img src="../../src/img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`); else {
+                checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">Назва вакансії:</div>\n\t\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t`);
+                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t<img src="../../src/img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`); else {
                     let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i + 1]];
                     let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
-                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t\t<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t\t<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t\t<img src="../../src/img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t`);
+                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t<img src="../../src/img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`);
                 }
                 addListenerOnEditButtons();
             };
@@ -1699,10 +1693,47 @@
                     return response.json();
                 })).then((data => {
                     console.log("Отримано дані від сервера:", data);
+                    showMainMessage(successfullMessage);
                 })).catch((error => {
                     console.error("Помилка під час виконання POST-запиту:", error);
+                    showMainMessage(errorMessage);
                 }));
             }
+            const showMainMessage = messageText => {
+                let message = document.querySelector(".main-message-template-style");
+                message.classList.remove("_hidden-template");
+                document.querySelector(".main-message-template-style__message").innerHTML = `${messageText}`;
+                showMessageAnimation();
+                reloadPageAfterClickHomeButton();
+            };
+            const showMessageAnimation = () => {
+                console.log("ok");
+                document.querySelector(".main-message-template-style__wrapper").classList.add("position-message-animation");
+                document.querySelector(".main-message-template-style__wrapper").classList.remove("hidden-message");
+                let message = document.querySelector(".main-message-template-style");
+                message.classList.add("yellow-bg-color-animation");
+                function delay() {
+                    message.classList.add("bg-yellow-color");
+                    document.querySelector(".main-message-template-style__wrapper").classList.remove("margin-top");
+                }
+                setTimeout(delay, 990);
+            };
+            const reloadPageAfterClickHomeButton = () => {
+                console.log("click");
+                document.querySelector(".main-message-template-style__home-button").addEventListener("click", (() => {
+                    window.location.reload();
+                    let message = document.querySelector(".main-message-template-style");
+                    message.classList.add("_hidden-template");
+                }));
+            };
+            fetch(`${actualHost}/cabinet/${currentTelegramID}/${currentPassword}`).then((response => {
+                if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
+                return response.json();
+            })).then((data => {
+                console.log(data);
+            })).catch((error => {
+                console.error("Fetch error:", error);
+            }));
         }));
         __webpack_require__(69);
         document.addEventListener("DOMContentLoaded", (() => {}));

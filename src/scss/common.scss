@@ -1,7 +1,6 @@
 // Заголовки, загальні БЕМ блоки та інше...
 body {
 	background-color: $backGroundColor;
-
 }
 
 section {
@@ -9,6 +8,14 @@ section {
 	height: 100%;
 	display: flex;
 	align-items: center;
+	scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+	&::-webkit-scrollbar {
+		width: 0px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: transparent;
+	}
 }
 
 ._hidden {
@@ -25,14 +32,16 @@ section {
 
 .wrapper {
 	height: 100%;
-	overflow-y: auto; //// изменено
-	scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
+	overflow-y: auto;
+
+	/* Для WebKit-браузеров (Chrome, Safari) */
 	&::-webkit-scrollbar {
-		width: 0px;
+		width: 0px; /* Ширина полосы прокрутки */
 	}
+
 	&::-webkit-scrollbar-thumb {
-		background-color: transparent;
+		background-color: transparent; /* Прозрачный цвет полосы прокрутки */
+		border: none; /* Убираем границу полосы прокрутки */
 	}
 }
 
@@ -45,126 +54,97 @@ section {
 	width: 100%;
 	overflow: hidden;
 	z-index: -1;
+	&>* {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: $mainYellow;
+		z-index: -1;
+		position: absolute;
+		border-radius: 50%;
+		&>* {
+			width: 80%;
+			height: 80%;
+			border-radius: 50%;
+			background-color: $backGroundColor;
+		}
+	}
 }
 .bg-one-circle-element {
-	z-index: -1;
-	position: absolute;
 	top: 10vh;
 	left: 5vw;
-	background-color: $backgoundYellowCircle;
 	width: 4vh;
 	height: 4vh;
-	border-radius: 50%;
 	animation: moveAround 25s infinite;
 }
 .bg-two-circle-element {
-	z-index: -1;
-	position: absolute;
 	top: 75vh;
 	left: 79vw;
-	background-color: $backgoundYellowCircle;
 	width: 11vh;
 	height: 11vh;
-	border-radius: 50%;
 	animation: moveAroundTwo 40s infinite;
 }
 .bg-three-circle-element {
-	z-index: -1;
-	position: absolute;
 	top: 60vh;
 	right: 40vw;
-	background-color: $backgoundYellowCircle;
 	width: 5vh;
 	height: 5vh;
-	border-radius: 50%;
 	animation: moveAroundTwo 35s infinite;
 }
 .bg-four-circle-element {
-	z-index: -1;
-	position: absolute;
 	top: 20vh;
 	right: 20vw;
-	background-color: $backgoundYellowCircle;
 	width: 9vh;
 	height: 9vh;
-	border-radius: 50%;
 	animation: moveAroundThree 20s infinite;
 }
 .bg-five-circle-element {
-	z-index: -1;
-	position: absolute;
 	top: 80vh;
 	left: 20vw;
-	background-color: $backgoundYellowCircle;
 	width: 16vh;
 	height: 16vh;
-	border-radius: 50%;
 	animation: moveAround 15s infinite;
 }
 .bg-six-circle-element {
-	z-index: -1;
-	position: absolute;
 	top: 5vh;
 	right: 28vh;
-	background-color: $backgoundYellowCircle;
 	width: 12vh;
 	height: 12vh;
-	border-radius: 50%;
 	animation: moveAroundTwo 10s infinite;
 }
 .bg-seven-circle-element {
-	z-index: -1;
-	position: absolute;
 	top: 11vh;
 	right: 8vh;
-	background-color: $backgoundYellowCircle;
 	width: 3vh;
 	height: 3vh;
-	border-radius: 50%;
 	animation: moveAround 20s infinite;
 }
 .bg-eight-circle-element {
-	z-index: -1;
-	position: absolute;
 	top: -3vh;
 	left: 11vh;
-	background-color: $backgoundYellowCircle;
 	width: 6vh;
 	height: 6vh;
-	border-radius: 50%;
 	animation: moveAroundThree 23s infinite;
 }
 .bg-nine-circle-element {
-	z-index: -1;
-	position: absolute;
 	top: 27vh;
 	left: -8vh;
-	background-color: $backgoundYellowCircle;
 	width: 11vh;
 	height: 11vh;
-	border-radius: 50%;
 	animation: moveAround 35s infinite;
 }
 .bg-ten-circle-element {
-	z-index: -1;
-	position: absolute;
 	top: 40vh;
 	right: 14vh;
-	background-color: $backgoundYellowCircle;
 	width: 7vh;
 	height: 7vh;
-	border-radius: 50%;
 	animation: moveAroundThree 43s infinite;
 }
 .bg-eleven-circle-element {
-	z-index: -1;
-	position: absolute;
 	top: 65vh;
 	left: 1vh;
-	background-color: $backgoundYellowCircle;
 	width: 9vh;
 	height: 9vh;
-	border-radius: 50%;
 	animation: moveAround 25s infinite;
 }
 
@@ -244,7 +224,6 @@ section {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-
 }
 
 .white-background {
@@ -268,14 +247,6 @@ section {
 	gap: toRem(10);
 	overflow: scroll;
 	z-index: 3;
-	scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-	&::-webkit-scrollbar {
-		width: 0px;
-	}
-	&::-webkit-scrollbar-thumb {
-		background-color: transparent;
-	}
 }
 
 .content-width-limiter {

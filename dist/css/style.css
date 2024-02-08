@@ -170,6 +170,16 @@ section {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+section::-webkit-scrollbar {
+  width: 0px;
+}
+
+section::-webkit-scrollbar-thumb {
+  background-color: transparent;
 }
 
 ._hidden {
@@ -187,16 +197,19 @@ section {
 .wrapper {
   height: 100%;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
+  /* Для WebKit-браузеров (Chrome, Safari) */
 }
 
 .wrapper::-webkit-scrollbar {
   width: 0px;
+  /* Ширина полосы прокрутки */
 }
 
 .wrapper::-webkit-scrollbar-thumb {
   background-color: transparent;
+  /* Прозрачный цвет полосы прокрутки */
+  border: none;
+  /* Убираем границу полосы прокрутки */
 }
 
 .bg-circles-container {
@@ -209,145 +222,124 @@ section {
   z-index: -1;
 }
 
-.bg-one-circle-element {
+.bg-circles-container > * {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: rgb(255, 221, 0);
   z-index: -1;
   position: absolute;
+  border-radius: 50%;
+}
+
+.bg-circles-container > * > * {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  background-color: #f8f9f9;
+}
+
+.bg-one-circle-element {
   top: 10vh;
   left: 5vw;
-  background-color: rgba(255, 221, 0, 0.2);
   width: 4vh;
   height: 4vh;
-  border-radius: 50%;
   -webkit-animation: moveAround 25s infinite;
           animation: moveAround 25s infinite;
 }
 
 .bg-two-circle-element {
-  z-index: -1;
-  position: absolute;
   top: 75vh;
   left: 79vw;
-  background-color: rgba(255, 221, 0, 0.2);
   width: 11vh;
   height: 11vh;
-  border-radius: 50%;
   -webkit-animation: moveAroundTwo 40s infinite;
           animation: moveAroundTwo 40s infinite;
 }
 
 .bg-three-circle-element {
-  z-index: -1;
-  position: absolute;
   top: 60vh;
   right: 40vw;
-  background-color: rgba(255, 221, 0, 0.2);
   width: 5vh;
   height: 5vh;
-  border-radius: 50%;
   -webkit-animation: moveAroundTwo 35s infinite;
           animation: moveAroundTwo 35s infinite;
 }
 
 .bg-four-circle-element {
-  z-index: -1;
-  position: absolute;
   top: 20vh;
   right: 20vw;
-  background-color: rgba(255, 221, 0, 0.2);
   width: 9vh;
   height: 9vh;
-  border-radius: 50%;
   -webkit-animation: moveAroundThree 20s infinite;
           animation: moveAroundThree 20s infinite;
 }
 
 .bg-five-circle-element {
-  z-index: -1;
-  position: absolute;
   top: 80vh;
   left: 20vw;
-  background-color: rgba(255, 221, 0, 0.2);
   width: 16vh;
   height: 16vh;
-  border-radius: 50%;
   -webkit-animation: moveAround 15s infinite;
           animation: moveAround 15s infinite;
 }
 
 .bg-six-circle-element {
-  z-index: -1;
-  position: absolute;
   top: 5vh;
   right: 28vh;
-  background-color: rgba(255, 221, 0, 0.2);
   width: 12vh;
   height: 12vh;
-  border-radius: 50%;
   -webkit-animation: moveAroundTwo 10s infinite;
           animation: moveAroundTwo 10s infinite;
 }
 
 .bg-seven-circle-element {
-  z-index: -1;
-  position: absolute;
   top: 11vh;
   right: 8vh;
-  background-color: rgba(255, 221, 0, 0.2);
   width: 3vh;
   height: 3vh;
-  border-radius: 50%;
   -webkit-animation: moveAround 20s infinite;
           animation: moveAround 20s infinite;
 }
 
 .bg-eight-circle-element {
-  z-index: -1;
-  position: absolute;
   top: -3vh;
   left: 11vh;
-  background-color: rgba(255, 221, 0, 0.2);
   width: 6vh;
   height: 6vh;
-  border-radius: 50%;
   -webkit-animation: moveAroundThree 23s infinite;
           animation: moveAroundThree 23s infinite;
 }
 
 .bg-nine-circle-element {
-  z-index: -1;
-  position: absolute;
   top: 27vh;
   left: -8vh;
-  background-color: rgba(255, 221, 0, 0.2);
   width: 11vh;
   height: 11vh;
-  border-radius: 50%;
   -webkit-animation: moveAround 35s infinite;
           animation: moveAround 35s infinite;
 }
 
 .bg-ten-circle-element {
-  z-index: -1;
-  position: absolute;
   top: 40vh;
   right: 14vh;
-  background-color: rgba(255, 221, 0, 0.2);
   width: 7vh;
   height: 7vh;
-  border-radius: 50%;
   -webkit-animation: moveAroundThree 43s infinite;
           animation: moveAroundThree 43s infinite;
 }
 
 .bg-eleven-circle-element {
-  z-index: -1;
-  position: absolute;
   top: 65vh;
   left: 1vh;
-  background-color: rgba(255, 221, 0, 0.2);
   width: 9vh;
   height: 9vh;
-  border-radius: 50%;
   -webkit-animation: moveAround 25s infinite;
           animation: moveAround 25s infinite;
 }
@@ -596,16 +588,6 @@ section {
   gap: 0.625rem;
   overflow: scroll;
   z-index: 3;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-}
-
-.page-container::-webkit-scrollbar {
-  width: 0px;
-}
-
-.page-container::-webkit-scrollbar-thumb {
-  background-color: transparent;
 }
 
 .content-width-limiter {
@@ -2177,7 +2159,6 @@ section {
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(255, 221, 0, 0.8);
   z-index: 1000;
 }
 
@@ -2207,6 +2188,68 @@ section {
 
 .main-message-template-style__home-button {
   width: 100%;
+}
+
+.yellow-bg-color-animation {
+  -webkit-animation: messageBgAnimation 1s ease;
+          animation: messageBgAnimation 1s ease;
+}
+
+@-webkit-keyframes messageBgAnimation {
+  0% {
+    background-color: rgba(255, 221, 0, 0);
+  }
+
+  100% {
+    background-color: rgba(255, 221, 0, 0.8);
+  }
+}
+
+@keyframes messageBgAnimation {
+  0% {
+    background-color: rgba(255, 221, 0, 0);
+  }
+
+  100% {
+    background-color: rgba(255, 221, 0, 0.8);
+  }
+}
+
+.bg-yellow-color {
+  background-color: rgba(255, 221, 0, 0.8);
+}
+
+.position-message-animation {
+  -webkit-animation: messagePositionAnimation 1s ease;
+          animation: messagePositionAnimation 1s ease;
+}
+
+@-webkit-keyframes messagePositionAnimation {
+  0% {
+    margin-top: 200vh;
+  }
+
+  100% {
+    margin-top: 0vh;
+  }
+}
+
+@keyframes messagePositionAnimation {
+  0% {
+    margin-top: 200vh;
+  }
+
+  100% {
+    margin-top: 0vh;
+  }
+}
+
+.margin-top {
+  margin-top: 200vh;
+}
+
+.hidden-message {
+  display: none;
 }
 
 @media (min-width: 47.99875em) {
