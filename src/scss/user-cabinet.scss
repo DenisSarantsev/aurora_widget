@@ -1,11 +1,16 @@
 
 ._hidden-cabinet-button {
+	display: none;
+}
 
+._hidden-edit-or-save-button {
+	display: none;
 }
 
 .cabinet-page {
 		&__container {
 			height: 100%;
+			width: 100%;
 			padding: toRem(15);
 			display: flex;
 			flex-direction: column;
@@ -17,9 +22,50 @@
 		}
 		&__wrapper {
 			height: 100%;
+			width: 100%;
 			background-color: rgba($color: #FFFFFF, $alpha: 0.95);
 			border-radius: toRem(20);
 			padding: toRem(15);
+			display: flex;
+			flex-direction: column;
+			gap: toRem(10);
+		}
+		&__item {
+			display: flex;
+			justify-content: space-between;
+			gap: toRem(15);
+			&>* {
+				font-size: toRem(16);
+			}
+		}
+		&__item-name {
+			width: 50%;
+			color: rgba($color: #000000, $alpha: 0.7);
+			padding: toRem(5) toRem(0);
+		}
+		&__item-value {
+			width: 50%;
+			resize: none;
+			height: auto;
+			overflow-y: hidden;
+			outline: none;
+			border: 1px solid transparent;
+			padding: toRem(5);
+			border-radius: toRem(10);
+		}
+		&__item-value-vacancy {
+			width: 50%;
+			resize: none;
+			height: auto;
+			overflow-y: hidden;
+			outline: none;
+			border: 1px solid transparent;
+			padding: toRem(5);
+			border-radius: toRem(10);
+		}
+		&__yellow-input-border {
+			border: 1px solid $mainYellow;
+			background-color: transparent;
 		}
 		&__status {
 		}

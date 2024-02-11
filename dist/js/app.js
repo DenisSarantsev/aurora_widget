@@ -1277,6 +1277,7 @@
                     }
                     includeCurrentTemplate(removeDigitsAndUnderscore(item.id));
                     currentVacancyID = item.getAttribute(`data-vacancy-id`);
+                    console.log(currentVacancyID);
                     currentVacancyTitle = item.lastElementChild.textContent;
                     document.querySelector(".vacancy-page__title").innerHTML = "";
                     document.querySelector(".vacancy-page__content").innerHTML = "";
@@ -1334,9 +1335,18 @@
                     questionsCounter++;
                 }
             };
+            const validateName = () => {
+                const chatTextInput = document.querySelector(".post-request-vacancy-page__input");
+                if (chatTextInput.value.length <= 3 || chatTextInput.value.length > 100) return false; else return true;
+            };
+            const errorValidateMessage = () => {
+                console.log("Error name");
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element final-message__container">\n\t\t\t<div class="main-error-style">Неправильно введені дані. Ім'я та прізвище мають містити від 4 до 100 символів</div>\n\t\t</div>\n\t`);
+            };
             const chatInput = document.querySelector(".post-request-vacancy-page__input");
             chatInput.addEventListener("keyup", (event => {
-                if (event.key === "Enter") addAnswersAndQuestionsToChat();
+                if (event.key === "Enter") if (questionsCounter === 0) validateName() ? addAnswersAndQuestionsToChat() : errorValidateMessage(); else if (questionsCounter === 1) ; else if (questionsCounter === 2) ; else if (questionsCounter === 3) ; else if (questionsCounter > 3) ;
             }));
             const sendMessageButton = document.querySelector(".post-request-vacancy-page__send-message");
             sendMessageButton.addEventListener("click", (() => {
@@ -1623,40 +1633,53 @@
             const addInputFieldsToCheckPage = () => {
                 const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
                 checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">Назва вакансії:</div>\n\t\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t`);
-                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t<img src="../../src/img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`); else {
+                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`); else {
                     let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i + 1]];
                     let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
-                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t\t<img src="../../src/img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`);
+                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`);
                 }
                 addListenerOnEditButtons();
+                inactiveCheckInputs();
             };
             const addListenerOnEditButtons = () => {
                 const allEditButtons = document.querySelectorAll(".check-request-vacancy-page__edit-button");
                 for (let item of allEditButtons) item.addEventListener("click", (() => {
-                    changeButtonImage(item);
-                    if (item.previousElementSibling.lastElementChild.hasAttribute("disabled")) activeCheckInput(item); else {
-                        inactiveCheckInput(item);
-                        writeNewDataToPostVacancyObject(item);
-                    }
+                    if (item.previousElementSibling.lastElementChild.hasAttribute("disabled")) activeCheckInput(item); else writeNewDataToPostVacancyObject(item);
                 }));
             };
             const activeCheckInput = button => {
-                let inputContainer = button.previousElementSibling;
-                inputContainer.lastElementChild.disabled = false;
-                inputContainer.lastElementChild.focus();
-                inputContainer.parentElement.classList.remove("inactive-input-container-border");
-                inputContainer.parentElement.classList.add("active-input-container-border");
+                if (button.classList.contains("check-request-vacancy-page__edit-button")) {
+                    const allCheckItems = document.querySelectorAll(".check-request-vacancy-page__question-input-container");
+                    for (let item of allCheckItems) {
+                        item.lastElementChild.disabled = true;
+                        item.lastElementChild.blur();
+                        item.parentElement.classList.add("inactive-input-container-border");
+                        item.parentElement.classList.remove("active-input-container-border");
+                        if (item.nextElementSibling !== null) item.nextElementSibling.children[0].classList.remove("_hidden-icon");
+                    }
+                    let inputContainer = button.previousElementSibling;
+                    inputContainer.lastElementChild.disabled = false;
+                    inputContainer.lastElementChild.focus();
+                    inputContainer.parentElement.classList.remove("inactive-input-container-border");
+                    inputContainer.parentElement.classList.add("active-input-container-border");
+                    inputContainer.nextElementSibling.children[0].classList.add("_hidden-icon");
+                }
             };
-            const inactiveCheckInput = button => {
-                let inputContainer = button.previousElementSibling;
-                inputContainer.lastElementChild.disabled = true;
-                inputContainer.lastElementChild.blur();
-                inputContainer.parentElement.classList.remove("active-input-container-border");
-                inputContainer.parentElement.classList.add("inactive-input-container-border");
-            };
-            const changeButtonImage = button => {
-                button.lastElementChild.classList.toggle("_hidden-icon");
-                button.firstElementChild.classList.toggle("_hidden-icon");
+            const inactiveCheckInputs = () => {
+                const allCheckInputs = document.querySelectorAll(".check-request-vacancy-page__check-input");
+                const allCheckEditButtonsImages = document.querySelectorAll(".check-request-vacancy-page__edit-button-image");
+                document.addEventListener("click", (event => {
+                    if (event.target) if (!event.target.classList.contains("check-request-vacancy-page__edit-button") && !event.target.classList.contains("check-request-vacancy-page__edit-button-image") && !event.target.classList.contains("check-request-vacancy-page__check-input") || event.target.classList.contains("check-request-vacancy-page__check-input") && !event.target.parentElement.parentElement.classList.contains("active-input-container-border")) {
+                        console.log(event.target);
+                        for (let item of allCheckInputs) {
+                            item.parentElement.parentElement.classList.add("inactive-input-container-border");
+                            item.parentElement.parentElement.classList.remove("active-input-container-border");
+                            item.blur();
+                            item.disabled = true;
+                        }
+                        for (let item of allCheckEditButtonsImages) item.classList.remove("_hidden-icon");
+                    }
+                }));
             };
             const writeNewDataToPostVacancyObject = button => {
                 let inputElement = button.previousElementSibling.lastElementChild;
@@ -1679,8 +1702,9 @@
                 return cvObject;
             };
             function fetchPostData(objectData, vacancyID) {
-                const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`;
+                const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/65a569ea42f8319f053cb630`;
                 const data = addCVObjectToMainObject(objectData);
+                console.log(data);
                 const requestOptions = {
                     method: "POST",
                     headers: {
@@ -1730,10 +1754,41 @@
                 if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
                 return response.json();
             })).then((data => {
-                console.log(data);
+                writeDataToCabinet(data);
+                currentVacancyID = data.cabinet._id;
             })).catch((error => {
                 console.error("Fetch error:", error);
             }));
+            const writeDataToCabinet = data => {
+                const cabinetWrapper = document.querySelector(".cabinet-page__wrapper");
+                const cabinetMainButton = document.querySelector(".user-cabinet-main-page-button");
+                if (data.cabinet === "") {
+                    cabinetMainButton.classList.add("_hidden-cabinet-button");
+                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\tЗаявки відсутні\n\t\t\t</div>\n\t\t`);
+                } else {
+                    cabinetMainButton.classList.remove("_hidden-cabinet-button");
+                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Назва вакансії:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value-vacancy" data-item="title">${data.cabinet.title}</textarea>\n\t\t\t</div>\n\t\t`);
+                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Ім'я та прізвище:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-name" data-item="name">${data.cabinet.name}</textarea>\n\t\t\t</div>\n\t\t`);
+                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Телефон:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-phone" data-item="phone">${data.cabinet.feedback_phone}</textarea>\n\t\t\t</div>\n\t\t`);
+                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Місто:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-city" data-item="city">${data.cabinet.city}</textarea>\n\t\t\t</div>\n\t\t`);
+                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Дата народження:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</textarea>\n\t\t\t</div>\n\t\t`);
+                    const additionalQuestionsArray = [];
+                    for (let i = 0; i < Object.keys(data.cabinet).length; i++) {
+                        let objectItem = Object.keys(data.cabinet)[i];
+                        if (objectItem[0] === "q" && objectItem.length === 2) {
+                            additionalQuestionsArray.push(objectItem);
+                            addAdditionalQuestionsToUserCabinet(objectItem, cabinetWrapper, data);
+                        }
+                    }
+                }
+            };
+            const addAdditionalQuestionsToUserCabinet = (object, element, data) => {
+                let questionObject = data.cabinet[object];
+                for (const key in questionObject) {
+                    const value = questionObject[key];
+                    element.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">${key}</div>\n\t\t\t\t<textarea class="cabinet-page__item-value additional-cabinet-value" data-item="${object}">${value}</textarea>\n\t\t\t</div>\n\t\t`);
+                }
+            };
             document.querySelector(".cabinet-page__delete-button").addEventListener("click", (() => {
                 fetch(`${actualHost}/del_order/${currentTelegramID}/${currentPassword}`).then((response => {
                     if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);

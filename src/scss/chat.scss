@@ -345,3 +345,12 @@
 
 }
 
+.main-error-style {
+	padding: toRem(10) toRem(15);
+	border: 2px dashed red;
+	background-color: rgba($color: #ff0000, $alpha: 0.1);
+	margin-top: toRem(10);
+	border-radius: toRem(30);
+	font-weight: 500;
+	text-align: center;
+}

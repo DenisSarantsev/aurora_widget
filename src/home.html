@@ -42,7 +42,7 @@
 									<div id="circle"></div>
 									<div>Хочу бути №1</div>
 								</button>
-								<button id="001_cabinet-page" class="route-button route-button-main-style button-effect user-cabinet-main-page-button ">
+								<button id="001_cabinet-page" class="route-button route-button-main-style button-effect user-cabinet-main-page-button">
 									<div id="circle"></div>
 									<div>Мій кабінет</div>
 								</button>
@@ -189,22 +189,23 @@
 								Ваша поточна заявка:
 							</h2>
 							<div class="cabinet-page__wrapper">
-								<div class="cabinet-page__status"></div>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio vero quod aliquid excepturi dolorum nemo laboriosam aliquam veritatis? Accusantium velit voluptatum, exercitationem laborum magni a repellat quisquam vel obcaecati ducimus!
+									<div class="cabinet-page__status"></div>
 							</div>
 							<div class="cabinet-page__buttons-container">
 								<button class="cabinet-page__delete-button route-button-main-style button-effect">
 									<div id="circle"></div>
-									<div>Видалити
+									<div>Відкликати заявку
 										<img  src="@img/icons/cross.png" alt="edit icon">
 									</div>
 								</button>
-								<button class="cabinet-page__edit-button route-button-main-style button-effect">
+								<!-- <button class="cabinet-page__edit-button route-button-main-style button-effect blocked">
 									<div id="circle"></div>
-									<div>Редагувати
-										<img src="@img/icons/edit.png" alt="cross icon">
+									<div>
+										<div class="edit-button-text">Редагувати</div>
+										<img class="edit-image" src="@img/icons/edit.png" alt="edit icon">
+										<img class="save-image _hidden-edit-or-save-button" src="@img/icons/save.png" alt="save icon">
 									</div>
-								</button>
+								</button> -->
 							</div>
 						</div>
 					</section>
@@ -212,6 +213,7 @@
 				</main>
 				@@include('html/_footer.htm',{})
 		</div>
+		@@include('html/_preloader.htm',{})
 		@@include('html/_js.htm',{})
 	</body>
 </html>

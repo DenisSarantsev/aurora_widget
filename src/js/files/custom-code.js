@@ -228,6 +228,7 @@ fetch(apiVacanciesUrl)
 			// Запускаем функцию включения нужного шаблона по id из кнопки ( предварительно очищаем id от префикса при помощи функции removeDigitsAndUnderscore() )
 			includeCurrentTemplate(removeDigitsAndUnderscore(item.id));
 			currentVacancyID = item.getAttribute(`data-vacancy-id`);
+			console.log(currentVacancyID)
 			currentVacancyTitle = item.lastElementChild.textContent;
 			// Очищаем шаблон вакансии от предыдущего контента
 			document.querySelector(".vacancy-page__title").innerHTML = "";
@@ -247,14 +248,6 @@ headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
 
 
 // ------------------------------------------------------------------------------------------------------------ Работа с чатом
-
-// document.addEventListener("click", () => {
-// 	if ( currentTemplateID === "post-request-vacancy-page" ) {
-// 		document.querySelector(".page").classList.add("page-chat-height");
-// 	} else {
-// 		document.querySelector(".page").classList.remove("page-chat-height");
-// 	}
-// })
 
 // При переходе на страницу с чатом обнуляем все переменные
 // Переменные для отправки на бэк
@@ -278,6 +271,7 @@ const postVacancyObject = {
 	'city': dataCity,
 	'birthday': dataBornDate,
 }
+
 
 // Счетчики вопросов и ответов
 let fixedQuestionsCounter = 4// Фиксированное количество вопросов (переменная не изменяется нигде в коде, а используется для понимания, когда переходить к формированию обьектов из ответов по дополнительным вопросам)
@@ -330,9 +324,6 @@ function addQuestionsToChat() {
 	.catch(error => { console.error('Fetch error:', error); });
 }
 
-
-
-
 // Функционал последовательного добавления вопросов в чат по мере записи ответов
 const addMessagesAfterUserAnswers = (questionsArray) => {
 	if ( answersCounter === questionsCounter && questionsArray[questionsCounter+1] !== undefined ) {
@@ -341,12 +332,119 @@ const addMessagesAfterUserAnswers = (questionsArray) => {
 	}
 }
 
-// Получаем инпут для ввода текста, и записываем значение при отправке сообщения и вызываем функция для вывода нового вопроса в чате
+// const validateChatTextInput = () => {
+// 	const chatTextInput = document.querySelector(".post-request-vacancy-page__input");
+// 	chatTextInput.addEventListener("keyup", () => {
+// 		if ( questionsCounter === 0 ) {
+// 			validateName(chatTextInput.value);
+// 			console.log("true");
+// 		} else if ( questionsCounter === 2 ) {
+// 			validateCity(chatTextInput.value);
+// 			console.log(chatTextInput.value);
+// 			console.log(questionsCounter);
+// 		} else {
+
+// 		}
+// 	})
+// }
+// validateChatTextInput();
+
+// const validateChatPhoneInput = () => {
+// 	const chatPhoneInput = document.querySelector(".post-request-vacancy-page__phone-input");
+// 	chatPhoneInput.addEventListener("keyup", () => {
+// 		if ( questionsCounter === 1 ) {
+// 			validatePhone(chatPhoneInput.value.toString().replace(" ", ""));
+// 		}
+// 	})
+// }
+// validateChatPhoneInput();
+
+// const validateChatCalendarInput = () => {
+// 	const chatCalendarInput = document.querySelector(".post-request-vacancy-page__date-input");
+// 	chatCalendarInput.addEventListener("keyup", () => {
+// 		if ( questionsCounter === 3 ) {
+// 			const reversedArray = chatCalendarInput.value.split('-').reverse();
+// 			const finalString = reversedArray.join('.');
+// 			validateBirthday(finalString);
+// 			console.log(finalString.length)
+// 		}
+// 	})
+// }
+// validateChatCalendarInput();
+
+
+// Валидация имени
+const validateName = () => {
+	const chatTextInput = document.querySelector(".post-request-vacancy-page__input");
+	if ( chatTextInput.value.length <= 3 || chatTextInput.value.length > 100 ) {
+		return false
+	} else {
+		return true
+	}
+}
+
+// Сообщение при неправильно валидации имени
+const errorValidateMessage = () => {
+	console.log("Error name")
+	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+	chatMessagesBlock.insertAdjacentHTML("beforeend", `
+		<div class="post-request-vacancy-page__message-element final-message__container">
+			<div class="main-error-style">Неправильно введені дані. Ім'я та прізвище мають містити від 4 до 100 символів</div>
+		</div>
+	`);
+}
+
+// // Валидация телефона
+// const validatePhone = (phone) => {
+// 	const noNumbersCounter = 0;
+// 	for ( let i = 0; i < phone.length; i++ ) {
+// 		if ( typeof phone[i] !== "number" ) {
+// 			noNumbersCounter++
+// 		}
+// 	}
+// 	if ( phone.length < 10 || phone.length > 30 || noNumbersCounter > 0 ) {
+// 		console.log("Телефон має містити не менше 10 і не більше 30 символів")
+// 	}
+// }
+
+// // Валидация города
+// const validateCity = (city) => {
+// 	if ( city.length < 2 || city.length > 100 ) {
+// 		console.log("Допустима кількість символів - від 2 до 100")
+// 	}
+// }
+
+// // Валидация дня рождения
+// const validateBirthday = (birthday) => {
+// 	if ( birthday.length !== 10 || typeof birthday[0] !== "number" || typeof birthday[1] !== "number" ||
+// 			 typeof birthday[3] !== "number" || typeof birthday[4] !== "number" || typeof birthday[6] !== "number" ||
+// 			 typeof birthday[7] !== "number" || typeof birthday[8] !== "number" || typeof birthday[9] !== "number" ||
+// 			 birthday[2] !== "." || birthday[5] !== "." ) {
+// 		console.log("Введіть номер телефону у форматі дд.мм.рррр")
+// 	}
+// }
+
+
+
+
+
+// Получаем инпут для ввода текста, и записываем значение при отправке сообщения и вызываем функцию для вывода нового вопроса в чате
 const chatInput = document.querySelector(".post-request-vacancy-page__input");
 // При нажатии кнопки Enter
 chatInput.addEventListener("keyup", (event) => {
 	if ( event.key === "Enter" ) {
-		addAnswersAndQuestionsToChat();
+		if ( questionsCounter === 0 ) {
+			validateName() ? addAnswersAndQuestionsToChat() : errorValidateMessage();
+		} else if ( questionsCounter === 1 ) {
+
+		} else if ( questionsCounter === 2 ) {
+
+		} else if ( questionsCounter === 3 ) {
+
+		} else if ( questionsCounter > 3 ) {
+
+		}
+		;
 	}
 })
 // При клике на стрелочку
@@ -720,10 +818,6 @@ const addAdditionalQuestionsToMainPostObject = (questionsObject, objectToWrite) 
 
 // ---------------------------------------------------------------------------------------------------- Логика для страницы проверки введенных данных
 
-
-
-
-
 // Список вопросов для проверочной страницы
 const checkQuestionsArray = [
 	`Ім'я та прізвище:`,
@@ -761,7 +855,6 @@ const addInputFieldsToCheckPage = () => {
 					</div>
 					<button class="check-request-vacancy-page__edit-button">
 						<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
-						<img src="../../src/img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
 					</button>
 				</div>
 			`)
@@ -776,13 +869,13 @@ const addInputFieldsToCheckPage = () => {
 					</div>
 					<button class="check-request-vacancy-page__edit-button">
 						<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
-						<img src="../../src/img/icons/save.png" alt="save icon" class="check-request-vacancy-page__edit-button-image save-icon _hidden-icon">
 					</button>
 				</div>
 			`)
 		}
 	}
 	addListenerOnEditButtons();
+	inactiveCheckInputs();
 }
 
 // Вешаем событие клика на все кнопки "редактировать" для каждого инпута
@@ -790,11 +883,10 @@ const addListenerOnEditButtons = () => {
 	const allEditButtons = document.querySelectorAll(".check-request-vacancy-page__edit-button");
 	for ( let item of allEditButtons ) {
 		item.addEventListener("click", () => {
-			changeButtonImage(item);
+			// changeButtonImage(item);
 			if ( item.previousElementSibling.lastElementChild.hasAttribute("disabled") ) {
 				activeCheckInput(item);
 			} else {
-				inactiveCheckInput(item);
 				writeNewDataToPostVacancyObject(item);
 			}
 		})
@@ -803,25 +895,52 @@ const addListenerOnEditButtons = () => {
 
 // Разблокируем текущий инпут для редактирования при клике на кнопку редактирования
 const activeCheckInput = (button) => {
-	let inputContainer = button.previousElementSibling;
-	inputContainer.lastElementChild.disabled = false;
-	inputContainer.lastElementChild.focus();
-	inputContainer.parentElement.classList.remove("inactive-input-container-border");
-	inputContainer.parentElement.classList.add("active-input-container-border");
-}
-// Блокируем текущий инпут для редактирования при клике на дискету
-const inactiveCheckInput = (button) => {
-	let inputContainer = button.previousElementSibling;
-	inputContainer.lastElementChild.disabled = true;
-	inputContainer.lastElementChild.blur();
-	inputContainer.parentElement.classList.remove("active-input-container-border");
-	inputContainer.parentElement.classList.add("inactive-input-container-border");
+	if ( button.classList.contains("check-request-vacancy-page__edit-button") ) {
+		const allCheckItems = document.querySelectorAll(".check-request-vacancy-page__question-input-container");
+		for ( let item of allCheckItems ) {
+			item.lastElementChild.disabled = true;
+			item.lastElementChild.blur();
+			item.parentElement.classList.add("inactive-input-container-border");
+			item.parentElement.classList.remove("active-input-container-border");
+			if ( item.nextElementSibling !== null ) {
+				item.nextElementSibling.children[0].classList.remove("_hidden-icon");
+			} 
+		}
+		let inputContainer = button.previousElementSibling;
+		inputContainer.lastElementChild.disabled = false;
+		inputContainer.lastElementChild.focus();
+		inputContainer.parentElement.classList.remove("inactive-input-container-border");
+		inputContainer.parentElement.classList.add("active-input-container-border");
+		inputContainer.nextElementSibling.children[0].classList.add("_hidden-icon");
+	}
 }
 
-// Заменяем картинку на кнопке на дискету
-const changeButtonImage = (button) => {
-	button.lastElementChild.classList.toggle("_hidden-icon");
-	button.firstElementChild.classList.toggle("_hidden-icon");
+// Блокируем все инпуты при клике вне кнопок и вне активного инпута
+const inactiveCheckInputs = () => {
+	const allCheckInputs = document.querySelectorAll(".check-request-vacancy-page__check-input");
+	const allCheckEditButtonsImages = document.querySelectorAll(".check-request-vacancy-page__edit-button-image");
+	document.addEventListener("click", (event) => {
+		if ( event.target ) {
+			if ( 
+				!event.target.classList.contains("check-request-vacancy-page__edit-button") &&
+				!event.target.classList.contains("check-request-vacancy-page__edit-button-image") &&
+				!event.target.classList.contains("check-request-vacancy-page__check-input") ||
+				event.target.classList.contains("check-request-vacancy-page__check-input") &&
+				!event.target.parentElement.parentElement.classList.contains("active-input-container-border")
+			) {
+				console.log(event.target)
+				for ( let item of allCheckInputs ) {
+					item.parentElement.parentElement.classList.add("inactive-input-container-border");
+					item.parentElement.parentElement.classList.remove("active-input-container-border");
+					item.blur();
+					item.disabled = true;
+				}
+				for ( let item of allCheckEditButtonsImages ) {
+					item.classList.remove("_hidden-icon");
+				}
+			}
+		}
+	})
 }
 
 // Перезапись новых данных в обьекте для отправки
@@ -852,14 +971,12 @@ const addCVObjectToMainObject = (cvObject) => {
 	return cvObject
 }
 
-
-	
-
 // Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
 function fetchPostData(objectData, vacancyID) {
-	const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`;
+	const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/65a569ea42f8319f053cb630`;
 	// Данные POST запроса
 	const data = addCVObjectToMainObject(objectData);
+	console.log(data)
 	const requestOptions = {
 		method: 'POST',
 		headers: {
@@ -900,8 +1017,6 @@ function fetchPostData(objectData, vacancyID) {
 		reloadPageAfterClickHomeButton() // Событие клика по кнопке
 	}
 	
-	
-	
 	// Вызываем анимацию появления сообщения
 	const showMessageAnimation = () => {
 		console.log("ok");
@@ -926,9 +1041,7 @@ function fetchPostData(objectData, vacancyID) {
 		})
 	}
 	
-	
-	// ---------------------------------------------------------------------------------------------------- Логика личного кабинета и проверки заявки
-	
+// ---------------------------------------------------------------------------------------------------- Логика личного кабинета и проверки заявки
 	
 	// Вызываем данные клиента при каждой загрузке
 fetch(`${actualHost}/cabinet/${currentTelegramID}/${currentPassword}`)
@@ -942,7 +1055,8 @@ fetch(`${actualHost}/cabinet/${currentTelegramID}/${currentPassword}`)
 		return response.json();
 	})
 	.then(data => {
-		console.log(data);
+		writeDataToCabinet(data);
+		currentVacancyID = data.cabinet._id;
 	})
 	.catch(error => {
 		// Обрабатываем ошибки
@@ -950,11 +1064,74 @@ fetch(`${actualHost}/cabinet/${currentTelegramID}/${currentPassword}`)
 	});
 
 // Запись данных клиента на страницу кабинета
-const writeDataToCabinet = () => {
-	
+const writeDataToCabinet = (data) => {
+	const cabinetWrapper = document.querySelector(".cabinet-page__wrapper");
+	const cabinetMainButton = document.querySelector(".user-cabinet-main-page-button");
+	if ( data.cabinet === "" ) {
+		cabinetMainButton.classList.add("_hidden-cabinet-button");
+		cabinetWrapper.insertAdjacentHTML("beforeend", `
+			<div class="cabinet-page__item">
+				Заявки відсутні
+			</div>
+		`)
+	} else {
+		cabinetMainButton.classList.remove("_hidden-cabinet-button");
+		cabinetWrapper.insertAdjacentHTML("beforeend", `
+			<div class="cabinet-page__item">
+				<div class="cabinet-page__item-name">Назва вакансії:</div>
+				<textarea class="cabinet-page__item-value-vacancy" data-item="title">${data.cabinet.title}</textarea>
+			</div>
+		`)
+		cabinetWrapper.insertAdjacentHTML("beforeend",`
+			<div class="cabinet-page__item">
+				<div class="cabinet-page__item-name">Ім'я та прізвище:</div>
+				<textarea class="cabinet-page__item-value cabinet-page__item-value-name" data-item="name">${data.cabinet.name}</textarea>
+			</div>
+		`)
+		cabinetWrapper.insertAdjacentHTML("beforeend",`
+			<div class="cabinet-page__item">
+				<div class="cabinet-page__item-name">Телефон:</div>
+				<textarea class="cabinet-page__item-value cabinet-page__item-value-phone" data-item="phone">${data.cabinet.feedback_phone}</textarea>
+			</div>
+		`)
+		cabinetWrapper.insertAdjacentHTML("beforeend",`
+			<div class="cabinet-page__item">
+				<div class="cabinet-page__item-name">Місто:</div>
+				<textarea class="cabinet-page__item-value cabinet-page__item-value-city" data-item="city">${data.cabinet.city}</textarea>
+			</div>
+		`)
+		cabinetWrapper.insertAdjacentHTML("beforeend",`
+			<div class="cabinet-page__item">
+				<div class="cabinet-page__item-name">Дата народження:</div>
+				<textarea class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</textarea>
+			</div>
+		`)
+		const additionalQuestionsArray = [];
+		for ( let i = 0; i < Object.keys(data.cabinet).length; i++ ) {
+			let objectItem = Object.keys(data.cabinet)[i];
+			if ( objectItem[0] === "q" && objectItem.length === 2 ) {
+				additionalQuestionsArray.push(objectItem);
+				addAdditionalQuestionsToUserCabinet(objectItem, cabinetWrapper, data);
+			}
+		}
+	}
 }
 
+// Добавление списка дополнительных вопросов и ответов в личном кабинете
+const addAdditionalQuestionsToUserCabinet = (object, element, data) => {
+	let questionObject = data.cabinet[object];
+	for (const key in questionObject) {
+		const value = questionObject[key];
+		element.insertAdjacentHTML("beforeend",`
+			<div class="cabinet-page__item">
+				<div class="cabinet-page__item-name">${key}</div>
+				<textarea class="cabinet-page__item-value additional-cabinet-value" data-item="${object}">${value}</textarea>
+			</div>
+		`)
+	}
+}
 
+// Удаление заявки
 document.querySelector(".cabinet-page__delete-button").addEventListener("click", () => {
 	fetch(`${actualHost}/del_order/${currentTelegramID}/${currentPassword}`)
 	.then(response => {
@@ -979,18 +1156,50 @@ document.querySelector(".cabinet-page__delete-button").addEventListener("click",
 
 // Вывод сообщения об удаленной заявке
 
-
-
-
-
-
-
 })
 
 
-	
+// ------------------------------------------------------------------------------------------ Валидация полей на всех страницах
 
+// // Валидация имени
+// const validateName = (name) => {
+// 	if ( name.length <= 3 || name.length > 100 ) {
+// 		console.log("Допустима кількість символів - від 4 до 100")
+// 	}
+// }
 
+// // Валидация телефона
+// const validatePhone = (phone) => {
+// 	let phoneNumber = phone.replace(" ", "");
+// 	let phoneNumberInt = +phoneNumber;
+// 	let noNumbersCounter = 0;
+// 	for ( let i = 0; i < phoneNumberInt.length; i++ ) {
+// 		if ( typeof phoneNumberInt[i] !== "number" ) {
+// 			noNumbersCounter++
+// 		}
+// 	}
+// 	if ( phoneNumber.length < 10 || phoneNumber.length > 30 || noNumbersCounter > 0 ) {
+// 		console.log("Телефон має містити не менше 10 і не більше 30 символів");
+// 	} else {
+// 		console.log("phone ok");
+// 	}
+// }
+
+// // Валидация города
+// const validateCity = (city) => {
+// 	if ( city.length < 2 || city.length > 100 ) {
+// 		console.log("Допустима кількість символів - від 2 до 100")
+// 	}
+// }
+
+// // Валидация дня рождения
+// const validateBirthday = (birthday) => {
+// 	if ( birthday.length !== 10 ) {
+// 		console.log("Введіть номер телефону у форматі дд.мм.рррр")
+// 	} else {
+// 		console.log("date ok")
+// 	}
+// }
 
 
 
