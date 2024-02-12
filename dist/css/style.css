@@ -2217,7 +2217,7 @@ section::-webkit-scrollbar-thumb {
 
 .error-message-check-input {
   position: fixed;
-  top: 0;
+  bottom: 0;
   z-index: 1000;
   width: 100%;
   display: -webkit-box;
@@ -2235,21 +2235,21 @@ section::-webkit-scrollbar-thumb {
 
 @-webkit-keyframes errorCheckPageAnimation {
   0% {
-    margin-top: -100px;
+    margin-bottom: -100px;
   }
 
   100% {
-    margin-top: 0px;
+    margin-bottom: 0px;
   }
 }
 
 @keyframes errorCheckPageAnimation {
   0% {
-    margin-top: -100px;
+    margin-bottom: -100px;
   }
 
   100% {
-    margin-top: 0px;
+    margin-bottom: 0px;
   }
 }
 
@@ -2260,21 +2260,21 @@ section::-webkit-scrollbar-thumb {
 
 @-webkit-keyframes errorCheckPageAnimationHidden {
   0% {
-    margin-top: 0px;
+    margin-bottom: 0px;
   }
 
   100% {
-    margin-top: -100px;
+    margin-bottom: -100px;
   }
 }
 
 @keyframes errorCheckPageAnimationHidden {
   0% {
-    margin-top: 0px;
+    margin-bottom: 0px;
   }
 
   100% {
-    margin-top: -100px;
+    margin-bottom: -100px;
   }
 }
 
