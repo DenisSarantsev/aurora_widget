@@ -27,6 +27,10 @@
 			border-radius: 10px;
 			color: #000;
 			line-height: 120%;
+			@media (max-width: em(500)){
+				padding: toRem(10) toRem(5) toRem(10) toRem(5);
+			}
+
 		}
 		&__check-question {
 			color: #000;
@@ -35,6 +39,7 @@
 			min-height: toRem(20);
 		}
 		&__check-input {
+			position: relative;
 			margin-top: toRem(5);
 			width: 100%;
 			background-color: transparent;
@@ -93,13 +98,65 @@
 }
 
 .red-cross {
-	margin-left: toRem(10);
+	margin-left: toRem(2);
+	margin-right: toRem(8);
 	height: toRem(16);
 	width: toRem(16);
 }
 .green-check-mark {
-	margin-left: toRem(10);
+	margin-right: toRem(6);
 	height: toRem(20);
 	width: toRem(20);
 	filter: invert(45%) sepia(87%) saturate(1085%) hue-rotate(89deg) brightness(95%) contrast(106%);
+}
+
+.vacancy-mark {
+	margin-right: toRem(6);
+	height: toRem(20);
+	width: toRem(20);
+	// filter: invert(100%) sepia(73%) saturate(7499%) hue-rotate(344deg) brightness(95%) contrast(111%);
+}
+
+.vacancy-title-on-check-page {
+	display: flex;
+	align-items: flex-end;
+}
+
+.error-message-check-input {
+	position: fixed;
+	top: 0;
+	z-index: 1000;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	padding: toRem(5) toRem(10);
+	border: 2px dashed red;
+	background-color: #ffc7c7;
+	animation: errorCheckPageAnimation 0.5s ease;
+}
+
+@keyframes errorCheckPageAnimation {
+	0% {
+		margin-top: -100px;
+	}
+	100% {
+		margin-top: 0px;
+	}
+}
+
+.error-message-check-input-hidden {
+	animation: errorCheckPageAnimationHidden 0.6s ease;
+}
+
+@keyframes errorCheckPageAnimationHidden {
+	0% {
+		margin-top: 0px;
+	}
+	100% {
+		margin-top: -100px;
+	}
+}
+
+._hidden-error-message {
+	display: none;
 }

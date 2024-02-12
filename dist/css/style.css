@@ -2116,6 +2116,7 @@ section::-webkit-scrollbar-thumb {
 }
 
 .check-request-vacancy-page__check-input {
+  position: relative;
   margin-top: 0.3125rem;
   width: 100%;
   background-color: transparent;
@@ -2185,17 +2186,100 @@ section::-webkit-scrollbar-thumb {
 }
 
 .red-cross {
-  margin-left: 0.625rem;
+  margin-left: 0.125rem;
+  margin-right: 0.5rem;
   height: 1rem;
   width: 1rem;
 }
 
 .green-check-mark {
-  margin-left: 0.625rem;
+  margin-right: 0.375rem;
   height: 1.25rem;
   width: 1.25rem;
   -webkit-filter: invert(45%) sepia(87%) saturate(1085%) hue-rotate(89deg) brightness(95%) contrast(106%);
           filter: invert(45%) sepia(87%) saturate(1085%) hue-rotate(89deg) brightness(95%) contrast(106%);
+}
+
+.vacancy-mark {
+  margin-right: 0.375rem;
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+.vacancy-title-on-check-page {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.error-message-check-input {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 0.3125rem 0.625rem;
+  border: 2px dashed red;
+  background-color: #ffc7c7;
+  -webkit-animation: errorCheckPageAnimation 0.5s ease;
+          animation: errorCheckPageAnimation 0.5s ease;
+}
+
+@-webkit-keyframes errorCheckPageAnimation {
+  0% {
+    margin-top: -100px;
+  }
+
+  100% {
+    margin-top: 0px;
+  }
+}
+
+@keyframes errorCheckPageAnimation {
+  0% {
+    margin-top: -100px;
+  }
+
+  100% {
+    margin-top: 0px;
+  }
+}
+
+.error-message-check-input-hidden {
+  -webkit-animation: errorCheckPageAnimationHidden 0.6s ease;
+          animation: errorCheckPageAnimationHidden 0.6s ease;
+}
+
+@-webkit-keyframes errorCheckPageAnimationHidden {
+  0% {
+    margin-top: 0px;
+  }
+
+  100% {
+    margin-top: -100px;
+  }
+}
+
+@keyframes errorCheckPageAnimationHidden {
+  0% {
+    margin-top: 0px;
+  }
+
+  100% {
+    margin-top: -100px;
+  }
+}
+
+._hidden-error-message {
+  display: none;
 }
 
 .main-message-template-style {
@@ -2452,5 +2536,9 @@ section::-webkit-scrollbar-thumb {
 @media (max-width: 31.25em) {
   .header__logo-link {
     max-width: 26vw;
+  }
+
+  .check-request-vacancy-page__check-item {
+    padding: 0.625rem 0.3125rem 0.625rem 0.3125rem;
   }
 }

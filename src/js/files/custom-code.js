@@ -365,7 +365,7 @@ const errorValidateNameMessage = () => {
 
 // Валидация телефона
 const validatePhone = (phone) => {
-	let phoneNumber = phone.replace(" ", "");
+	let phoneNumber = phone.replaceAll(" ", "");
 	let errorsCounter = 0
 	let includeSymbols = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 	includeSymbols.forEach(function(element){
@@ -923,7 +923,7 @@ const addInputFieldsToCheckPage = () => {
 	checkPageMainContainer.insertAdjacentHTML("beforeend", `
 				<div class="check-request-vacancy-page__check-item">
 					<div class="check-request-vacancy-page__question-input-container">
-						<div class="check-request-vacancy-page__check-question">Назва вакансії:</div>
+						<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> <img src="../../img/icons/vacancy-icon.png" alt="vacancy icon" class="vacancy-mark"> Назва вакансії:</div>
 						<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>
 					</div>
 				</div>
@@ -933,7 +933,7 @@ const addInputFieldsToCheckPage = () => {
 			checkPageMainContainer.insertAdjacentHTML("beforeend", `
 				<div class="check-request-vacancy-page__check-item">
 					<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
-						<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]} <img src="../../img/icons/check.png" alt="check icon" class="green-check-mark"> <img src="../../img/icons/cross.png" alt="check icon" class="red-cross _hidden-icon"> </div>
+						<div class="check-request-vacancy-page__check-question"> <img src="../../img/icons/check.png" alt="check icon" class="green-check-mark"> <img src="../../img/icons/cross.png" alt="check icon" class="red-cross _hidden-icon"> ${checkQuestionsArray[i]}</div>
 						<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i+1]]}" type="text" class="check-request-vacancy-page__check-input">
 					</div>
 					<button class="check-request-vacancy-page__edit-button">
@@ -947,7 +947,7 @@ const addInputFieldsToCheckPage = () => {
 			checkPageMainContainer.insertAdjacentHTML("beforeend", `
 				<div class="check-request-vacancy-page__check-item">
 					<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
-						<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]} <img src="../../img/icons/check.png" alt="check icon" class="green-check-mark"> <img src="../../img/icons/cross.png" alt="check icon" class="red-cross _hidden-icon"> </div>
+						<div class="check-request-vacancy-page__check-question"> <img src="../../img/icons/check.png" alt="check icon" class="green-check-mark"> <img src="../../img/icons/cross.png" alt="check icon" class="red-cross _hidden-icon"> ${checkQuestionsArray[i]}</div>
 						<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>
 					</div>
 					<button class="check-request-vacancy-page__edit-button">
@@ -1091,7 +1091,6 @@ function fetchPostData(objectData, vacancyID) {
 // -------------------------------------------------------------------------------- Валидация полей на странице проверки данных
 
 
-
 const addAllInputsValidateListeners = () => {
 	const allCheckInputs = document.querySelectorAll(".check-request-vacancy-page__check-input");
 	for ( let i = 0; i < allCheckInputs.length; i++ ) {
@@ -1099,54 +1098,111 @@ const addAllInputsValidateListeners = () => {
 	}
 	for ( let item of allCheckInputs ) {
 		item.addEventListener("keyup", (event) => {
-			console.log("keyup on input")
 			if ( +event.target.getAttribute("check-item-number") === 1 ) {
-				// Функция валидации имени и фамилии
-				if ( validateName(event.target.value) ) {
-					addGreenCheck(event.target);
-					console.log("Имя правильное")
-				} else {
-					addRedCross(event.target);
-					console.log("Имя неправильное")
-				}
+				validateName(event.target.value) ? addGreenCheck(event.target) : addRedCross(event.target, 0);
 			} else if ( +event.target.getAttribute("check-item-number") === 2 ) {
-				// Функция валидации номера телефона
+				validatePhoneOnCheckPage(event.target.value) ? addGreenCheck(event.target) : addRedCross(event.target, 1);
 			} else if ( +event.target.getAttribute("check-item-number") === 3 ) {
-				// Функция валидации города
+				validateCity(event.target.value) ? addGreenCheck(event.target) : addRedCross(event.target, 2);
 			} else if ( +event.target.getAttribute("check-item-number") === 4 ) {
-				// Функция валидации даты рождения
+				validateBirthdayOnCheckPage(event.target.value) ? addGreenCheck(event.target) : addRedCross(event.target, 3);
 			} else if ( +event.target.getAttribute("check-item-number") > 4 ) {
-				// функция валидации дополнительных вопросов
+				validateAdditionalAnswers(event.target.value) ? addGreenCheck(event.target) : addRedCross(event.target, 4);
 			}
 		})
 	}
 }
 
-// Валидация телефона на странице проверки данных
-const validatePhoneOnCheckPage = () => {
+// Валидация даты рождения
+const validateBirthdayOnCheckPage = (date) => {
+	let errorsCounter = 0;
+	let includeSymbols = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+	for ( let i = 0; i < 10; i++ ) {
+		for ( let j = 0; j < includeSymbols.length; j++ ) {
+			if ( date[i] === includeSymbols[j] ) {
+				errorsCounter++
+			}
+		}
+	} 
+	if ( date.length !== 10 || findAgeOnCheckPage(date) < 18  || findAgeOnCheckPage(date) > 70 || date[2] !== "." || date[5] !== "." || errorsCounter !== 8 ) {
+		return false
+	} else {
+		return true
+	}
+}
 
+// Рассчитываем возраст
+const findAgeOnCheckPage = (birthdate) => {
+	const [day, month, year] = birthdate.split('.');
+	const birthDateObj = new Date(`${year}-${month}-${day}`);
+	const currentDate = new Date();
+	const ageInMillis = currentDate - birthDateObj;
+	const ageInYears = Math.floor(ageInMillis / (365.25 * 24 * 60 * 60 * 1000));
+	return ageInYears
+}
+
+// Валидация телефона на странице проверки данных
+const validatePhoneOnCheckPage = (phone) => {
+	let phoneToString = phone.toString();
+	let phoneNumber = phoneToString.replaceAll(" ", "");
+	let errorsCounter = 0
+	let includeSymbols = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+	includeSymbols.forEach(function(element){
+		for ( let i = 0; i < phoneNumber.length; i++ ) {
+			if ( phoneNumber[i] === element ) {
+				errorsCounter++
+			}
+		}
+	})
+	if ( phoneNumber.length !== 12 || errorsCounter !== 12 || phoneNumber[0] !== "3" || phoneNumber[1] !== "8" || phoneNumber[2] !== "0" ) {
+		return false
+	} else {
+		return true
+	}
 }
 
 // Добавляем красный крестик
-const addRedCross = (item) => {
+const addRedCross = (item, messageNumber) => {
+	// Сообщения об ошибках
+	const errorMessages = [
+		"Поле має містити від 4 до 100 символів",
+		"Введіть номер телефону у форматі: 380930000000 (без знаків +,),(, та пробілів)",
+		"Поле має містити від 2 до 100 символів",
+		"Введіть дату народження у форматі: 25.06.1997. Для заповнення заявки кандидату має виповнитись 18 років",
+		"Поле має містити від 10 до 500 символів"
+	];
 	item.previousElementSibling.querySelector(".red-cross").classList.remove("_hidden-icon");
 	item.previousElementSibling.querySelector(".green-check-mark").classList.add("_hidden-icon");
-	// console.log(item)
-	// console.log(item.previousElementSibling)
-	// console.log(item.previousElementSibling.querySelector(".green-check-mark"))
+	addErrorMessageOnCheckPage(errorMessages[messageNumber]);
 }
 // Добавляем зеленую галочку
 const addGreenCheck = (item) => {
 	item.previousElementSibling.querySelector(".green-check-mark").classList.remove("_hidden-icon");
 	item.previousElementSibling.querySelector(".red-cross").classList.add("_hidden-icon");
+	deleteErrorMessageOnCheckPage();
 }
 
-// Оповещение при неправильно введенном имени
-const showErrorValidateNameInpunOnCheckPage = () => {
-
+// Добавляем сообщение сверху об неправильной валидации
+const addErrorMessageOnCheckPage = (message) => {
+	const errorMessageElement = document.querySelector(".error-message-check-input");
+	if ( errorMessageElement.classList.contains("_hidden-error-message") ) {
+		errorMessageElement.innerText = `${message}`;
+		errorMessageElement.classList.remove("_hidden-error-message");
+	}
 }
 
-// 
+// Удаляем сообщение сверху
+const deleteErrorMessageOnCheckPage = () => {
+	const errorMessageElement = document.querySelector(".error-message-check-input");
+	if ( !errorMessageElement.classList.contains("_hidden-error-message") ) {
+		errorMessageElement.classList.add("error-message-check-input-hidden");
+		function delay() {
+			errorMessageElement.classList.add("_hidden-error-message");
+			errorMessageElement.classList.remove("error-message-check-input-hidden");
+		}
+		setTimeout(delay, 500);
+	}
+}
 
 // ---------------------------------------------------------------------------------------------------- Логика показа сообщения
 
