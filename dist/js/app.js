@@ -1335,22 +1335,77 @@
                     questionsCounter++;
                 }
             };
-            const validateName = () => {
-                const chatTextInput = document.querySelector(".post-request-vacancy-page__input");
-                if (chatTextInput.value.length <= 3 || chatTextInput.value.length > 100) return false; else return true;
+            const deleteErrorMessagesInChat = () => {
+                const allErrorMessages = document.querySelectorAll(".main-error-style__container");
+                for (let item of allErrorMessages) item.classList.add("_hidden-error-messages");
             };
-            const errorValidateMessage = () => {
-                console.log("Error name");
+            const validateName = value => {
+                if (value.length <= 3 || value.length > 100) return false; else return true;
+            };
+            const errorValidateNameMessage = () => {
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element final-message__container">\n\t\t\t<div class="main-error-style">Неправильно введені дані. Ім'я та прізвище мають містити від 4 до 100 символів</div>\n\t\t</div>\n\t`);
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="main-error-style">Неправильно введені дані. Ім'я та прізвище мають містити від 4 до 100 символів</div>\n\t\t</div>\n\t`);
+                scrollChatToBottom();
+            };
+            const validatePhone = phone => {
+                let phoneNumber = phone.replace(" ", "");
+                let errorsCounter = 0;
+                let includeSymbols = [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" ];
+                includeSymbols.forEach((function(element) {
+                    for (let i = 0; i < phoneNumber.length; i++) if (phoneNumber[i] === element) errorsCounter++;
+                }));
+                if (phoneNumber.length < 10 || phoneNumber.length > 30 || errorsCounter !== 10) return false; else return true;
+            };
+            const errorValidatePhoneMessage = () => {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="main-error-style">Неправильно введені дані. Телефон має містити лише цифри, та мати довжину 10 символів.</div>\n\t\t</div>\n\t`);
+                scrollChatToBottom();
+            };
+            const validateCity = city => {
+                if (city.length < 2 || city.length > 100) return false; else return true;
+            };
+            const errorValidateCityMessage = () => {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="main-error-style">Неправильно введені дані. Назва населеного пункту має містити від 2 до 100 символів</div>\n\t\t</div>\n\t`);
+                scrollChatToBottom();
+            };
+            const validateBirthday = date => {
+                let formattedDate = formateDate(date);
+                if (formattedDate.length !== 10 || findAge(formattedDate) < 18 || findAge(formattedDate) > 70) return false; else return true;
+            };
+            const formateDate = date => {
+                let parts = date.split("-");
+                let formattedDate = parts[2] + "." + parts[1] + "." + parts[0];
+                return formattedDate;
+            };
+            const findAge = birthdate => {
+                const [day, month, year] = birthdate.split(".");
+                const birthDateObj = new Date(`${year}-${month}-${day}`);
+                const currentDate = new Date;
+                const ageInMillis = currentDate - birthDateObj;
+                const ageInYears = Math.floor(ageInMillis / (365.25 * 24 * 60 * 60 * 1e3));
+                return ageInYears;
+            };
+            const errorValidateBirthday = () => {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="main-error-style">Для того, щоб подати заявку вам має бути не менше 18 і не більше 70 років</div>\n\t\t</div>\n\t`);
+                scrollChatToBottom();
+            };
+            const validateAdditionalAnswers = data => {
+                if (data.length < 10 || data.length > 500) return false; else return true;
+            };
+            const errorValidateAdditionalAnswersMessage = () => {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="main-error-style">Неправильно введені дані. Довжина відповіді має бути від 10 до 500 символів</div>\n\t\t</div>\n\t`);
+                scrollChatToBottom();
             };
             const chatInput = document.querySelector(".post-request-vacancy-page__input");
             chatInput.addEventListener("keyup", (event => {
-                if (event.key === "Enter") if (questionsCounter === 0) validateName() ? addAnswersAndQuestionsToChat() : errorValidateMessage(); else if (questionsCounter === 1) ; else if (questionsCounter === 2) ; else if (questionsCounter === 3) ; else if (questionsCounter > 3) ;
+                if (event.key === "Enter") if (answersCounter === -1) validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage(); else if (answersCounter === 1) validateCity(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateCityMessage(); else if (answersCounter > 2) validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
             }));
             const sendMessageButton = document.querySelector(".post-request-vacancy-page__send-message");
             sendMessageButton.addEventListener("click", (() => {
-                addAnswersAndQuestionsToChat();
+                if (answersCounter === -1) validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage(); else if (answersCounter === 1) validateCity(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateCityMessage(); else if (answersCounter > 2) validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
             }));
             const addAnswersAndQuestionsToChat = () => {
                 if (questionsCounter + 1 <= fixedQuestionsCounter) {
@@ -1372,6 +1427,7 @@
                     checkFinalAnswerMessage();
                 }
                 chatInput.value = "";
+                deleteErrorMessagesInChat();
             };
             const addBirthDateAnswerBlock = () => {
                 if (objectKeys[questionsCounter] === "birthday") {
@@ -1385,21 +1441,10 @@
             const dateInput = document.querySelector(".post-request-vacancy-page__date-input");
             const dateSendButton = document.querySelector(".post-request-vacancy-page__send-date");
             dateSendButton.addEventListener("click", (() => {
-                writeActualBirthDate(dateInput.value);
-                addUserMessageToChat(dateInput.value);
-                hiddenCalendarInput();
-                answersCounter++;
-                function delayedFunction() {
-                    addMessagesAfterUserAnswers(questionsArray);
-                    scrollChatToBottom();
-                    showTextInput();
-                }
-                setTimeout(delayedFunction, 300);
-            }));
-            dateInput.addEventListener("keyup", (event => {
-                if (event.key === "Enter") {
+                if (validateBirthday(dateInput.value)) {
+                    deleteErrorMessagesInChat();
                     writeActualBirthDate(dateInput.value);
-                    addUserMessageToChat(dateInput.value);
+                    addUserMessageToChat(formateDate(dateInput.value));
                     hiddenCalendarInput();
                     answersCounter++;
                     function delayedFunction() {
@@ -1408,7 +1453,22 @@
                         showTextInput();
                     }
                     setTimeout(delayedFunction, 300);
-                }
+                } else errorValidateBirthday();
+            }));
+            dateInput.addEventListener("keyup", (event => {
+                if (event.key === "Enter") if (validateBirthday(dateInput.value)) {
+                    deleteErrorMessagesInChat();
+                    writeActualBirthDate(dateInput.value);
+                    addUserMessageToChat(formateDate(dateInput.value));
+                    hiddenCalendarInput();
+                    answersCounter++;
+                    function delayedFunction() {
+                        addMessagesAfterUserAnswers(questionsArray);
+                        scrollChatToBottom();
+                        showTextInput();
+                    }
+                    setTimeout(delayedFunction, 300);
+                } else errorValidateBirthday();
             }));
             const showCalendarInput = () => {
                 document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-hidden-animation");
@@ -1451,6 +1511,7 @@
                             writeCurrentNumber(currentUserPhone);
                             hiddenPhoneNumberInput();
                             deleteNumbersButtons();
+                            deleteErrorMessagesInChat();
                             answersCounter++;
                             function delayedFunction() {
                                 addUserMessageToChat(currentUserPhone);
@@ -1469,20 +1530,7 @@
             const sendNumberAsMessageInput = document.querySelector(".post-request-vacancy-page__phone-input");
             const sendNumberAsMessageButton = document.querySelector(".post-request-vacancy-page__send-phone");
             sendNumberAsMessageButton.addEventListener("click", (() => {
-                writeCurrentNumber(sendNumberAsMessageInput.value);
-                hiddenPhoneNumberInput();
-                deleteNumbersButtons();
-                answersCounter++;
-                function delayedFunction() {
-                    addUserMessageToChat(sendNumberAsMessageInput.value);
-                    addMessagesAfterUserAnswers(questionsArray);
-                    scrollChatToBottom();
-                    showTextInput();
-                }
-                setTimeout(delayedFunction, 300);
-            }));
-            sendNumberAsMessageInput.addEventListener("keyup", (event => {
-                if (event.key === "Enter") {
+                if (validatePhone(sendNumberAsMessageInput.value)) {
                     writeCurrentNumber(sendNumberAsMessageInput.value);
                     hiddenPhoneNumberInput();
                     deleteNumbersButtons();
@@ -1494,6 +1542,29 @@
                         showTextInput();
                     }
                     setTimeout(delayedFunction, 300);
+                    deleteErrorMessagesInChat();
+                } else {
+                    errorValidatePhoneMessage();
+                    scrollChatToBottom();
+                }
+            }));
+            sendNumberAsMessageInput.addEventListener("keyup", (event => {
+                if (event.key === "Enter" && validatePhone(sendNumberAsMessageInput.value)) {
+                    writeCurrentNumber(sendNumberAsMessageInput.value);
+                    hiddenPhoneNumberInput();
+                    deleteNumbersButtons();
+                    answersCounter++;
+                    function delayedFunction() {
+                        addUserMessageToChat(sendNumberAsMessageInput.value);
+                        addMessagesAfterUserAnswers(questionsArray);
+                        scrollChatToBottom();
+                        showTextInput();
+                    }
+                    setTimeout(delayedFunction, 300);
+                    deleteErrorMessagesInChat();
+                } else if (event.key === "Enter" && !validatePhone(sendNumberAsMessageInput.value)) {
+                    errorValidatePhoneMessage();
+                    scrollChatToBottom();
                 }
             }));
             const deleteNumbersButtons = () => {
@@ -1523,9 +1594,16 @@
                 }
                 setTimeout(delayedFunction, 300);
             };
+            const adaptPhoneNumber = data => {
+                const cleanSpace = data.replaceAll(" ", "").replaceAll("+", "").replaceAll(")", "").replaceAll("(", "");
+                const startPhone = "38";
+                let finalPhone = cleanSpace;
+                if (cleanSpace[0] === "0") finalPhone = startPhone + cleanSpace;
+                if (finalPhone[0] === "3" && finalPhone[1] === "8" && finalPhone.length === 12) return finalPhone; else return false;
+            };
             const writeCurrentNumber = number => {
-                dataPhone = number;
-                postVacancyObject.feedback_phone = number;
+                dataPhone = adaptPhoneNumber(number);
+                postVacancyObject.feedback_phone = dataPhone;
             };
             const inactiveMessageButton = () => {
                 document.querySelector(".post-request-vacancy-page__send-message").disabled = true;
@@ -1640,6 +1718,7 @@
                 }
                 addListenerOnEditButtons();
                 inactiveCheckInputs();
+                addAllInputsValidateListeners();
             };
             const addListenerOnEditButtons = () => {
                 const allEditButtons = document.querySelectorAll(".check-request-vacancy-page__edit-button");
@@ -1670,7 +1749,6 @@
                 const allCheckEditButtonsImages = document.querySelectorAll(".check-request-vacancy-page__edit-button-image");
                 document.addEventListener("click", (event => {
                     if (event.target) if (!event.target.classList.contains("check-request-vacancy-page__edit-button") && !event.target.classList.contains("check-request-vacancy-page__edit-button-image") && !event.target.classList.contains("check-request-vacancy-page__check-input") || event.target.classList.contains("check-request-vacancy-page__check-input") && !event.target.parentElement.parentElement.classList.contains("active-input-container-border")) {
-                        console.log(event.target);
                         for (let item of allCheckInputs) {
                             item.parentElement.parentElement.classList.add("inactive-input-container-border");
                             item.parentElement.parentElement.classList.remove("active-input-container-border");
@@ -1723,6 +1801,13 @@
                     showMainMessage(errorMessage);
                 }));
             }
+            const addAllInputsValidateListeners = () => {
+                const allCheckInputs = document.querySelectorAll(".check-request-vacancy-page__check-input");
+                for (let i = 0; i < allCheckInputs.length; i++) allCheckInputs[i].setAttribute("check-item-number", `${i}`);
+                for (let item of allCheckInputs) item.addEventListener("keyup", (event => {
+                    if (+event.target.getAttribute("check-item-number") === 1) if (validateName(event.target.value)) console.log("Имя правильное"); else console.log("Имя неправильное"); else if (+event.target.getAttribute("check-item-number") === 2) ; else if (+event.target.getAttribute("check-item-number") === 3) ; else if (+event.target.getAttribute("check-item-number") === 4) ; else if (+event.target.getAttribute("check-item-number") > 4) ;
+                }));
+            };
             const showMainMessage = messageText => {
                 let message = document.querySelector(".main-message-template-style");
                 message.classList.remove("_hidden-template");
@@ -1731,7 +1816,6 @@
                 reloadPageAfterClickHomeButton();
             };
             const showMessageAnimation = () => {
-                console.log("ok");
                 document.querySelector(".main-message-template-style__wrapper").classList.add("position-message-animation");
                 document.querySelector(".main-message-template-style__wrapper").classList.remove("hidden-message");
                 let message = document.querySelector(".main-message-template-style");
@@ -1743,7 +1827,6 @@
                 setTimeout(delay, 990);
             };
             const reloadPageAfterClickHomeButton = () => {
-                console.log("click");
                 document.querySelector(".main-message-template-style__home-button").addEventListener("click", (() => {
                     window.location.reload();
                     let message = document.querySelector(".main-message-template-style");

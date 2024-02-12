@@ -22,10 +22,9 @@
 			gap: toRem(10);
 			align-items: end;
 			position: relative;
-			border: 1px solid transparent;
+			// border: 2px solid transparent;
 			padding: toRem(10) toRem(15) toRem(10) toRem(15);
 			border-radius: 10px;
-			background-color: rgba($color:#FFFFFF, $alpha: 0.95);
 			color: #000;
 			line-height: 120%;
 		}

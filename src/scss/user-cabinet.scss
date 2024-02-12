@@ -52,6 +52,7 @@
 			border: 1px solid transparent;
 			padding: toRem(5);
 			border-radius: toRem(10);
+			background-color: transparent;
 		}
 		&__item-value-vacancy {
 			width: 50%;
@@ -62,6 +63,7 @@
 			border: 1px solid transparent;
 			padding: toRem(5);
 			border-radius: toRem(10);
+			background-color: transparent;
 		}
 		&__yellow-input-border {
 			border: 1px solid $mainYellow;
