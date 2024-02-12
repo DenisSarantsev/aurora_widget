@@ -1711,10 +1711,10 @@
             const addInputFieldsToCheckPage = () => {
                 const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
                 checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">Назва вакансії:</div>\n\t\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t`);
-                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`); else {
+                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]} <img src="../../img/icons/check.png" alt="check icon" class="green-check-mark"> <img src="../../img/icons/cross.png" alt="check icon" class="red-cross _hidden-icon"> </div>\n\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`); else {
                     let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i + 1]];
                     let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
-                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`);
+                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]} <img src="../../img/icons/check.png" alt="check icon" class="green-check-mark"> <img src="../../img/icons/cross.png" alt="check icon" class="red-cross _hidden-icon"> </div>\n\t\t\t\t\t\t<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`);
                 }
                 addListenerOnEditButtons();
                 inactiveCheckInputs();
@@ -1805,8 +1805,23 @@
                 const allCheckInputs = document.querySelectorAll(".check-request-vacancy-page__check-input");
                 for (let i = 0; i < allCheckInputs.length; i++) allCheckInputs[i].setAttribute("check-item-number", `${i}`);
                 for (let item of allCheckInputs) item.addEventListener("keyup", (event => {
-                    if (+event.target.getAttribute("check-item-number") === 1) if (validateName(event.target.value)) console.log("Имя правильное"); else console.log("Имя неправильное"); else if (+event.target.getAttribute("check-item-number") === 2) ; else if (+event.target.getAttribute("check-item-number") === 3) ; else if (+event.target.getAttribute("check-item-number") === 4) ; else if (+event.target.getAttribute("check-item-number") > 4) ;
+                    console.log("keyup on input");
+                    if (+event.target.getAttribute("check-item-number") === 1) if (validateName(event.target.value)) {
+                        addGreenCheck(event.target);
+                        console.log("Имя правильное");
+                    } else {
+                        addRedCross(event.target);
+                        console.log("Имя неправильное");
+                    } else if (+event.target.getAttribute("check-item-number") === 2) ; else if (+event.target.getAttribute("check-item-number") === 3) ; else if (+event.target.getAttribute("check-item-number") === 4) ; else if (+event.target.getAttribute("check-item-number") > 4) ;
                 }));
+            };
+            const addRedCross = item => {
+                item.previousElementSibling.querySelector(".red-cross").classList.remove("_hidden-icon");
+                item.previousElementSibling.querySelector(".green-check-mark").classList.add("_hidden-icon");
+            };
+            const addGreenCheck = item => {
+                item.previousElementSibling.querySelector(".green-check-mark").classList.remove("_hidden-icon");
+                item.previousElementSibling.querySelector(".red-cross").classList.add("_hidden-icon");
             };
             const showMainMessage = messageText => {
                 let message = document.querySelector(".main-message-template-style");

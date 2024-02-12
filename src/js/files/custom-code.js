@@ -933,11 +933,11 @@ const addInputFieldsToCheckPage = () => {
 			checkPageMainContainer.insertAdjacentHTML("beforeend", `
 				<div class="check-request-vacancy-page__check-item">
 					<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
-						<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>
+						<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]} <img src="../../img/icons/check.png" alt="check icon" class="green-check-mark"> <img src="../../img/icons/cross.png" alt="check icon" class="red-cross _hidden-icon"> </div>
 						<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i+1]]}" type="text" class="check-request-vacancy-page__check-input">
 					</div>
 					<button class="check-request-vacancy-page__edit-button">
-						<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
+						<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
 					</button>
 				</div>
 			`)
@@ -947,11 +947,11 @@ const addInputFieldsToCheckPage = () => {
 			checkPageMainContainer.insertAdjacentHTML("beforeend", `
 				<div class="check-request-vacancy-page__check-item">
 					<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
-						<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]}</div>
+						<div class="check-request-vacancy-page__check-question">${checkQuestionsArray[i]} <img src="../../img/icons/check.png" alt="check icon" class="green-check-mark"> <img src="../../img/icons/cross.png" alt="check icon" class="red-cross _hidden-icon"> </div>
 						<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>
 					</div>
 					<button class="check-request-vacancy-page__edit-button">
-						<img src="../../src/img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
+						<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
 					</button>
 				</div>
 			`)
@@ -1099,11 +1099,14 @@ const addAllInputsValidateListeners = () => {
 	}
 	for ( let item of allCheckInputs ) {
 		item.addEventListener("keyup", (event) => {
+			console.log("keyup on input")
 			if ( +event.target.getAttribute("check-item-number") === 1 ) {
 				// Функция валидации имени и фамилии
 				if ( validateName(event.target.value) ) {
+					addGreenCheck(event.target);
 					console.log("Имя правильное")
 				} else {
+					addRedCross(event.target);
 					console.log("Имя неправильное")
 				}
 			} else if ( +event.target.getAttribute("check-item-number") === 2 ) {
@@ -1123,6 +1126,27 @@ const addAllInputsValidateListeners = () => {
 const validatePhoneOnCheckPage = () => {
 
 }
+
+// Добавляем красный крестик
+const addRedCross = (item) => {
+	item.previousElementSibling.querySelector(".red-cross").classList.remove("_hidden-icon");
+	item.previousElementSibling.querySelector(".green-check-mark").classList.add("_hidden-icon");
+	// console.log(item)
+	// console.log(item.previousElementSibling)
+	// console.log(item.previousElementSibling.querySelector(".green-check-mark"))
+}
+// Добавляем зеленую галочку
+const addGreenCheck = (item) => {
+	item.previousElementSibling.querySelector(".green-check-mark").classList.remove("_hidden-icon");
+	item.previousElementSibling.querySelector(".red-cross").classList.add("_hidden-icon");
+}
+
+// Оповещение при неправильно введенном имени
+const showErrorValidateNameInpunOnCheckPage = () => {
+
+}
+
+// 
 
 // ---------------------------------------------------------------------------------------------------- Логика показа сообщения
 
