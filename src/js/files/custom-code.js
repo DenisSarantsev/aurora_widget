@@ -91,38 +91,24 @@ function addWhiteBackground(button) {
 	}
 }
 
-// Проходимся по всем кнопкам с роутами, чтобы повесить на них событие клика и при необходимости включить функцию переключения шаблона
-const addListenerToAllRouteButtons = () => {
-	if (document.querySelector(".route-button")) {
-		// Находим все кнопки с роутами
-		const allRouteButtons = document.querySelectorAll(".route-button");
-		// Вешаем события на все кнопки с роутами в виджете
-		for ( let item of allRouteButtons ) {
-			// Отменяем всплытие и задаем событие при клике на дочерние элементы
-			item.addEventListener("click", (e) => {
-				currentTemplateID = removeDigitsAndUnderscore(e.target.id);
-				firstEnter = false;
-				includeCurrentTemplate(currentTemplateID);
-				addWhiteBackground(item);
-				hiddenOrShowFooter();
-				scrollToTop();
-			})
-		}
-	}
-}
-addListenerToAllRouteButtons();
+
 
 
 // Функция удаления префикса из ID
 function removeDigitsAndUnderscore(inputString) {
-	var resultString = inputString.replace(/[0-9_]/g, '');
+	let prefix = inputString.slice(0, 4);
+	let rest = inputString.slice(4);
+	let resultPrefix = prefix.replace(/[0-9_]/g, '');
+	let resultString = resultPrefix+rest;
 	return resultString;
 }
 
-// Находим все шаблоны
-const allWidgetTemplates = document.querySelectorAll(".page-template");
+
 // Функция для включения нужного шаблона (выполняется по клике кнопки роута)
 const includeCurrentTemplate = (currentTemplateID) => {
+	// Находим все шаблоны
+const allWidgetTemplates = document.querySelectorAll(".page-template");
+console.log(allWidgetTemplates)
 	for ( let item of allWidgetTemplates ) {
 		if ( item.id !== currentTemplateID && !firstEnter ) { 
 			item.classList.add("position-left");
@@ -145,13 +131,6 @@ const includeCurrentTemplate = (currentTemplateID) => {
 includeCurrentTemplate(currentTemplateID);
 
 // Вызов API VACANCIES
-let officeVacancies = []; // Масив з офісними вакансіями
-let shopVacancies = []; // Масив з вакансіями для магазинів
-let stockVacancies = []; // Масив з вакансіями для складу
-
-const officeVacanciesElement = document.querySelector(".jobs-list__office");
-const shopVacanciesElement = document.querySelector(".jobs-list__shop");
-const stockVacanciesElement = document.querySelector(".jobs-list__stock");
 
 // Запрос для получения всех вакансий
 const apiVacanciesUrl = `${actualHost}/vacancies/${data.telegram_id}/${data.password}`;
@@ -162,50 +141,78 @@ fetch(apiVacanciesUrl)
 })
 .then(data => {
 	globalVacancies = data; // Добавляем все вакансии в переменную
-	// Сортируем вакансии по направлениям (в три разных массива, созданных выше перед вызовом fetch)
-	for ( let i = 0; i < globalVacancies.vacancies.length; i++ ) {
-		let currentVacancy = globalVacancies.vacancies[i];
-		if ( currentVacancy.kind === "офіс" ) {
-			officeVacancies.push(currentVacancy);
-		} else if ( currentVacancy.kind === "магазин" ) {
-			shopVacancies.push(currentVacancy);
-		} else if ( currentVacancy.kind === "склад" ) {
-			stockVacancies.push(currentVacancy);
+	let globalKinds = [] // Добавляем все виды вакансий в один массив
+	const findAllKindsOfVacancies = (vacancies) => {
+		for ( let i = 0; i < vacancies.vacancies.length; i++ ) {
+			let currentKind = vacancies.vacancies[i].kind;
+			if ( !globalKinds.includes(currentKind) ) {
+				globalKinds.push(currentKind)
+			}
+		} 
+	}
+	findAllKindsOfVacancies(globalVacancies)
+
+	// <button id="001_office-jobs-list-page" class="route-button button route-button-main-style button-effect">
+	// 								<div id="circle"></div>
+	// 								<div>Офіс</div>
+	// 							</button>
+	// 							<button id="001_shop-jobs-list-page" class="route-button button route-button-main-style button-effect">
+	// 								<div id="circle"></div>
+	// 								<div>Склад</div>
+	// 							</button>
+	// 							<button id="001_stock-jobs-list-page" class="route-button button route-button-main-style button-effect">
+	// 								<div id="circle"></div>
+	// 								<div>Магазин</div>
+	// 							</button>
+
+	// Вставляем в страницу с направлениями нужное количество кнопок
+	let directionsButtons = document.querySelector(".directions-page__buttons-block");
+	for ( let i = 0; i < globalKinds.length; i++ ) {
+		directionsButtons.insertAdjacentHTML("beforeend", 
+			`
+			<button id="${i}_jobs-list-page-${i}" class="route-button button route-button-main-style button-effect">
+				<div id="circle"></div>
+				<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>
+			</button>
+			`
+		)
+	}
+
+	// Создаем нужное количество шаблонов в зависимости от количества направлений
+	for ( let i = 0; i < globalKinds.length; i++ ) {
+		document.querySelector(".page").insertAdjacentHTML("beforeend", 
+			`
+				<section id="jobs-list-page-${i}" class="page-template page__jobs-list jobs-list-page-${i} jobs-list _hidden-template section-padding">
+					<div class="jobs-list__container">
+						<div class="jobs-list__buttons-block jobs-list__${i}">
+						</div>
+					</div>
+				</section>
+			`
+		)
+	}
+
+
+	// Вставляем вакансии в сформированные шаблоны
+	for ( let i = 0; i < globalKinds.length; i++ ) {
+		let currentVacanciesTemplate = document.querySelector(`.jobs-list-page-${i}`);
+		for ( let j = 0; j < globalVacancies.vacancies.length; j++ ) {
+			if ( globalKinds[i] === globalVacancies.vacancies[j].kind ) {
+				currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", 
+					`
+						<button id="vacancy-page" data-vacancy-id="${globalVacancies.vacancies[j]._id}" class="button button-effect jobs-list__item">
+							<div id="circle"></div>
+							<div>${globalVacancies.vacancies[j].title}</div>
+						</button>
+					`
+				)
+			}
 		}
-	}
-
-	//Вставляем вакансии в соответствующие шаблоны при помощи циклов
-	for ( let i = 0; i < officeVacancies.length; i++ ) {
-		officeVacanciesElement.insertAdjacentHTML(
-			"beforeend", 
+		currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", 
 			`
-				<button id="${i}0_vacancy-page" data-vacancy-id="${officeVacancies[i]._id}" class="button button-effect jobs-list__item">
+				<button class="route-button button button-effect reserve-template-main-page-button">
 					<div id="circle"></div>
-					<div>${officeVacancies[i].title}</div>
-				</button>
-			`
-		)
-	}
-
-	for ( let i = 0; i < shopVacancies.length; i++ ) {
-		shopVacanciesElement.insertAdjacentHTML(
-			"beforeend", 
-			`
-				<button id="${i}1_vacancy-page" data-vacancy-id="${shopVacancies[i]._id}" class="button button-effect jobs-list__item">
-					<div id="circle"></div>
-					<div>${shopVacancies[i].title}</div>
-				</button>
-			`
-		)
-	}
-
-	for ( let i = 0; i < stockVacancies.length; i++ ) {
-		stockVacanciesElement.insertAdjacentHTML(
-			"beforeend", 
-			`
-				<button id="${i}2_vacancy-page" data-vacancy-id="${stockVacancies[i]._id}" class="button button-effect jobs-list__item">
-					<div id="circle"></div>
-					<div>${stockVacancies[i].title}</div>
+					<div>Не знайшов вакансії для себе?</div>
 				</button>
 			`
 		)
@@ -220,7 +227,7 @@ fetch(apiVacanciesUrl)
 			let vacancyContent = "";
 			// Проходимя по массиву со всеми вакансиями и ищем в нем ту, у которой id такой же, как и у вакансии, по которой мы кликнули
 			for ( let i = 0; i < globalVacancies.vacancies.length; i++ ) {
-				if ( globalVacancies.vacancies[i]._id === item.getAttribute(`data-vacancy-id`) ) {
+				if ( globalVacancies.vacancies[i]._id === +item.getAttribute(`data-vacancy-id`) ) {
 					vacancyTitle = globalVacancies.vacancies[i].title;
 					vacancyContent = globalVacancies.vacancies[i].description_html;
 				}
@@ -228,7 +235,6 @@ fetch(apiVacanciesUrl)
 			// Запускаем функцию включения нужного шаблона по id из кнопки ( предварительно очищаем id от префикса при помощи функции removeDigitsAndUnderscore() )
 			includeCurrentTemplate(removeDigitsAndUnderscore(item.id));
 			currentVacancyID = item.getAttribute(`data-vacancy-id`);
-			console.log(currentVacancyID)
 			currentVacancyTitle = item.lastElementChild.textContent;
 			// Очищаем шаблон вакансии от предыдущего контента
 			document.querySelector(".vacancy-page__title").innerHTML = "";
@@ -239,6 +245,30 @@ fetch(apiVacanciesUrl)
 			
 		})
 	}
+
+	// Проходимся по всем кнопкам с роутами, чтобы повесить на них событие клика и при необходимости включить функцию переключения шаблона
+	const addListenerToAllRouteButtons = () => {
+		if (document.querySelector(".route-button")) {
+			// Находим все кнопки с роутами
+			const allRouteButtons = document.querySelectorAll(".route-button");
+			// Вешаем события на все кнопки с роутами в виджете
+			for ( let item of allRouteButtons ) {
+				// Отменяем всплытие и задаем событие при клике на дочерние элементы
+				item.addEventListener("click", (e) => {
+					currentTemplateID = removeDigitsAndUnderscore(e.target.id);
+					firstEnter = false;
+					includeCurrentTemplate(currentTemplateID);
+					addWhiteBackground(item);
+					hiddenOrShowFooter();
+					scrollToTop();
+				})
+			}
+		}
+	}
+	addListenerToAllRouteButtons();
+
+
+
 })
 .catch(error => { console.error('Ошибка при выполнении запроса:', error); });
 
@@ -1056,7 +1086,7 @@ const addCVObjectToMainObject = (cvObject) => {
 
 // Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
 function fetchPostData(objectData, vacancyID) {
-	const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/65a569ea42f8319f053cb630`;
+	const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`;
 	// Данные POST запроса
 	const data = addCVObjectToMainObject(objectData);
 	console.log(data)
@@ -1251,6 +1281,7 @@ fetch(`${actualHost}/cabinet/${currentTelegramID}/${currentPassword}`)
 		return response.json();
 	})
 	.then(data => {
+		console.log(data)
 		writeDataToCabinet(data);
 		currentVacancyID = data.cabinet._id;
 	})
@@ -1302,30 +1333,30 @@ const writeDataToCabinet = (data) => {
 				<textarea class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</textarea>
 			</div>
 		`)
-		const additionalQuestionsArray = [];
-		for ( let i = 0; i < Object.keys(data.cabinet).length; i++ ) {
-			let objectItem = Object.keys(data.cabinet)[i];
-			if ( objectItem[0] === "q" && objectItem.length === 2 ) {
-				additionalQuestionsArray.push(objectItem);
-				addAdditionalQuestionsToUserCabinet(objectItem, cabinetWrapper, data);
-			}
-		}
+		// const additionalQuestionsArray = [];
+		// for ( let i = 0; i < Object.keys(data.cabinet).length; i++ ) {
+		// 	let objectItem = Object.keys(data.cabinet)[i];
+		// 	if ( objectItem[0] === "q" && objectItem.length === 2 ) {
+		// 		additionalQuestionsArray.push(objectItem);
+		// 		addAdditionalQuestionsToUserCabinet(objectItem, cabinetWrapper, data);
+		// 	}
+		// }
 	}
 }
 
 // Добавление списка дополнительных вопросов и ответов в личном кабинете
-const addAdditionalQuestionsToUserCabinet = (object, element, data) => {
-	let questionObject = data.cabinet[object];
-	for (const key in questionObject) {
-		const value = questionObject[key];
-		element.insertAdjacentHTML("beforeend",`
-			<div class="cabinet-page__item">
-				<div class="cabinet-page__item-name">${key}</div>
-				<textarea class="cabinet-page__item-value additional-cabinet-value" data-item="${object}">${value}</textarea>
-			</div>
-		`)
-	}
-}
+// const addAdditionalQuestionsToUserCabinet = (object, element, data) => {
+// 	let questionObject = data.cabinet[object];
+// 	for (const key in questionObject) {
+// 		const value = questionObject[key];
+// 		element.insertAdjacentHTML("beforeend",`
+// 			<div class="cabinet-page__item">
+// 				<div class="cabinet-page__item-name">${key}</div>
+// 				<textarea class="cabinet-page__item-value additional-cabinet-value" data-item="${object}">${value}</textarea>
+// 			</div>
+// 		`)
+// 	}
+// }
 
 // Удаление заявки
 document.querySelector(".cabinet-page__delete-button").addEventListener("click", () => {

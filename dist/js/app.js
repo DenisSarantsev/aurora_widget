@@ -1212,26 +1212,16 @@
                 let itemID = removeDigitsAndUnderscore(button.id);
                 if (itemID === "post-request-vacancy-page") mainPageContainer.classList.add("white-background"); else mainPageContainer.classList.remove("white-background");
             }
-            const addListenerToAllRouteButtons = () => {
-                if (document.querySelector(".route-button")) {
-                    const allRouteButtons = document.querySelectorAll(".route-button");
-                    for (let item of allRouteButtons) item.addEventListener("click", (e => {
-                        currentTemplateID = removeDigitsAndUnderscore(e.target.id);
-                        firstEnter = false;
-                        includeCurrentTemplate(currentTemplateID);
-                        addWhiteBackground(item);
-                        hiddenOrShowFooter();
-                        scrollToTop();
-                    }));
-                }
-            };
-            addListenerToAllRouteButtons();
             function removeDigitsAndUnderscore(inputString) {
-                var resultString = inputString.replace(/[0-9_]/g, "");
+                let prefix = inputString.slice(0, 4);
+                let rest = inputString.slice(4);
+                let resultPrefix = prefix.replace(/[0-9_]/g, "");
+                let resultString = resultPrefix + rest;
                 return resultString;
             }
-            const allWidgetTemplates = document.querySelectorAll(".page-template");
             const includeCurrentTemplate = currentTemplateID => {
+                const allWidgetTemplates = document.querySelectorAll(".page-template");
+                console.log(allWidgetTemplates);
                 for (let item of allWidgetTemplates) if (item.id !== currentTemplateID && !firstEnter) {
                     item.classList.add("position-left");
                     setTimeout((function() {
@@ -1247,43 +1237,59 @@
                 }), 290);
             };
             includeCurrentTemplate(currentTemplateID);
-            let officeVacancies = [];
-            let shopVacancies = [];
-            let stockVacancies = [];
-            const officeVacanciesElement = document.querySelector(".jobs-list__office");
-            const shopVacanciesElement = document.querySelector(".jobs-list__shop");
-            const stockVacanciesElement = document.querySelector(".jobs-list__stock");
             const apiVacanciesUrl = `${actualHost}/vacancies/${data.telegram_id}/${data.password}`;
             fetch(apiVacanciesUrl).then((response => {
                 if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
                 return response.json();
             })).then((data => {
                 globalVacancies = data;
-                for (let i = 0; i < globalVacancies.vacancies.length; i++) {
-                    let currentVacancy = globalVacancies.vacancies[i];
-                    if (currentVacancy.kind === "офіс") officeVacancies.push(currentVacancy); else if (currentVacancy.kind === "магазин") shopVacancies.push(currentVacancy); else if (currentVacancy.kind === "склад") stockVacancies.push(currentVacancy);
+                let globalKinds = [];
+                const findAllKindsOfVacancies = vacancies => {
+                    for (let i = 0; i < vacancies.vacancies.length; i++) {
+                        let currentKind = vacancies.vacancies[i].kind;
+                        if (!globalKinds.includes(currentKind)) globalKinds.push(currentKind);
+                    }
+                };
+                findAllKindsOfVacancies(globalVacancies);
+                let directionsButtons = document.querySelector(".directions-page__buttons-block");
+                for (let i = 0; i < globalKinds.length; i++) directionsButtons.insertAdjacentHTML("beforeend", `\n\t\t\t<button id="${i}_jobs-list-page-${i}" class="route-button button route-button-main-style button-effect">\n\t\t\t\t<div id="circle"></div>\n\t\t\t\t<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>\n\t\t\t</button>\n\t\t\t`);
+                for (let i = 0; i < globalKinds.length; i++) document.querySelector(".page").insertAdjacentHTML("beforeend", `\n\t\t\t\t<section id="jobs-list-page-${i}" class="page-template page__jobs-list jobs-list-page-${i} jobs-list _hidden-template section-padding">\n\t\t\t\t\t<div class="jobs-list__container">\n\t\t\t\t\t\t<div class="jobs-list__buttons-block jobs-list__${i}">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</section>\n\t\t\t`);
+                for (let i = 0; i < globalKinds.length; i++) {
+                    let currentVacanciesTemplate = document.querySelector(`.jobs-list-page-${i}`);
+                    for (let j = 0; j < globalVacancies.vacancies.length; j++) if (globalKinds[i] === globalVacancies.vacancies[j].kind) currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", `\n\t\t\t\t\t\t<button id="vacancy-page" data-vacancy-id="${globalVacancies.vacancies[j]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t\t<div>${globalVacancies.vacancies[j].title}</div>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t`);
+                    currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", `\n\t\t\t\t<button class="route-button button button-effect reserve-template-main-page-button">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Не знайшов вакансії для себе?</div>\n\t\t\t\t</button>\n\t\t\t`);
                 }
-                for (let i = 0; i < officeVacancies.length; i++) officeVacanciesElement.insertAdjacentHTML("beforeend", `\n\t\t\t\t<button id="${i}0_vacancy-page" data-vacancy-id="${officeVacancies[i]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>${officeVacancies[i].title}</div>\n\t\t\t\t</button>\n\t\t\t`);
-                for (let i = 0; i < shopVacancies.length; i++) shopVacanciesElement.insertAdjacentHTML("beforeend", `\n\t\t\t\t<button id="${i}1_vacancy-page" data-vacancy-id="${shopVacancies[i]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>${shopVacancies[i].title}</div>\n\t\t\t\t</button>\n\t\t\t`);
-                for (let i = 0; i < stockVacancies.length; i++) stockVacanciesElement.insertAdjacentHTML("beforeend", `\n\t\t\t\t<button id="${i}2_vacancy-page" data-vacancy-id="${stockVacancies[i]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>${stockVacancies[i].title}</div>\n\t\t\t\t</button>\n\t\t\t`);
                 const allJobItemsButtons = document.querySelectorAll(".jobs-list__item");
                 for (let item of allJobItemsButtons) item.addEventListener("click", (function() {
                     scrollToTop();
                     let vacancyTitle = "";
                     let vacancyContent = "";
-                    for (let i = 0; i < globalVacancies.vacancies.length; i++) if (globalVacancies.vacancies[i]._id === item.getAttribute(`data-vacancy-id`)) {
+                    for (let i = 0; i < globalVacancies.vacancies.length; i++) if (globalVacancies.vacancies[i]._id === +item.getAttribute(`data-vacancy-id`)) {
                         vacancyTitle = globalVacancies.vacancies[i].title;
                         vacancyContent = globalVacancies.vacancies[i].description_html;
                     }
                     includeCurrentTemplate(removeDigitsAndUnderscore(item.id));
                     currentVacancyID = item.getAttribute(`data-vacancy-id`);
-                    console.log(currentVacancyID);
                     currentVacancyTitle = item.lastElementChild.textContent;
                     document.querySelector(".vacancy-page__title").innerHTML = "";
                     document.querySelector(".vacancy-page__content").innerHTML = "";
                     document.querySelector(".vacancy-page__title").insertAdjacentHTML("afterbegin", `${vacancyTitle}`);
                     document.querySelector(".vacancy-page__content").insertAdjacentHTML("afterbegin", `${vacancyContent}`);
                 }));
+                const addListenerToAllRouteButtons = () => {
+                    if (document.querySelector(".route-button")) {
+                        const allRouteButtons = document.querySelectorAll(".route-button");
+                        for (let item of allRouteButtons) item.addEventListener("click", (e => {
+                            currentTemplateID = removeDigitsAndUnderscore(e.target.id);
+                            firstEnter = false;
+                            includeCurrentTemplate(currentTemplateID);
+                            addWhiteBackground(item);
+                            hiddenOrShowFooter();
+                            scrollToTop();
+                        }));
+                    }
+                };
+                addListenerToAllRouteButtons();
             })).catch((error => {
                 console.error("Ошибка при выполнении запроса:", error);
             }));
@@ -1780,7 +1786,7 @@
                 return cvObject;
             };
             function fetchPostData(objectData, vacancyID) {
-                const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/65a569ea42f8319f053cb630`;
+                const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`;
                 const data = addCVObjectToMainObject(objectData);
                 console.log(data);
                 const requestOptions = {
@@ -1890,6 +1896,7 @@
                 if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
                 return response.json();
             })).then((data => {
+                console.log(data);
                 writeDataToCabinet(data);
                 currentVacancyID = data.cabinet._id;
             })).catch((error => {
@@ -1908,21 +1915,6 @@
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Телефон:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-phone" data-item="phone">${data.cabinet.feedback_phone}</textarea>\n\t\t\t</div>\n\t\t`);
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Місто:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-city" data-item="city">${data.cabinet.city}</textarea>\n\t\t\t</div>\n\t\t`);
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Дата народження:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</textarea>\n\t\t\t</div>\n\t\t`);
-                    const additionalQuestionsArray = [];
-                    for (let i = 0; i < Object.keys(data.cabinet).length; i++) {
-                        let objectItem = Object.keys(data.cabinet)[i];
-                        if (objectItem[0] === "q" && objectItem.length === 2) {
-                            additionalQuestionsArray.push(objectItem);
-                            addAdditionalQuestionsToUserCabinet(objectItem, cabinetWrapper, data);
-                        }
-                    }
-                }
-            };
-            const addAdditionalQuestionsToUserCabinet = (object, element, data) => {
-                let questionObject = data.cabinet[object];
-                for (const key in questionObject) {
-                    const value = questionObject[key];
-                    element.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">${key}</div>\n\t\t\t\t<textarea class="cabinet-page__item-value additional-cabinet-value" data-item="${object}">${value}</textarea>\n\t\t\t</div>\n\t\t`);
                 }
             };
             document.querySelector(".cabinet-page__delete-button").addEventListener("click", (() => {

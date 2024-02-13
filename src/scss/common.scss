@@ -550,3 +550,27 @@ section {
 .green-border {
 	border: 1px solid rgba(28, 189, 17, 1);
 }
+
+.reserve-template-main-page-button {
+	width: 100%;
+	margin-top: toRem(10);
+	min-height: 41.97px;
+	font-weight: 500;
+	background-color: rgba($color: #ffdd00, $alpha: 0.6);
+	// background-color: rgba(232, 232, 232, 0.9);
+	// background-color: $mainYellow;
+	border: 2px dashed rgba($color: #000000, $alpha: 0.3);
+	border-radius: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: toRem(18);
+	transition: all 0.3s ease 0s;
+	padding: toRem(12) toRem(15);
+	&:hover {
+		transition: all 0.3s ease 0s;
+	}
+	@media (max-width: em(400)){
+		font-size: toRem(16);
+	}
+}
