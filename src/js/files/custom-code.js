@@ -91,9 +91,6 @@ function addWhiteBackground(button) {
 	}
 }
 
-
-
-
 // Функция удаления префикса из ID
 function removeDigitsAndUnderscore(inputString) {
 	let prefix = inputString.slice(0, 4);
@@ -141,6 +138,7 @@ fetch(apiVacanciesUrl)
 })
 .then(data => {
 	globalVacancies = data; // Добавляем все вакансии в переменную
+	console.log(globalVacancies)
 	let globalKinds = [] // Добавляем все виды вакансий в один массив
 	const findAllKindsOfVacancies = (vacancies) => {
 		for ( let i = 0; i < vacancies.vacancies.length; i++ ) {
@@ -845,7 +843,22 @@ const addFinalMessageAfterAnswers = (message) => {
 		`);
 		changeMessageContainerPadding();
 		showFinalBlock();
-		addListenerToAllRouteButtons();
+
+		const addListenerToAllRouteButtonsFinalMessage = () => {
+			if (document.querySelector(".final-message__button")) {
+				const finalButton = document.querySelector(".final-message__button");
+					// Отменяем всплытие и задаем событие при клике на дочерние элементы
+					finalButton.addEventListener("click", (e) => {
+						currentTemplateID = removeDigitsAndUnderscore(e.target.id);
+						includeCurrentTemplate(currentTemplateID);
+						hiddenOrShowFooter();
+						scrollToTop();
+					})
+
+			}
+		}
+		addListenerToAllRouteButtonsFinalMessage();
+
 		addInputFieldsToCheckPage();
 	}
 	setTimeout(delayedFunction, 300);
