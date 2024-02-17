@@ -2602,10 +2602,3 @@ section::-webkit-scrollbar-thumb {
     padding: 0.625rem 0.3125rem 0.625rem 0.3125rem;
   }
 }
-
-@media (max-width: 28.125em) {
-  .directions-page__image-container {
-    max-width: 100vw;
-    height: 63vw;
-  }
-}
