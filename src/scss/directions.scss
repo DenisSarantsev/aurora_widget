@@ -16,8 +16,8 @@
 	&__title {
 	}
 	&__image-container {
-		max-width: toRem(380);
-		height: toRem(260);
+		max-width: toRem(330);
+		height: toRem(200);
 		width: 100%;
 		position: relative;
 		display: flex;
@@ -29,7 +29,7 @@
 		}
 	}
 	&__image-top {
-		max-width: toRem(170);
+		max-width: toRem(130);
 		position: absolute;
 		left: 0;
 		top: 0;
@@ -38,7 +38,7 @@
 		}
 	}
 	&__image-bottom {
-		max-width: toRem(240);
+		max-width: toRem(220);
 		position: absolute;
 		bottom: 0;
 		right: 0;

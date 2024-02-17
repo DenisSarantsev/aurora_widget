@@ -1480,8 +1480,8 @@ section::-webkit-scrollbar-thumb {
 }
 
 .directions-page__image-container {
-  max-width: 23.75rem;
-  height: 16.25rem;
+  max-width: 20.625rem;
+  height: 12.5rem;
   width: 100%;
   position: relative;
   display: -webkit-box;
@@ -1494,14 +1494,14 @@ section::-webkit-scrollbar-thumb {
 }
 
 .directions-page__image-top {
-  max-width: 10.625rem;
+  max-width: 8.125rem;
   position: absolute;
   left: 0;
   top: 0;
 }
 
 .directions-page__image-bottom {
-  max-width: 15rem;
+  max-width: 13.75rem;
   position: absolute;
   bottom: 0;
   right: 0;
