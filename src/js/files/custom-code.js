@@ -24,6 +24,7 @@ let currentVacancyID = ""; // Актуальный id вакансии (посл
 let currentVacancyTitle = "";
 let globalVacancies; // Глобальная переменная для всех вакансий
 let currentVacancyKind; // Глобальная переменная, в которую записываем вид вакансии при клике на него
+let reserveBranch = false;
 const successfullMessage = "Ваша заявка успішно надіслана. Ми зв'яжемося з вами, як тільки наші спеціалісти її розглянуть. Перевірити статус заявки, відредагувати або видалити її ви можете у вашому профілі";
 const errorMessage = "Нажаль сталась помилка під час відправки заявки. Спробуйте ще раз, або зв'яжіться з нами по телефону";
 
@@ -105,7 +106,6 @@ function removeDigitsAndUnderscore(inputString) {
 const includeCurrentTemplate = (currentTemplateID) => {
 	// Находим все шаблоны
 const allWidgetTemplates = document.querySelectorAll(".page-template");
-console.log(allWidgetTemplates)
 	for ( let item of allWidgetTemplates ) {
 		if ( item.id !== currentTemplateID && !firstEnter ) { 
 			item.classList.add("position-left");
@@ -138,7 +138,6 @@ fetch(apiVacanciesUrl)
 })
 .then(data => {
 	globalVacancies = data; // Добавляем все вакансии в переменную
-	console.log(globalVacancies)
 	let globalKinds = [] // Добавляем все виды вакансий в один массив
 	const findAllKindsOfVacancies = (vacancies) => {
 		for ( let i = 0; i < vacancies.vacancies.length; i++ ) {
@@ -168,13 +167,25 @@ fetch(apiVacanciesUrl)
 	for ( let i = 0; i < globalKinds.length; i++ ) {
 		directionsButtons.insertAdjacentHTML("beforeend", 
 			`
-			<button id="${i}_jobs-list-page-${i}" class="route-button button route-button-main-style button-effect">
+			<button id="${i}_jobs-list-page-${i}" class="route-button button route-button-main-style button-effect kind-vacancy-button">
 				<div id="circle"></div>
 				<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>
 			</button>
 			`
 		)
 	}
+
+	// Вешаем прослушиватели на все кнопки выбора направления при выборе вакансии
+	const addListenerToAllKindButtons = () => {
+		const allKindButtons = document.querySelectorAll(".kind-vacancy-button");
+		for ( let item of allKindButtons ) {
+			item.addEventListener("click", () => {
+				currentVacancyKind = item.lastElementChild.textContent;
+				reserveBranch = false;
+			})
+		}
+	}
+	addListenerToAllKindButtons();
 
 	// Создаем нужное количество шаблонов в зависимости от количества направлений
 	for ( let i = 0; i < globalKinds.length; i++ ) {
@@ -208,13 +219,41 @@ fetch(apiVacanciesUrl)
 		}
 		currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", 
 			`
-				<button class="route-button button button-effect reserve-template-main-page-button">
+				<button id="005_reserve-directions-page" class="route-button button button-effect reserve-template-main-page-button">
 					<div id="circle"></div>
 					<div>Не знайшов вакансії для себе?</div>
 				</button>
 			`
 		)
 	}
+
+
+	// Вставляем в страницу с направлениями нужное количество кнопок
+	let reserveDirectionsButtons = document.querySelector(".reserve-directions-page__buttons-block");
+	for ( let i = 0; i < globalKinds.length; i++ ) {
+		reserveDirectionsButtons.insertAdjacentHTML("beforeend", 
+			`
+			<button id="0${i}_post-request-vacancy-page" class="route-button button route-button-main-style button-effect kind-reserve-button">
+				<div id="circle"></div>
+				<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>
+			</button>
+			`
+		)
+	}
+
+	// Вешаем прослушиватели на все кнопки выбора направления при записи в резерв
+	const addListenerToAllKindReserveButtons = () => {
+		const allKindsReserveButtons = document.querySelectorAll(".kind-reserve-button");
+		for ( let item of allKindsReserveButtons ) {
+			item.addEventListener("click", () => {
+				addQuestionsToChat();
+				currentVacancyKind = item.lastElementChild.textContent;
+				reserveBranch = true;
+			})
+		}
+	}
+	addListenerToAllKindReserveButtons();
+
 
 	// Проходимся по всем кнопкам вакансий (вне зависимости от направления), и вешаем на них событие клика
 	const allJobItemsButtons = document.querySelectorAll(".jobs-list__item");
@@ -279,7 +318,7 @@ headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
 
 // При переходе на страницу с чатом обнуляем все переменные
 // Переменные для отправки на бэк
-let dataKind = "склад";
+let dataKind = currentVacancyKind;
 
 let dataName = "";
 let dataPhone = currentUserPhone;
@@ -362,7 +401,7 @@ const addMessagesAfterUserAnswers = (questionsArray) => {
 
 // -------------------------------------------------------------------------------------------------- Функции валидации в чате
 
-// Удаление всех сообщния об ошибке
+// Удаление всех сообщний об ошибке
 const deleteErrorMessagesInChat = () => {
 	const allErrorMessages = document.querySelectorAll(".main-error-style__container");
 	for ( let item of allErrorMessages ) {
@@ -963,14 +1002,26 @@ const addAdditionalQuestionsToMainCheckQuestionsArray = (questionsObject, arrayT
 // Получаем объект и выводим данные на странице в инпутах
 const addInputFieldsToCheckPage = () => {
 	const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
-	checkPageMainContainer.insertAdjacentHTML("beforeend", `
-				<div class="check-request-vacancy-page__check-item">
-					<div class="check-request-vacancy-page__question-input-container">
-						<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> <img src="../../img/icons/vacancy-icon.png" alt="vacancy icon" class="vacancy-mark"> Назва вакансії:</div>
-						<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>
-					</div>
+	if ( reserveBranch === false ) {
+		checkPageMainContainer.insertAdjacentHTML("beforeend", `
+			<div class="check-request-vacancy-page__check-item">
+				<div class="check-request-vacancy-page__question-input-container">
+					<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> <img src="../../img/icons/vacancy-icon.png" alt="vacancy icon" class="vacancy-mark"> Назва вакансії:</div>
+					<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>
 				</div>
-			`)
+			</div>
+		`)
+	} else if ( reserveBranch === true ) {
+		checkPageMainContainer.insertAdjacentHTML("beforeend", `
+			<div class="check-request-vacancy-page__check-item">
+				<div class="check-request-vacancy-page__question-input-container">
+					<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> <img src="../../img/icons/vacancy-icon.png" alt="vacancy icon" class="vacancy-mark"> Назва вакансії:</div>
+					<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">Резерв</div>
+				</div>
+			</div>
+		`)
+	}
+
 	for ( let i = 0; i < Object.keys(postVacancyObject).length-1; i++ ) {
 		if ( i < fixedQuestionsCounter ) {
 			checkPageMainContainer.insertAdjacentHTML("beforeend", `
@@ -1099,10 +1150,19 @@ const addCVObjectToMainObject = (cvObject) => {
 
 // Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
 function fetchPostData(objectData, vacancyID) {
-	const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`;
+
+	let apiPostDataURL = "";
+	if ( reserveBranch === false ) {
+		apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`;
+	} else if ( reserveBranch === true ) {
+		apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/reserve`;
+		currentVacancyTitle = "Резерв";
+	}
 	// Данные POST запроса
 	const data = addCVObjectToMainObject(objectData);
-	console.log(data)
+	objectData.kind = currentVacancyKind.toLowerCase();
+
+	console.log(objectData)
 	const requestOptions = {
 		method: 'POST',
 		headers: {
@@ -1316,12 +1376,21 @@ const writeDataToCabinet = (data) => {
 		`)
 	} else {
 		cabinetMainButton.classList.remove("_hidden-cabinet-button");
-		cabinetWrapper.insertAdjacentHTML("beforeend", `
-			<div class="cabinet-page__item">
-				<div class="cabinet-page__item-name">Назва вакансії:</div>
-				<textarea class="cabinet-page__item-value-vacancy" data-item="title">${data.cabinet.title}</textarea>
-			</div>
-		`)
+		if ( data.cabinet.title === "Хочу бути номер 1" ) {
+			cabinetWrapper.insertAdjacentHTML("beforeend", `
+				<div class="cabinet-page__item">
+					<div class="cabinet-page__item-name">Назва вакансії:</div>
+					<textarea class="cabinet-page__item-value-vacancy" data-item="title">Резерв</textarea>
+				</div>
+			`)
+		} else if ( data.cabinet.title !== "Хочу бути номер 1" ) {
+			cabinetWrapper.insertAdjacentHTML("beforeend", `
+				<div class="cabinet-page__item">
+					<div class="cabinet-page__item-name">Назва вакансії:</div>
+					<textarea class="cabinet-page__item-value-vacancy" data-item="title">${data.cabinet.title}</textarea>
+				</div>
+			`)
+		}
 		cabinetWrapper.insertAdjacentHTML("beforeend",`
 			<div class="cabinet-page__item">
 				<div class="cabinet-page__item-name">Ім'я та прізвище:</div>
@@ -1346,30 +1415,9 @@ const writeDataToCabinet = (data) => {
 				<textarea class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</textarea>
 			</div>
 		`)
-		// const additionalQuestionsArray = [];
-		// for ( let i = 0; i < Object.keys(data.cabinet).length; i++ ) {
-		// 	let objectItem = Object.keys(data.cabinet)[i];
-		// 	if ( objectItem[0] === "q" && objectItem.length === 2 ) {
-		// 		additionalQuestionsArray.push(objectItem);
-		// 		addAdditionalQuestionsToUserCabinet(objectItem, cabinetWrapper, data);
-		// 	}
-		// }
+
 	}
 }
-
-// Добавление списка дополнительных вопросов и ответов в личном кабинете
-// const addAdditionalQuestionsToUserCabinet = (object, element, data) => {
-// 	let questionObject = data.cabinet[object];
-// 	for (const key in questionObject) {
-// 		const value = questionObject[key];
-// 		element.insertAdjacentHTML("beforeend",`
-// 			<div class="cabinet-page__item">
-// 				<div class="cabinet-page__item-name">${key}</div>
-// 				<textarea class="cabinet-page__item-value additional-cabinet-value" data-item="${object}">${value}</textarea>
-// 			</div>
-// 		`)
-// 	}
-// }
 
 // Удаление заявки
 document.querySelector(".cabinet-page__delete-button").addEventListener("click", () => {
@@ -1399,47 +1447,7 @@ document.querySelector(".cabinet-page__delete-button").addEventListener("click",
 })
 
 
-// ------------------------------------------------------------------------------------------ Валидация полей на всех страницах
 
-// // Валидация имени
-// const validateName = (name) => {
-// 	if ( name.length <= 3 || name.length > 100 ) {
-// 		console.log("Допустима кількість символів - від 4 до 100")
-// 	}
-// }
-
-// // Валидация телефона
-// const validatePhone = (phone) => {
-// 	let phoneNumber = phone.replace(" ", "");
-// 	let phoneNumberInt = +phoneNumber;
-// 	let noNumbersCounter = 0;
-// 	for ( let i = 0; i < phoneNumberInt.length; i++ ) {
-// 		if ( typeof phoneNumberInt[i] !== "number" ) {
-// 			noNumbersCounter++
-// 		}
-// 	}
-// 	if ( phoneNumber.length < 10 || phoneNumber.length > 30 || noNumbersCounter > 0 ) {
-// 		console.log("Телефон має містити не менше 10 і не більше 30 символів");
-// 	} else {
-// 		console.log("phone ok");
-// 	}
-// }
-
-// // Валидация города
-// const validateCity = (city) => {
-// 	if ( city.length < 2 || city.length > 100 ) {
-// 		console.log("Допустима кількість символів - від 2 до 100")
-// 	}
-// }
-
-// // Валидация дня рождения
-// const validateBirthday = (birthday) => {
-// 	if ( birthday.length !== 10 ) {
-// 		console.log("Введіть номер телефону у форматі дд.мм.рррр")
-// 	} else {
-// 		console.log("date ok")
-// 	}
-// }
 
 
 

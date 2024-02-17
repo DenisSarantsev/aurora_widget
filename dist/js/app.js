@@ -1165,6 +1165,8 @@
             let currentVacancyID = "";
             let currentVacancyTitle = "";
             let globalVacancies;
+            let currentVacancyKind;
+            let reserveBranch = false;
             const successfullMessage = "Ваша заявка успішно надіслана. Ми зв'яжемося з вами, як тільки наші спеціалісти її розглянуть. Перевірити статус заявки, відредагувати або видалити її ви можете у вашому профілі";
             const errorMessage = "Нажаль сталась помилка під час відправки заявки. Спробуйте ще раз, або зв'яжіться з нами по телефону";
             const homePageTitleElement = document.querySelector(".home-page__title");
@@ -1221,7 +1223,6 @@
             }
             const includeCurrentTemplate = currentTemplateID => {
                 const allWidgetTemplates = document.querySelectorAll(".page-template");
-                console.log(allWidgetTemplates);
                 for (let item of allWidgetTemplates) if (item.id !== currentTemplateID && !firstEnter) {
                     item.classList.add("position-left");
                     setTimeout((function() {
@@ -1243,7 +1244,6 @@
                 return response.json();
             })).then((data => {
                 globalVacancies = data;
-                console.log(globalVacancies);
                 let globalKinds = [];
                 const findAllKindsOfVacancies = vacancies => {
                     for (let i = 0; i < vacancies.vacancies.length; i++) {
@@ -1253,13 +1253,32 @@
                 };
                 findAllKindsOfVacancies(globalVacancies);
                 let directionsButtons = document.querySelector(".directions-page__buttons-block");
-                for (let i = 0; i < globalKinds.length; i++) directionsButtons.insertAdjacentHTML("beforeend", `\n\t\t\t<button id="${i}_jobs-list-page-${i}" class="route-button button route-button-main-style button-effect">\n\t\t\t\t<div id="circle"></div>\n\t\t\t\t<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>\n\t\t\t</button>\n\t\t\t`);
+                for (let i = 0; i < globalKinds.length; i++) directionsButtons.insertAdjacentHTML("beforeend", `\n\t\t\t<button id="${i}_jobs-list-page-${i}" class="route-button button route-button-main-style button-effect kind-vacancy-button">\n\t\t\t\t<div id="circle"></div>\n\t\t\t\t<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>\n\t\t\t</button>\n\t\t\t`);
+                const addListenerToAllKindButtons = () => {
+                    const allKindButtons = document.querySelectorAll(".kind-vacancy-button");
+                    for (let item of allKindButtons) item.addEventListener("click", (() => {
+                        currentVacancyKind = item.lastElementChild.textContent;
+                        reserveBranch = false;
+                    }));
+                };
+                addListenerToAllKindButtons();
                 for (let i = 0; i < globalKinds.length; i++) document.querySelector(".page").insertAdjacentHTML("beforeend", `\n\t\t\t\t<section id="jobs-list-page-${i}" class="page-template page__jobs-list jobs-list-page-${i} jobs-list _hidden-template section-padding">\n\t\t\t\t\t<div class="jobs-list__container">\n\t\t\t\t\t\t<div class="jobs-list__buttons-block jobs-list__${i}">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</section>\n\t\t\t`);
                 for (let i = 0; i < globalKinds.length; i++) {
                     let currentVacanciesTemplate = document.querySelector(`.jobs-list-page-${i}`);
                     for (let j = 0; j < globalVacancies.vacancies.length; j++) if (globalKinds[i] === globalVacancies.vacancies[j].kind) currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", `\n\t\t\t\t\t\t<button id="vacancy-page" data-vacancy-id="${globalVacancies.vacancies[j]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t\t<div>${globalVacancies.vacancies[j].title}</div>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t`);
-                    currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", `\n\t\t\t\t<button class="route-button button button-effect reserve-template-main-page-button">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Не знайшов вакансії для себе?</div>\n\t\t\t\t</button>\n\t\t\t`);
+                    currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", `\n\t\t\t\t<button id="005_reserve-directions-page" class="route-button button button-effect reserve-template-main-page-button">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Не знайшов вакансії для себе?</div>\n\t\t\t\t</button>\n\t\t\t`);
                 }
+                let reserveDirectionsButtons = document.querySelector(".reserve-directions-page__buttons-block");
+                for (let i = 0; i < globalKinds.length; i++) reserveDirectionsButtons.insertAdjacentHTML("beforeend", `\n\t\t\t<button id="0${i}_post-request-vacancy-page" class="route-button button route-button-main-style button-effect kind-reserve-button">\n\t\t\t\t<div id="circle"></div>\n\t\t\t\t<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>\n\t\t\t</button>\n\t\t\t`);
+                const addListenerToAllKindReserveButtons = () => {
+                    const allKindsReserveButtons = document.querySelectorAll(".kind-reserve-button");
+                    for (let item of allKindsReserveButtons) item.addEventListener("click", (() => {
+                        addQuestionsToChat();
+                        currentVacancyKind = item.lastElementChild.textContent;
+                        reserveBranch = true;
+                    }));
+                };
+                addListenerToAllKindReserveButtons();
                 const allJobItemsButtons = document.querySelectorAll(".jobs-list__item");
                 for (let item of allJobItemsButtons) item.addEventListener("click", (function() {
                     scrollToTop();
@@ -1296,7 +1315,7 @@
             }));
             const headerUserName = document.querySelector(".header__user-name-text");
             headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
-            let dataKind = "склад";
+            let dataKind = currentVacancyKind;
             let dataName = "";
             let dataPhone = currentUserPhone;
             let dataCity = "";
@@ -1728,7 +1747,7 @@
             };
             const addInputFieldsToCheckPage = () => {
                 const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
-                checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> <img src="../../img/icons/vacancy-icon.png" alt="vacancy icon" class="vacancy-mark"> Назва вакансії:</div>\n\t\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t`);
+                if (reserveBranch === false) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> <img src="../../img/icons/vacancy-icon.png" alt="vacancy icon" class="vacancy-mark"> Назва вакансії:</div>\n\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t`); else if (reserveBranch === true) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> <img src="../../img/icons/vacancy-icon.png" alt="vacancy icon" class="vacancy-mark"> Назва вакансії:</div>\n\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">Резерв</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t`);
                 for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question"> <img src="../../img/icons/check.png" alt="check icon" class="green-check-mark"> <img src="../../img/icons/cross.png" alt="check icon" class="red-cross _hidden-icon"> ${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`); else {
                     let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i + 1]];
                     let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
@@ -1798,9 +1817,14 @@
                 return cvObject;
             };
             function fetchPostData(objectData, vacancyID) {
-                const apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`;
+                let apiPostDataURL = "";
+                if (reserveBranch === false) apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`; else if (reserveBranch === true) {
+                    apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/reserve`;
+                    currentVacancyTitle = "Резерв";
+                }
                 const data = addCVObjectToMainObject(objectData);
-                console.log(data);
+                objectData.kind = currentVacancyKind.toLowerCase();
+                console.log(objectData);
                 const requestOptions = {
                     method: "POST",
                     headers: {
@@ -1922,7 +1946,7 @@
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\tЗаявки відсутні\n\t\t\t</div>\n\t\t`);
                 } else {
                     cabinetMainButton.classList.remove("_hidden-cabinet-button");
-                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Назва вакансії:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value-vacancy" data-item="title">${data.cabinet.title}</textarea>\n\t\t\t</div>\n\t\t`);
+                    if (data.cabinet.title === "Хочу бути номер 1") cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="cabinet-page__item">\n\t\t\t\t\t<div class="cabinet-page__item-name">Назва вакансії:</div>\n\t\t\t\t\t<textarea class="cabinet-page__item-value-vacancy" data-item="title">Резерв</textarea>\n\t\t\t\t</div>\n\t\t\t`); else if (data.cabinet.title !== "Хочу бути номер 1") cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="cabinet-page__item">\n\t\t\t\t\t<div class="cabinet-page__item-name">Назва вакансії:</div>\n\t\t\t\t\t<textarea class="cabinet-page__item-value-vacancy" data-item="title">${data.cabinet.title}</textarea>\n\t\t\t\t</div>\n\t\t\t`);
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Ім'я та прізвище:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-name" data-item="name">${data.cabinet.name}</textarea>\n\t\t\t</div>\n\t\t`);
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Телефон:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-phone" data-item="phone">${data.cabinet.feedback_phone}</textarea>\n\t\t\t</div>\n\t\t`);
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Місто:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-city" data-item="city">${data.cabinet.city}</textarea>\n\t\t\t</div>\n\t\t`);
