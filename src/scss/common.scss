@@ -353,13 +353,24 @@ section {
 .position-left {
 	animation: fadeOut 0.3s cubic-bezier(1,-0.25,1,.71);
 }
-
 @keyframes fadeOut {
   0% {
     margin-right: 0vw;
   }
   100% {
     margin-right: 200vw;
+  }
+}
+
+.position-left-reverse {
+	animation: fadeOutReverse 0.3s cubic-bezier(1,-0.25,1,.71);
+}
+@keyframes fadeOutReverse {
+  0% {
+    margin-right: 0vw;
+  }
+  100% {
+    margin-right: -200vw;
   }
 }
 
@@ -371,14 +382,24 @@ section {
 	margin-right: 0vw;
 	transition: all 0.3s ease 0s;
 }
-
-
 @keyframes fadeIn {
   0% {
     margin-right: -200vw;
   }
   100% {
     margin-right: 0vw;
+  }
+}
+
+.position-right-reverse {
+	animation: fadeInReverse 0.3s cubic-bezier(0,1.49,.66,.9);
+}
+@keyframes fadeInReverse {
+  0% {
+    margin-left: -200vw;
+  }
+  100% {
+    margin-left: 0vw;
   }
 }
 

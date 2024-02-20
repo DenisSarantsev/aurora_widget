@@ -722,6 +722,31 @@ section::-webkit-scrollbar-thumb {
   }
 }
 
+.position-left-reverse {
+  -webkit-animation: fadeOutReverse 0.3s cubic-bezier(1, -0.25, 1, 0.71);
+          animation: fadeOutReverse 0.3s cubic-bezier(1, -0.25, 1, 0.71);
+}
+
+@-webkit-keyframes fadeOutReverse {
+  0% {
+    margin-right: 0vw;
+  }
+
+  100% {
+    margin-right: -200vw;
+  }
+}
+
+@keyframes fadeOutReverse {
+  0% {
+    margin-right: 0vw;
+  }
+
+  100% {
+    margin-right: -200vw;
+  }
+}
+
 .position-right {
   -webkit-animation: fadeIn 0.3s cubic-bezier(0, 1.49, 0.66, 0.9);
           animation: fadeIn 0.3s cubic-bezier(0, 1.49, 0.66, 0.9);
@@ -750,6 +775,31 @@ section::-webkit-scrollbar-thumb {
 
   100% {
     margin-right: 0vw;
+  }
+}
+
+.position-right-reverse {
+  -webkit-animation: fadeInReverse 0.3s cubic-bezier(0, 1.49, 0.66, 0.9);
+          animation: fadeInReverse 0.3s cubic-bezier(0, 1.49, 0.66, 0.9);
+}
+
+@-webkit-keyframes fadeInReverse {
+  0% {
+    margin-left: -200vw;
+  }
+
+  100% {
+    margin-left: 0vw;
+  }
+}
+
+@keyframes fadeInReverse {
+  0% {
+    margin-left: -200vw;
+  }
+
+  100% {
+    margin-left: 0vw;
   }
 }
 
@@ -1795,6 +1845,138 @@ section::-webkit-scrollbar-thumb {
           filter: invert(80%) sepia(65%) saturate(2048%) hue-rotate(3deg) brightness(106%) contrast(109%);
 }
 
+.add-resume-container {
+  padding: 10px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.625rem;
+  font-size: 0.9375rem;
+}
+
+.add-resume-file-button {
+  min-height: 41.97px;
+  width: 100%;
+  border: 2px dashed rgba(0, 0, 0, 0.3);
+  border-radius: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 0.625rem;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+.add-resume-file-button:hover {
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  background-color: rgba(255, 221, 0, 0.7);
+}
+
+.add-resume-choose-image {
+  max-width: 1.25rem;
+}
+
+.add-resume-file-image {
+  max-width: 1.25rem;
+}
+
+.save-delete-resume-buttons-container {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0.625rem;
+}
+
+.save-delete-resume-buttons-container > * {
+  width: 100%;
+  background-color: #fff;
+  min-height: 41.97px;
+  border-radius: 100px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 0.625rem;
+}
+
+.save-delete-resume-buttons-container > * img {
+  max-width: 1.0625rem;
+}
+
+.delete-resume-button {
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+.delete-resume-button:hover {
+  border: 1px solid rgba(255, 0, 0, 0.4);
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+.save-resume-button {
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+.save-resume-button:hover {
+  border: 1px solid rgba(35, 212, 0, 0.7);
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+.save-resume-button img {
+  -webkit-filter: invert(45%) sepia(87%) saturate(1085%) hue-rotate(89deg) brightness(95%) contrast(106%);
+          filter: invert(45%) sepia(87%) saturate(1085%) hue-rotate(89deg) brightness(95%) contrast(106%);
+}
+
+.skip-resume-button {
+  margin-top: -10px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: rgb(245, 245, 245);
+  width: 100%;
+  min-height: 41.97px;
+  border-radius: 100px;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+.skip-resume-button:hover {
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  background-color: rgba(255, 221, 0, 0.7);
+}
+
+.hidden-file-buttons {
+  display: none;
+}
+
 .padding-message-container-chat {
   padding: 0.9375rem 0.3125rem 8.75rem 0.3125rem;
   -webkit-transition: all 0.3s ease 0s;
@@ -2372,6 +2554,10 @@ section::-webkit-scrollbar-thumb {
 }
 
 .main-message-template-style__home-button {
+  width: 100%;
+}
+
+.main-message-template-style__width {
   width: 100%;
 }
 

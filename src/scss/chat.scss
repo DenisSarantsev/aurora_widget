@@ -31,11 +31,9 @@
 			&::-webkit-scrollbar {
 				width: 0.5em; /* Ширина полосы прокрутки */
 			}
-			
 			&::-webkit-scrollbar-thumb {
 					background-color: transparent; /* Цвет бегунка (перемещаемой части) */
 			}
-			
 			&::-webkit-scrollbar-track {
 					background-color: transparent; /* Цвет фона полосы прокрутки */
 			}
@@ -156,6 +154,104 @@
 			// filter: invert(100%) sepia(0%) saturate(7460%) hue-rotate(92deg) brightness(113%) contrast(109%);
 			filter: invert(80%) sepia(65%) saturate(2048%) hue-rotate(3deg) brightness(106%) contrast(109%);
 		}
+}
+
+.add-resume-container {
+	padding: 10px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: toRem(10);
+	font-size: toRem(15);
+}
+
+.add-resume-file-button {
+	min-height: 41.97px;
+	width: 100%;
+	border: 2px dashed rgba($color: #000000, $alpha: 0.3);
+	border-radius: 100px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: toRem(10);
+	transition: all 0.3s ease 0s;
+	&:hover {
+		transition: all 0.3s ease 0s;
+		background-color: rgba($color: $mainYellow, $alpha: 0.7)
+	}
+}
+
+.add-resume-choose-image {
+	max-width: toRem(20);
+}
+
+.add-resume-file-image {
+	max-width: toRem(20);
+}
+
+.add-resume-choose-text {
+
+}
+
+.save-delete-resume-buttons-container {
+	width: 100%;
+	display: flex;
+	gap: toRem(10);
+	&>* {
+		width: 100%;
+		background-color: #fff;
+		min-height: 41.97px;
+		border-radius: 100px;
+		border: 1px solid rgba($color: #000000, $alpha: 0.15);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: toRem(10);
+		& img {
+			max-width: toRem(17);
+		}
+	}
+}
+
+.delete-resume-button {
+	transition: all 0.3s ease 0s;
+	&:hover {
+		border: 1px solid rgba($color: red, $alpha: 0.4);
+		// background-color: rgba($color: red, $alpha: 0.4);
+		transition: all 0.3s ease 0s;
+	}
+}
+
+.save-resume-button {
+	transition: all 0.3s ease 0s;
+	&:hover {
+		border: 1px solid rgba(35, 212, 0, 0.7);
+		transition: all 0.3s ease 0s;
+		// background-color: rgba($color: greenyellow, $alpha: 0.7);
+	}
+	& img {
+		filter: invert(45%) sepia(87%) saturate(1085%) hue-rotate(89deg) brightness(95%) contrast(106%);
+	}
+}
+
+.skip-resume-button {
+	margin-top: -10px;
+	border: 1px solid rgba($color: #000000, $alpha: 0.15);
+	background-color: rgba(245, 245, 245, 1);
+	width: 100%;
+	min-height: 41.97px;
+	border-radius: 100px;
+	transition: all 0.3s ease 0s;
+	&:hover {
+		transition: all 0.3s ease 0s;
+		background-color: rgba($color: $mainYellow, $alpha: 0.7)
+	}
+}
+
+.hidden-file-buttons {
+	display: none;
 }
 
 .padding-message-container-chat {
@@ -358,3 +454,4 @@
 ._hidden-error-messages {
 	display: none;
 }
+

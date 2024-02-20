@@ -1159,7 +1159,7 @@
             let currentTelegramID = data.telegram_id;
             let currentPassword = data.password;
             let currentUserPhone = data.phone_number;
-            let actualHost = "https://avrora-web.fly.dev";
+            let actualHost = "https://avrora-hr.fly.dev/";
             let currentTemplateID = "home-page";
             let firstEnter = true;
             let currentVacancyID = "";
@@ -1167,7 +1167,8 @@
             let globalVacancies;
             let currentVacancyKind;
             let reserveBranch = false;
-            const successfullMessage = "Ваша заявка успішно надіслана. Ми зв'яжемося з вами, як тільки наші спеціалісти її розглянуть. Перевірити статус заявки, відредагувати або видалити її ви можете у вашому профілі";
+            let currentFile = {};
+            let templatesRoad = [ "home-page" ];
             const errorMessage = "Нажаль сталась помилка під час відправки заявки. Спробуйте ще раз, або зв'яжіться з нами по телефону";
             const homePageTitleElement = document.querySelector(".home-page__title");
             const homePageTitleText = `Привіт, ${currentUserName}! `;
@@ -1265,22 +1266,23 @@
                 for (let i = 0; i < globalKinds.length; i++) document.querySelector(".page").insertAdjacentHTML("beforeend", `\n\t\t\t\t<section id="jobs-list-page-${i}" class="page-template page__jobs-list jobs-list-page-${i} jobs-list _hidden-template section-padding">\n\t\t\t\t\t<div class="jobs-list__container">\n\t\t\t\t\t\t<div class="jobs-list__buttons-block jobs-list__${i}">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</section>\n\t\t\t`);
                 for (let i = 0; i < globalKinds.length; i++) {
                     let currentVacanciesTemplate = document.querySelector(`.jobs-list-page-${i}`);
-                    for (let j = 0; j < globalVacancies.vacancies.length; j++) if (globalKinds[i] === globalVacancies.vacancies[j].kind) currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", `\n\t\t\t\t\t\t<button id="vacancy-page" data-vacancy-id="${globalVacancies.vacancies[j]._id}" class="button button-effect jobs-list__item">\n\t\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t\t<div>${globalVacancies.vacancies[j].title}</div>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t`);
+                    for (let j = 0; j < globalVacancies.vacancies.length; j++) if (globalKinds[i] === globalVacancies.vacancies[j].kind) currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", `\n\t\t\t\t\t\t<button id="vacancy-page" data-vacancy-id="${globalVacancies.vacancies[j]._id}" class="route-button button button-effect jobs-list__item">\n\t\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t\t<div>${globalVacancies.vacancies[j].title}</div>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t`);
                     currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", `\n\t\t\t\t<button id="005_reserve-directions-page" class="route-button button button-effect reserve-template-main-page-button">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Не знайшов вакансії для себе?</div>\n\t\t\t\t</button>\n\t\t\t`);
                 }
                 let reserveDirectionsButtons = document.querySelector(".reserve-directions-page__buttons-block");
                 for (let i = 0; i < globalKinds.length; i++) reserveDirectionsButtons.insertAdjacentHTML("beforeend", `\n\t\t\t<button id="0${i}_post-request-vacancy-page" class="route-button button route-button-main-style button-effect kind-reserve-button">\n\t\t\t\t<div id="circle"></div>\n\t\t\t\t<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>\n\t\t\t</button>\n\t\t\t`);
                 const addListenerToAllKindReserveButtons = () => {
                     const allKindsReserveButtons = document.querySelectorAll(".kind-reserve-button");
-                    for (let item of allKindsReserveButtons) item.addEventListener("click", (() => {
+                    for (let item of allKindsReserveButtons) item.addEventListener("click", (e => {
                         addQuestionsToChat();
                         currentVacancyKind = item.lastElementChild.textContent;
                         reserveBranch = true;
+                        addBackButtonMechanics(e.target);
                     }));
                 };
                 addListenerToAllKindReserveButtons();
                 const allJobItemsButtons = document.querySelectorAll(".jobs-list__item");
-                for (let item of allJobItemsButtons) item.addEventListener("click", (function() {
+                for (let item of allJobItemsButtons) item.addEventListener("click", (function(e) {
                     scrollToTop();
                     let vacancyTitle = "";
                     let vacancyContent = "";
@@ -1301,6 +1303,7 @@
                         const allRouteButtons = document.querySelectorAll(".route-button");
                         for (let item of allRouteButtons) item.addEventListener("click", (e => {
                             currentTemplateID = removeDigitsAndUnderscore(e.target.id);
+                            addBackButtonMechanics(e.target);
                             firstEnter = false;
                             includeCurrentTemplate(currentTemplateID);
                             addWhiteBackground(item);
@@ -1321,23 +1324,25 @@
             let dataCity = "";
             let dataBornDate = "";
             let postVariablesArray = [ dataName, dataPhone, dataCity, dataBornDate ];
-            let objectKeys = [ "name", "feedback_phone", "city", "birthday" ];
+            let objectKeys = [ "name", "feedback_phone", "city", "birthday", "cv" ];
             const postVacancyObject = {
                 kind: dataKind,
                 name: dataName,
                 feedback_phone: dataPhone,
                 city: dataCity,
-                birthday: dataBornDate
+                birthday: dataBornDate,
+                cv: ""
             };
-            let fixedQuestionsCounter = 4;
-            let allQuestionsCounter = 4;
+            let fixedQuestionsCounter = 5;
+            let allQuestionsCounter = 5;
             let questionsCounter = -1;
             let answersCounter = -1;
             const requestButtonsArray = document.querySelectorAll(".vacancy-page__request-button");
             for (let button of requestButtonsArray) button.addEventListener("click", (() => {
                 addQuestionsToChat();
+                showTextInput();
             }));
-            const questionsArray = [ `Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`, `Вкажіть актуальний номер телефону для зв'язку:`, `Вкажіть місто проживання:`, `Вкажіть дату народження:` ];
+            const questionsArray = [ `Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`, `Вкажіть актуальний номер телефону для зв'язку:`, `Вкажіть місто проживання:`, `Вкажіть дату народження:`, `Додайте резюме у форматі .docx або .pdf:` ];
             const finalMessage = "Дякуємо за терпіння! Залишилось перевірити правильність введених даних і можна надсилати заявку)";
             let additionalQuestions;
             function addQuestionsToChat() {
@@ -1425,6 +1430,11 @@
                 chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="main-error-style">Неправильно введені дані. Довжина відповіді має бути від 10 до 500 символів</div>\n\t\t</div>\n\t`);
                 scrollChatToBottom();
             };
+            const errorValidateFileFormat = () => {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="main-error-style">Неправильний формат резюме. Розширення файлу має бути .docx або .pdf</div>\n\t\t</div>\n\t`);
+                scrollChatToBottom();
+            };
             const chatInput = document.querySelector(".post-request-vacancy-page__input");
             chatInput.addEventListener("keyup", (event => {
                 if (event.key === "Enter") if (answersCounter === -1) validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage(); else if (answersCounter === 1) validateCity(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateCityMessage(); else if (answersCounter > 2) validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
@@ -1442,6 +1452,7 @@
                     addMessagesAfterUserAnswers(questionsArray);
                     addPhoneAnswerBlock();
                     addBirthDateAnswerBlock();
+                    addResumeBlock();
                 } else if (questionsCounter + 1 > fixedQuestionsCounter && answersCounter < allQuestionsCounter) {
                     let currentQuestionKey = `q${questionsCounter + 1 - fixedQuestionsCounter}`;
                     let currentAdditionalQuestion = additionalQuestions.forms[`${currentQuestionKey}`];
@@ -1451,9 +1462,100 @@
                     addUserAnswers(chatInput.value);
                     addMessagesAfterUserAnswers(questionsArray);
                     checkFinalAnswerMessage();
+                    addResumeBlock();
                 }
                 chatInput.value = "";
                 deleteErrorMessagesInChat();
+            };
+            const addResumeBlock = () => {
+                console.log("function");
+                if (objectKeys[questionsCounter] === "cv") {
+                    console.log("function cv");
+                    function delayedFunction() {
+                        scrollChatToBottom();
+                        addResumeField();
+                    }
+                    setTimeout(delayedFunction, 900);
+                }
+            };
+            const addResumeField = () => {
+                hiddenTextInput();
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="add-resume-container phone-buttons-show-animations">\n\t\t\t<input class="input-hidden add-resume-input" type="file" id="fileInput" accept=".pdf, .docx">\n\t\t\t<button class="add-resume-file-button">\n\t\t\t\t<img class="add-resume-choose-image" src="../../img/icons/upload.png">\n\t\t\t\t<img class="add-resume-file-image hidden-file-buttons" src="../../img/icons/vacancy-icon.png">\n\t\t\t\t<div class="add-resume-choose-text">Вибрати файл</div>\n\t\t\t</button>\n\t\t\t<div class="save-delete-resume-buttons-container">\n\t\t\t\t<button class="delete-resume-button hidden-file-buttons">\n\t\t\t\t\t<img src="../../img/icons/cross.png">\n\t\t\t\t\tВидалити\n\t\t\t\t</button>\n\t\t\t\t<button class="save-resume-button hidden-file-buttons">\n\t\t\t\t\t<img src="../../img/icons/check.png">\n\t\t\t\t\tЗберегти\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<button class="skip-resume-button">Пропустити</button>\n\t\t</div>\n\t`);
+                scrollChatToBottom();
+                addUploadFileCode();
+                document.querySelector(".save-resume-button").addEventListener("click", (() => {
+                    saveFiledataAndContinueChat();
+                }));
+                document.querySelector(".skip-resume-button").addEventListener("click", (() => {
+                    continueFileButton();
+                }));
+            };
+            const addUploadFileCode = () => {
+                let fileInput = document.querySelector(".add-resume-input");
+                let fileButton = document.querySelector(".add-resume-file-button");
+                fileButton.addEventListener("click", (function() {
+                    fileInput.click();
+                }));
+                fileInput.addEventListener("change", (function(event) {
+                    let file = event.target.files[0];
+                    let fileName = event.target.files[0].name;
+                    let fileExtension = fileName.split(".").pop().toLowerCase();
+                    removeDeleteAndSaveButtons(document.querySelector(".delete-resume-button"), fileInput);
+                    if (file && fileExtension === "docx" || file && fileExtension === "pdf") addDeleteAndSaveButtons(fileName); else if (fileExtension !== "docx" || fileExtension !== "pdf") {
+                        errorValidateFileFormat();
+                        deleteErrorMessagesInChat();
+                    }
+                    if (file) {
+                        let reader = new FileReader;
+                        reader.onload = function(e) {
+                            let fileBytes = new Uint8Array(e.target.result);
+                            let jsonData = JSON.stringify(Array.from(fileBytes));
+                            currentFile = {
+                                file_name: `${fileName}`,
+                                file_data: `${jsonData}`
+                            };
+                        };
+                        reader.readAsArrayBuffer(file);
+                    }
+                }));
+            };
+            const addDeleteAndSaveButtons = fileName => {
+                if (fileName) {
+                    document.querySelector(".delete-resume-button").classList.remove("hidden-file-buttons");
+                    document.querySelector(".save-resume-button").classList.remove("hidden-file-buttons");
+                    document.querySelector(".skip-resume-button").classList.add("hidden-file-buttons");
+                    document.querySelector(".add-resume-choose-text").innerText = `${fileName}`;
+                    document.querySelector(".add-resume-choose-image").classList.add("hidden-file-buttons");
+                    document.querySelector(".add-resume-file-image").classList.remove("hidden-file-buttons");
+                } else removeDeleteAndSaveButtons(document.querySelector(".delete-resume-button"));
+            };
+            const removeDeleteAndSaveButtons = (deleteButton, fileInput) => {
+                deleteButton.addEventListener("click", (() => {
+                    document.querySelector(".delete-resume-button").classList.add("hidden-file-buttons");
+                    document.querySelector(".save-resume-button").classList.add("hidden-file-buttons");
+                    document.querySelector(".skip-resume-button").classList.remove("hidden-file-buttons");
+                    document.querySelector(".add-resume-choose-text").innerText = "Вибрати файл";
+                    document.querySelector(".add-resume-choose-image").classList.remove("hidden-file-buttons");
+                    document.querySelector(".add-resume-file-image").classList.add("hidden-file-buttons");
+                    currentFile = {};
+                    fileInput.value = "";
+                }));
+            };
+            const saveFiledataAndContinueChat = () => {
+                document.querySelector(".add-resume-container").classList.add("hidden-file-buttons");
+                answersCounter++;
+                addMessagesAfterUserAnswers(questionsArray);
+                scrollChatToBottom();
+                showTextInput();
+            };
+            const continueFileButton = () => {
+                document.querySelector(".add-resume-container").classList.add("hidden-file-buttons");
+                answersCounter++;
+                addMessagesAfterUserAnswers(questionsArray);
+                scrollChatToBottom();
+                showTextInput();
+                currentFile = {};
             };
             const addBirthDateAnswerBlock = () => {
                 if (objectKeys[questionsCounter] === "birthday") {
@@ -1477,6 +1579,7 @@
                         addMessagesAfterUserAnswers(questionsArray);
                         scrollChatToBottom();
                         showTextInput();
+                        addResumeBlock();
                     }
                     setTimeout(delayedFunction, 300);
                 } else errorValidateBirthday();
@@ -1492,6 +1595,7 @@
                         addMessagesAfterUserAnswers(questionsArray);
                         scrollChatToBottom();
                         showTextInput();
+                        addResumeBlock();
                     }
                     setTimeout(delayedFunction, 300);
                 } else errorValidateBirthday();
@@ -1741,7 +1845,7 @@
                     if (key.startsWith("q")) objectToWrite[`${key}`] = "";
                 }
             };
-            const checkQuestionsArray = [ `Ім'я та прізвище:`, `Номер телефону для зв'язку:`, `Місто проживання:`, `Дата народження:` ];
+            const checkQuestionsArray = [ `Ім'я та прізвище:`, `Номер телефону для зв'язку:`, `Місто проживання:`, `Дата народження:`, `Завантажене резюме:` ];
             const addAdditionalQuestionsToMainCheckQuestionsArray = (questionsObject, arrayToWrite) => {
                 for (var key in questionsObject.forms) if (key.startsWith("q")) arrayToWrite.push(questionsObject.forms[key]);
             };
@@ -1824,6 +1928,7 @@
                 }
                 const data = addCVObjectToMainObject(objectData);
                 objectData.kind = currentVacancyKind.toLowerCase();
+                objectData.cv = currentFile;
                 console.log(objectData);
                 const requestOptions = {
                     method: "POST",
@@ -1837,7 +1942,7 @@
                     return response.json();
                 })).then((data => {
                     console.log("Отримано дані від сервера:", data);
-                    showMainMessage(successfullMessage);
+                    showMainMessage(`\n\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\tЗаявка успішно надіслана. Перевірити статус, свої анкетні дані, або відкликати заявку ви можете в особистому кабінеті\n\t\t\t\t</div>\n\t\t\t\t<button class="route-button main-message-template-style__home-button route-button-main-style button-effect">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Зрозуміло</div>\n\t\t\t\t</button>\n\t\t\t`);
                 })).catch((error => {
                     console.error("Помилка під час виконання POST-запиту:", error);
                     showMainMessage(errorMessage);
@@ -1906,9 +2011,9 @@
             const showMainMessage = messageText => {
                 let message = document.querySelector(".main-message-template-style");
                 message.classList.remove("_hidden-template");
-                document.querySelector(".main-message-template-style__message").innerHTML = `${messageText}`;
+                document.querySelector(".main-message-template-style__wrapper").innerHTML = `${messageText}`;
                 showMessageAnimation();
-                reloadPageAfterClickHomeButton();
+                if (document.querySelector(".main-message-template-style__home-button")) reloadPageAfterClickHomeButton();
             };
             const showMessageAnimation = () => {
                 document.querySelector(".main-message-template-style__wrapper").classList.add("position-message-animation");
@@ -1963,6 +2068,94 @@
                 })).catch((error => {
                     console.error("Fetch error:", error);
                 }));
+            }));
+            const addBackButtonMechanics = targetButton => {
+                let currentId = removeDigitsAndUnderscore(targetButton.id);
+                if (currentId !== "vacancy-page" && currentId !== "post-request-vacancy-page") templatesRoad.push(currentId); else if (currentId.includes("post-request-vacancy-page") && !templatesRoad[templatesRoad.length - 1].includes("post-request-vacancy-page")) templatesRoad.push(currentId); else if (currentId === "vacancy-page") {
+                    let vacancyTitle = targetButton.lastElementChild.textContent;
+                    let uniteName = currentId + ": " + vacancyTitle;
+                    templatesRoad.push(uniteName);
+                }
+            };
+            const backToPreviousTemplate = () => {
+                if (templatesRoad[templatesRoad.length - 1] !== "post-request-vacancy-page") {
+                    templatesRoad.pop();
+                    let lastTemplate = templatesRoad[templatesRoad.length - 1];
+                    includeLastTemplate(lastTemplate);
+                    deleteChatContent();
+                    console.log(templatesRoad);
+                } else if (templatesRoad[templatesRoad.length - 1] === "post-request-vacancy-page") {
+                    templatesRoad.pop();
+                    let lastTemplate = templatesRoad[templatesRoad.length - 1];
+                    console.log(lastTemplate);
+                    console.log(currentVacancyID);
+                    includeLastTemplate("vacancy-page");
+                    includeLastVacancyContent();
+                    deleteChatContent();
+                }
+            };
+            const deleteChatContent = () => {
+                fixedQuestionsCounter = 5;
+                allQuestionsCounter = 5;
+                questionsCounter = -1;
+                answersCounter = -1;
+                document.querySelector(".post-request-vacancy-page__messages-container").innerHTML = "";
+                document.querySelector(".post-request-vacancy-page__messages-container").classList.remove("padding-message-container-final");
+                document.querySelector(".post-request-vacancy-page__messages-container").classList.add("padding-message-container-chat");
+            };
+            const addListenerToBackButton = () => {
+                const backButton = document.querySelector(".footer__button-back-link");
+                backButton.addEventListener("click", (() => {
+                    if (currentTemplateID === "post-request-vacancy-page" || currentTemplateID === "check-request-vacancy-page") {
+                        showMainMessage(`\n\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\tПісля виходу з чату ваші відповіді будуть видалені\n\t\t\t\t</div>\n\t\t\t\t<button class="route-button main-message-template-style__width route-button-main-style button-effect stay-in-chat-button">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Залишитись</div>\n\t\t\t\t</button>\n\t\t\t\t<button class="route-button main-message-template-style__width route-button-main-style button-effect back-out-chat-button">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Вийти</div>\n\t\t\t\t</button>\n\t\t\t`);
+                        document.querySelector(".stay-in-chat-button").addEventListener("click", (() => {
+                            document.querySelector(".main-message-template-style").classList.add("_hidden-template");
+                            console.log("stay");
+                        }));
+                        document.querySelector(".back-out-chat-button").addEventListener("click", (() => {
+                            document.querySelector(".main-message-template-style").classList.add("_hidden-template");
+                            console.log("back");
+                            backToPreviousTemplate();
+                        }));
+                    } else backToPreviousTemplate();
+                }));
+            };
+            addListenerToBackButton();
+            const includeLastTemplate = currentTemplateID => {
+                const allWidgetTemplates = document.querySelectorAll(".page-template");
+                for (let item of allWidgetTemplates) if (item.id !== currentTemplateID && !firstEnter) {
+                    item.classList.add("position-left-reverse");
+                    setTimeout((function() {
+                        item.classList.add("_hidden-template");
+                        item.classList.remove("position-left-reverse");
+                    }), 300);
+                } else if (item.id === currentTemplateID && !firstEnter) setTimeout((function() {
+                    item.classList.add("position-right-reverse");
+                    item.classList.remove("_hidden-template");
+                    setTimeout((function() {
+                        item.classList.remove("position-right-reverse");
+                    }), 100);
+                }), 300);
+            };
+            let vacanciesForBackButton;
+            const includeLastVacancyContent = () => {
+                let lastVacancyTitle = "";
+                let lastVacancyContent = "";
+                for (let i = 0; i < vacanciesForBackButton.vacancies.length; i++) if (vacanciesForBackButton.vacancies[i]._id === +currentVacancyID) {
+                    lastVacancyTitle = vacanciesForBackButton.vacancies[i].title;
+                    lastVacancyContent = vacanciesForBackButton.vacancies[i].description_html;
+                }
+                const vacancyPageTitle = document.querySelector(".vacancy-page__title");
+                const vacancyPageDescription = document.querySelector(".vacancy-page__content");
+                vacancyPageTitle.innerHTML = lastVacancyTitle;
+                vacancyPageDescription.innerHTML = lastVacancyContent;
+            };
+            const apiVacanciesRequest = `${actualHost}/vacancies/${data.telegram_id}/${data.password}`;
+            fetch(apiVacanciesRequest).then((response => {
+                if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+                return response.json();
+            })).then((data => {
+                vacanciesForBackButton = data;
             }));
         }));
         __webpack_require__(69);
