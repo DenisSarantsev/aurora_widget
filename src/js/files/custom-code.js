@@ -1513,6 +1513,7 @@ fetch(`${actualHost}/cabinet/${currentTelegramID}/${currentPassword}`)
 		console.log(data)
 		writeDataToCabinet(data);
 		currentVacancyID = data.cabinet._id;
+		searchButtonDeleteAddDelay();
 	})
 	.catch(error => {
 		// Обрабатываем ошибки
@@ -1576,7 +1577,7 @@ const writeDataToCabinet = (data) => {
 }
 
 // Удаление заявки
-document.querySelector(".cabinet-page__delete-button").addEventListener("click", () => {
+const deleteAddInCabinet = () => {
 	fetch(`${actualHost}/del_order/${currentTelegramID}/${currentPassword}`)
 	.then(response => {
 		// Проверяем успешность ответа
@@ -1589,16 +1590,36 @@ document.querySelector(".cabinet-page__delete-button").addEventListener("click",
 	})
 	.then(data => {
 		console.log(data);
-		console.log("Данные удалены")
+		console.log("Данные удалены");
+		showMainMessage(
+			`
+				<div class="main-message-template-style__message">
+					Ваша заявка успішно видалена
+				</div>
+				<button class="route-button main-message-template-style__home-button route-button-main-style button-effect">
+					<div id="circle"></div>
+					<div>На головну</div>
+				</button>
+			`);
 	})
 	.catch(error => {
 		// Обрабатываем ошибки
 		console.error('Fetch error:', error);
 	});
-})
+}
+
+
 
 
 // Вывод сообщения об удаленной заявке
+function searchButtonDeleteAddDelay() {
+	if ( document.querySelector(".cabinet-page__delete-button") ) {
+		document.querySelector(".cabinet-page__delete-button").addEventListener("click", () => {
+			deleteAddInCabinet()
+		})
+	} else {}
+}
+
 
 // Вывод сообщения о том, что при заполнении новой заявки старая будет удалена
 
@@ -1626,11 +1647,13 @@ const backToPreviousTemplate = () => {
 		templatesRoad.pop();
 		let lastTemplate = templatesRoad[templatesRoad.length - 1];
 		includeLastTemplate(lastTemplate);
+		currentTemplateID = lastTemplate;
 		deleteChatContent();
 		console.log(templatesRoad)
 	} else if ( templatesRoad[templatesRoad.length - 1] === 'post-request-vacancy-page' ) {
 		templatesRoad.pop();
 		let lastTemplate = templatesRoad[templatesRoad.length - 1];
+		currentTemplateID = lastTemplate;
 		console.log(lastTemplate)
 		console.log(currentVacancyID)
 		includeLastTemplate('vacancy-page');
@@ -1681,6 +1704,7 @@ const addListenerToBackButton = () => {
 		} else {
 			backToPreviousTemplate();
 		}
+		hiddenOrShowFooter();
 	})
 }
 addListenerToBackButton();

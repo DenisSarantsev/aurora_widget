@@ -2040,6 +2040,7 @@
                 console.log(data);
                 writeDataToCabinet(data);
                 currentVacancyID = data.cabinet._id;
+                searchButtonDeleteAddDelay();
             })).catch((error => {
                 console.error("Fetch error:", error);
             }));
@@ -2058,17 +2059,23 @@
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Дата народження:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</textarea>\n\t\t\t</div>\n\t\t`);
                 }
             };
-            document.querySelector(".cabinet-page__delete-button").addEventListener("click", (() => {
+            const deleteAddInCabinet = () => {
                 fetch(`${actualHost}/del_order/${currentTelegramID}/${currentPassword}`).then((response => {
                     if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
                     return response.json();
                 })).then((data => {
                     console.log(data);
                     console.log("Данные удалены");
+                    showMainMessage(`\n\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\tВаша заявка успішно видалена\n\t\t\t\t</div>\n\t\t\t\t<button class="route-button main-message-template-style__home-button route-button-main-style button-effect">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>На головну</div>\n\t\t\t\t</button>\n\t\t\t`);
                 })).catch((error => {
                     console.error("Fetch error:", error);
                 }));
-            }));
+            };
+            function searchButtonDeleteAddDelay() {
+                if (document.querySelector(".cabinet-page__delete-button")) document.querySelector(".cabinet-page__delete-button").addEventListener("click", (() => {
+                    deleteAddInCabinet();
+                }));
+            }
             const addBackButtonMechanics = targetButton => {
                 let currentId = removeDigitsAndUnderscore(targetButton.id);
                 if (currentId !== "vacancy-page" && currentId !== "post-request-vacancy-page") templatesRoad.push(currentId); else if (currentId.includes("post-request-vacancy-page") && !templatesRoad[templatesRoad.length - 1].includes("post-request-vacancy-page")) templatesRoad.push(currentId); else if (currentId === "vacancy-page") {
@@ -2082,11 +2089,13 @@
                     templatesRoad.pop();
                     let lastTemplate = templatesRoad[templatesRoad.length - 1];
                     includeLastTemplate(lastTemplate);
+                    currentTemplateID = lastTemplate;
                     deleteChatContent();
                     console.log(templatesRoad);
                 } else if (templatesRoad[templatesRoad.length - 1] === "post-request-vacancy-page") {
                     templatesRoad.pop();
                     let lastTemplate = templatesRoad[templatesRoad.length - 1];
+                    currentTemplateID = lastTemplate;
                     console.log(lastTemplate);
                     console.log(currentVacancyID);
                     includeLastTemplate("vacancy-page");
@@ -2118,6 +2127,7 @@
                             backToPreviousTemplate();
                         }));
                     } else backToPreviousTemplate();
+                    hiddenOrShowFooter();
                 }));
             };
             addListenerToBackButton();
