@@ -71,6 +71,8 @@
 			display: flex;
 			gap: toRem(7);
 			align-items: center;
+			width: 100%;
+			justify-content: center;
 		}
 		&__politics-label {
 			font-size: toRem(16);
