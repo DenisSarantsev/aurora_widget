@@ -8,6 +8,17 @@
 	<body data-barba="wrapper">
 		<div class="error-message-check-input _hidden-error-message"></div>
 
+		<div style="	
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			background-color:#ffdd00;
+			z-index:1000;" 
+			class="yellow-bg-to-reload">
+		</div>
+
 		<div class="bg-circles-container">
 			<div class="bg-one-circle-element"><div></div></div>
 			<div class="bg-two-circle-element"><div></div></div>
@@ -175,6 +186,14 @@
 							</h3>
 							<div class="check-request-vacancy-page__items-container">
 							</div>
+							<div class="check-request-vacancy-page__politics-container">
+								<div class="check-request-vacancy-page__politics-checkbox-label">
+									<input id="politics-checkbox" class="check-request-vacancy-page__politics-input" type="checkbox">
+									<label class="check-request-vacancy-page__politics-label" for="politics-checkbox">Даю згоду на обробку моїх персональних даних</label>
+								</div>
+								<button id="001_politics-page" class="check-request-vacancy-page__politics-link route-button">Ознайомитись з політикою конфіденційності</button>
+								<div class="check-request-vacancy-page__politics-message _hidden">Ви не надали згоду на обробку персональних даних</div>
+							</div>
 							<button class="check-request-vacancy-page__request-button route-button-main-style button-effect">
 								<div id="circle"></div>
 								<div>Надіслати заявку</div>
@@ -218,6 +237,17 @@
 										<img class="save-image _hidden-edit-or-save-button" src="@img/icons/save.png" alt="save icon">
 									</div>
 								</button> -->
+							</div>
+						</div>
+					</section>
+
+					<section id="politics-page" class="page-template _hidden-template">
+						<div class="politics-page__container">
+							<h2 class="politics-page__title title-main-style">
+								Політика конфіденційності:
+							</h2>
+							<div class="politics-page__wrapper">
+									
 							</div>
 						</div>
 					</section>

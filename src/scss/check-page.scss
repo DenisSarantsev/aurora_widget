@@ -61,6 +61,48 @@
 		&__edit-button-image {
 			max-width: toRem(25);
 		}
+		&__politics-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: toRem(10);
+		}
+		&__politics-checkbox-label {
+			display: flex;
+			gap: toRem(7);
+			align-items: center;
+		}
+		&__politics-label {
+			font-size: toRem(16);
+			&:hover {
+				cursor: pointer;
+			}
+		}
+		&__politics-input {
+			&:hover {
+				cursor: pointer;
+			}
+		}
+		&__politics-message {
+			width: 100%;
+			padding: toRem(5);
+			text-align: center;
+			border: 2px dashed red;
+			background-color: rgba($color: #ff0000, $alpha: 0.1);
+			margin-top: toRem(10);
+			border-radius: toRem(30);
+			font-weight: 500;
+		}
+		&__politics-link {
+			&:hover {
+				cursor: pointer;
+				text-decoration: underline;
+			}
+		}
+}
+
+._hidden {
+	display: none;
 }
 
 .vacancy-check-title {

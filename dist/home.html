@@ -6,9 +6,9 @@
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
 	<!-- <style>body{opacity: 0;}</style> -->
-	<link rel="stylesheet" href="css/style.min.css?_v=20240220120000">
+	<link rel="stylesheet" href="css/style.min.css?_v=20240222012718">
 	<link rel="shortcut icon" href="favicon.ico">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css?_v=20240220120000">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css?_v=20240222012718">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -16,6 +16,16 @@
 
 <body data-barba="wrapper">
 	<div class="error-message-check-input _hidden-error-message"></div>
+
+	<div style="	
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			background-color:#ffdd00;
+			z-index:1000;" class="yellow-bg-to-reload">
+	</div>
 
 	<div class="bg-circles-container">
 		<div class="bg-one-circle-element">
@@ -219,6 +229,14 @@
 					</h3>
 					<div class="check-request-vacancy-page__items-container">
 					</div>
+					<div class="check-request-vacancy-page__politics-container">
+						<div class="check-request-vacancy-page__politics-checkbox-label">
+							<input id="politics-checkbox" class="check-request-vacancy-page__politics-input" type="checkbox">
+							<label class="check-request-vacancy-page__politics-label" for="politics-checkbox">Даю згоду на обробку моїх персональних даних</label>
+						</div>
+						<button id="001_politics-page" class="check-request-vacancy-page__politics-link route-button">Ознайомитись з політикою конфіденційності</button>
+						<div class="check-request-vacancy-page__politics-message _hidden">Ви не надали згоду на обробку персональних даних</div>
+					</div>
 					<button class="check-request-vacancy-page__request-button route-button-main-style button-effect">
 						<div id="circle"></div>
 						<div>Надіслати заявку</div>
@@ -266,10 +284,21 @@
 				</div>
 			</section>
 
+			<section id="politics-page" class="page-template _hidden-template">
+				<div class="politics-page__container">
+					<h2 class="politics-page__title title-main-style">
+						Політика конфіденційності:
+					</h2>
+					<div class="politics-page__wrapper">
+
+					</div>
+				</div>
+			</section>
+
 		</main>
-		<script src="https://cdn.jsdelivr.net/npm/@barba/core?_v=20240220120000"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js?_v=20240220120000"></script>
-		<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js?_v=20240220120000"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@barba/core?_v=20240222012718"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js?_v=20240222012718"></script>
+		<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js?_v=20240222012718"></script>
 		<script>
 			const input = document.querySelector("#phone");
 			window.intlTelInput(input, {
@@ -439,8 +468,12 @@
 			}
 			preloader();
 		</script>
+		<script>
+			let reloadButton = document.querySelector(".yellow-bg-to-reload");
+			reloadButton.classList.add("_hidden-yellow-bg");
+		</script>
 	</div>
-	<script src="js/app.min.js?_v=20240220120000"></script>
+	<script src="js/app.min.js?_v=20240222012718"></script>
 </body>
 
 </html>

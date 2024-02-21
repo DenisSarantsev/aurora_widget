@@ -1010,6 +1010,10 @@ section::-webkit-scrollbar-thumb {
   transition: all 0.3s ease 0s;
 }
 
+._hidden-yellow-bg {
+  display: none;
+}
+
 @-webkit-keyframes headerMargin {
   0% {
     margin-top: -9.375rem;
@@ -2386,6 +2390,62 @@ section::-webkit-scrollbar-thumb {
 
 .check-request-vacancy-page__edit-button-image {
   max-width: 1.5625rem;
+}
+
+.check-request-vacancy-page__politics-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.625rem;
+}
+
+.check-request-vacancy-page__politics-checkbox-label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0.4375rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.check-request-vacancy-page__politics-label {
+  font-size: 1rem;
+}
+
+.check-request-vacancy-page__politics-label:hover {
+  cursor: pointer;
+}
+
+.check-request-vacancy-page__politics-input:hover {
+  cursor: pointer;
+}
+
+.check-request-vacancy-page__politics-message {
+  width: 100%;
+  padding: 0.3125rem;
+  text-align: center;
+  border: 2px dashed red;
+  background-color: rgba(255, 0, 0, 0.1);
+  margin-top: 0.625rem;
+  border-radius: 1.875rem;
+  font-weight: 500;
+}
+
+.check-request-vacancy-page__politics-link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+._hidden {
+  display: none;
 }
 
 .vacancy-check-title {
