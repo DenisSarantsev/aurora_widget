@@ -1,6 +1,14 @@
 // Заголовки, загальні БЕМ блоки та інше...
 body {
 	background-color: $backGroundColor;
+	scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+	&::-webkit-scrollbar {
+		width: 0px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: transparent;
+	}
 }
 
 section {
@@ -232,12 +240,13 @@ section {
 }
 
 .section-padding {
-	padding: toRem(20) toRem(0);
+	padding: toRem(0) toRem(0);
 }
 
 
 // Головний контейнер з контентом
 .page-container {
+	padding-top: toRem(20);
 	max-width: toRem(768);
 	width: 100%;
 	display: flex;
@@ -405,9 +414,25 @@ section {
 
 
 .vacancy-page {
+	padding: toRem(0) 0;
 	&__content {
+		width: 100%;
 		font-family: $fontFamily;
 		font-family: toRem(20);
+		padding: toRem(10) toRem(20) toRem(20) toRem(20);
+		background-color: rgba($color: #FFFFFF, $alpha: 0.90);
+		border-radius: 20px;
+		& li {
+			margin-left: 1px;
+			&::before {
+				content: url("@img/icons/dot.png");
+				position: relative;
+				left: -3px;
+				top: 4px;
+				max-height: 10px;
+				max-width: toRem(10);
+			}
+		}
 	}
 	&__request-button {
 		width: 100%;

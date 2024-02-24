@@ -669,32 +669,6 @@ function removeDigitsAndUnderscore(inputString) {
 	return resultString;
 }
 
-// Object {
-// 	q1 {
-// 		"Питання": {
-// 			"a": "Варіант 1",
-// 			"б": "Варіант 2",
-// 			"с": "Варіант 3"
-// 		}
-// 	}
-// 	q2 {
-// 		"Питання": {
-// 			"a": "Варіант 1",
-// 			"б": "Варіант 2",
-// 			"с": "Варіант 3"
-// 		}
-// 	}
-// 	q2 {
-// 		"Питання": {
-// 			"a": "Варіант 1",
-// 			"б": "Варіант 2",
-// 			"с": "Варіант 3"
-// 		}
-// 	}
-// }
-
-
-
 
 // Функция для включения нужного шаблона (выполняется по клике кнопки роута)
 const includeCurrentTemplate = (currentTemplateID) => {
@@ -834,8 +808,10 @@ for ( let item of allJobItemsButtons ) {
 		// Проходимя по массиву со всеми вакансиями и ищем в нем ту, у которой id такой же, как и у вакансии, по которой мы кликнули
 		for ( let i = 0; i < globalVacancies.vacancies.length; i++ ) {
 			if ( globalVacancies.vacancies[i]._id === +item.getAttribute(`data-vacancy-id`) ) {
-				vacancyTitle = globalVacancies.vacancies[i].title;
-				vacancyContent = globalVacancies.vacancies[i].description_html;
+				let titleObject = {text: `${globalVacancies.vacancies[i].title}`};
+				let textObject = {text: `${globalVacancies.vacancies[i].description_html}`};
+				vacancyTitle = cleanTagsStylesAndAttributes(titleObject);
+				vacancyContent = cleanTagsStylesAndAttributes(textObject);
 			}
 		}
 		// Запускаем функцию включения нужного шаблона по id из кнопки ( предварительно очищаем id от префикса при помощи функции removeDigitsAndUnderscore() )
@@ -1625,6 +1601,7 @@ const addFinalMessageAfterAnswers = (message) => {
 		`);
 		changeMessageContainerPadding();
 		showFinalBlock();
+		downloadPolitics();
 
 		const addListenerToAllRouteButtonsFinalMessage = () => {
 			if (document.querySelector(".final-message__button")) {
@@ -2416,10 +2393,60 @@ const addYellowBGAfterClickOnReloadButton = () => {
 }
 addYellowBGAfterClickOnReloadButton();
 
+// -------------------------------------------------------------------------------------------------------------- Подтягиваем политику конфиденциальности
 
+// Делаем запрос и вставляем текст
+const downloadPolitics = () => {
+	const politicsContainer = document.querySelector(".politics-page__wrapper")
 
+	fetch(`${actualHost}/politika-konfidencijnosti/${currentTelegramID}/${currentPassword}`)
+	.then(response => {
+		if (!response.ok) {throw new Error(`Network response was not ok: ${response.status}`);}
+		return response.json();
+	})
+	.then(data => {
+		let resultText = cleanTagsStylesAndAttributes(data);
+		politicsContainer.insertAdjacentHTML("afterbegin", `${resultText}`)
+	})
+	.catch(error => {
+		console.error('Fetch error:', error);
+	});
+}
 
+// Проходимся по всем тегам содержимого и убираем все стили
+const cleanTagsStylesAndAttributes = (data) => {
+	let doc = new DOMParser().parseFromString(data.text, 'text/html');
 
+	// Удаляем все теги "style"
+	let styleTags = doc.querySelectorAll('style');
+	styleTags.forEach(function(styleTag) {
+			styleTag.parentNode.removeChild(styleTag);
+	});
+
+	// Удаляем атрибут "style" и "font-family" у всех элементов
+	let elements = doc.querySelectorAll('*');
+	elements.forEach(function(element) {
+			element.removeAttribute('style');
+			element.style.fontFamily = '';
+	});
+
+	// Добавляем отступ сверху в 15 пикселей для каждого тега <p>
+	let pTags = doc.querySelectorAll('p');
+	pTags.forEach(function(pTag) {
+			pTag.style.marginTop = '15px';
+	});
+
+	// Получаем обновленный HTML-код
+	let cleanedHtml = new XMLSerializer().serializeToString(doc);
+
+	return cleanedHtml;
+}
+
+// -------------------------------------------------------------------------------------------------------------- Заполняем контент "О компании"
+
+const downloadInformationAboutCompany = () => {
+
+}
 
 
 

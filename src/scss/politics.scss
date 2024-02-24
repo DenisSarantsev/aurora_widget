@@ -1,0 +1,27 @@
+
+.politics-page {
+		padding: toRem(20) 0;
+		&__container {
+			background-color: rgba($color: #FFFFFF, $alpha: 0.95);
+			padding: toRem(20) toRem(15);
+			display: flex;
+			flex-direction: column;
+			gap: toRem(15);
+		}
+		&__title {
+		}
+		&__wrapper {
+			color: #000;
+			& li {
+				margin-left: 1px;
+				&::before {
+					content: url("@img/icons/dot.png");
+					position: relative;
+					left: -3px;
+					top: 4px;
+					max-height: 10px;
+					max-width: toRem(10);
+				}
+			}
+		}
+}
