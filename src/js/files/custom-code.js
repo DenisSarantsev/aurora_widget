@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let data = {
 	'title': 'АврорА',
-	'cabinet': 
+	'cabinet':
 	{
 			"birthday": "21.02.2002",
 			"check_gpt": null,
@@ -848,7 +848,6 @@ for ( let item of allJobItemsButtons ) {
 		// Записываем в шабон вакансии актуальный заголовок и контент
 		document.querySelector(".vacancy-page__title").insertAdjacentHTML("afterbegin", `${vacancyTitle}`);
 		document.querySelector(".vacancy-page__content").insertAdjacentHTML("afterbegin", `${vacancyContent}`);
-		
 	})
 }
 
@@ -1194,18 +1193,17 @@ const addResumeField = () => {
 		<div class="add-resume-container phone-buttons-show-animations">
 			<input class="input-hidden add-resume-input" type="file" id="fileInput" accept=".pdf, .docx">
 			<button class="add-resume-file-button">
-			
-				<img class="add-resume-choose-image" src="{{ url_for('static', filename='images/icons/upload.png') }}">
-				<img class="add-resume-file-image hidden-file-buttons" src="../static/images/icons/vacancy-icon.png">
+				<span class="icon-upload-1 add-resume-choose-image"></span>
+				<span class="icon-vacancy-icon add-resume-file-image hidden-file-buttons"></span>
 				<div class="add-resume-choose-text">Вибрати файл</div>
 			</button>
 			<div class="save-delete-resume-buttons-container">
 				<button class="delete-resume-button hidden-file-buttons">
-					<img src="../../img/icons/cross.png">
+					<span class="icon-cross"></span>
 					Видалити
 				</button>
 				<button class="save-resume-button hidden-file-buttons">
-					<img src="../../img/icons/check.png">
+					<span class="icon-check"></span>
 					Зберегти
 				</button>
 			</div>
@@ -1752,7 +1750,8 @@ const addInputFieldsToCheckPage = () => {
 		checkPageMainContainer.insertAdjacentHTML("beforeend", `
 			<div class="check-request-vacancy-page__check-item">
 				<div class="check-request-vacancy-page__question-input-container">
-					<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> <img src="../../img/icons/vacancy-icon.png" alt="vacancy icon" class="vacancy-mark"> Назва вакансії:</div>
+					<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> 
+					<span class="icon-vacancy-icon vacancy-mark"></span> Назва вакансії:</div>
 					<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>
 				</div>
 			</div>
@@ -1761,7 +1760,8 @@ const addInputFieldsToCheckPage = () => {
 		checkPageMainContainer.insertAdjacentHTML("beforeend", `
 			<div class="check-request-vacancy-page__check-item">
 				<div class="check-request-vacancy-page__question-input-container">
-					<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> <img src="../../img/icons/vacancy-icon.png" alt="vacancy icon" class="vacancy-mark"> Назва вакансії:</div>
+					<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> 
+					<span class="icon-vacancy-icon vacancy-mark"></span> Назва вакансії:</div>
 					<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">Резерв</div>
 				</div>
 			</div>
@@ -1773,11 +1773,13 @@ const addInputFieldsToCheckPage = () => {
 			checkPageMainContainer.insertAdjacentHTML("beforeend", `
 				<div class="check-request-vacancy-page__check-item">
 					<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
-						<div class="check-request-vacancy-page__check-question"> <img src="../../img/icons/check.png" alt="check icon" class="green-check-mark"> <img src="../../img/icons/cross.png" alt="check icon" class="red-cross _hidden-icon"> ${checkQuestionsArray[i]}</div>
+						<div class="check-request-vacancy-page__check-question"> 
+						<span class="icon-check green-check-mark"></span>
+						<span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>
 						<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i+1]]}" type="text" class="check-request-vacancy-page__check-input">
 					</div>
 					<button class="check-request-vacancy-page__edit-button">
-						<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
+						<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>
 					</button>
 				</div>
 			`)
@@ -1787,11 +1789,11 @@ const addInputFieldsToCheckPage = () => {
 			checkPageMainContainer.insertAdjacentHTML("beforeend", `
 				<div class="check-request-vacancy-page__check-item">
 					<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
-						<div class="check-request-vacancy-page__check-question"> <img src="../../img/icons/check.png" alt="check icon" class="green-check-mark"> <img src="../../img/icons/cross.png" alt="check icon" class="red-cross _hidden-icon"> ${checkQuestionsArray[i]}</div>
+						<div class="check-request-vacancy-page__check-question"> <span class="icon-check green-check-mark"></span> <span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>
 						<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>
 					</div>
 					<button class="check-request-vacancy-page__edit-button">
-						<img src="../../img/icons/edit.png" alt="edit icon" class="check-request-vacancy-page__edit-button-image edit-icon">
+						<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>
 					</button>
 				</div>
 			`)
