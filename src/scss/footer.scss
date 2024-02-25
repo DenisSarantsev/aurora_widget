@@ -54,19 +54,19 @@
 
 @keyframes hiddenFooter {
   0% {
-    margin-bottom: toRem(0);
+    opacity: 1;
   }
   100% {
-    margin-bottom: toRem(-100);
+    opacity: 0;
   }
 }
 
 @keyframes showFooter {
   0% {
-    margin-bottom: toRem(-100);
+    opacity: 0;
   }
   100% {
-    margin-bottom: 0;
+    opacity: 1;
   }
 }
 //====================================================================================================

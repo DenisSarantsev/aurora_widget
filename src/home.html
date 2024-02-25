@@ -5,6 +5,11 @@
 	})
 
 	<body data-barba="wrapper">
+
+		<div class="preloader-in-widget preloader-hidden">
+			<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+		</div>
+
 		<div class="error-message-check-input _hidden-error-message"></div>
 
 		<div style="	
@@ -32,7 +37,7 @@
 			<div class="bg-eleven-circle-element"><div></div></div>
 		</div>
 
-		<div style="scrollbar-width:1px;" class="wrapper">
+		<div class="wrapper">
 			@@include('html/_header.htm',{})
 				<main class="page home-main-page" data-barba="container" data-barba-namespace="home">
 					<section id="home-page" class="page-template page__home section-padding">
@@ -62,20 +67,20 @@
 							<h2 class="about-company__title title-main-style">
 							 Оберіть розділ, який вас цікавить
 							</h2>
-							<div class="about-company__buttons-block route-buttons-block">
-								<button  class="route-button button route-button-main-style button-effect">
+							<div id="about-aurora" class="about-company__buttons-block route-buttons-block">
+								<button id="001_about-aurora" class="route-button button route-button-main-style button-effect">
 									<div id="circle"></div>
 									<div>Що ти знаєш про Аврору?</div>
 								</button>
-								<button  class="route-button button route-button-main-style button-effect">
+								<button id="001_corporate-culture" class="route-button button route-button-main-style button-effect">
 									<div id="circle"></div>
 									<div>Корпоративна культура</div>
 								</button>
-								<button  class="route-button button route-button-main-style button-effect">
+								<button id="001_aurora-sport" class="route-button button route-button-main-style button-effect">
 									<div id="circle"></div>
 									<div>Аврора спорт</div>
 								</button>
-								<button  class="route-button button route-button-main-style button-effect">
+								<button id="001_social-responsibility" class="route-button button route-button-main-style button-effect">
 									<div id="circle"></div>
 									<div>Соціальна відповідальність</div>
 								</button>
@@ -83,30 +88,69 @@
 						</div>
 					</section>
 
-					<section id="directions-page" class="page-template page__directions directions-page _hidden-template section-padding">
+					<section id="about-aurora" class="page-template page__about-aurora about-aurora _hidden-template section-padding">
+						<div class="about-aurora__container page-container">
+							<h2 class="about-aurora__title title-main-style">
+								Що ти знаєш про аврору?
+							</h2>
+							<div class="about-aurora__wrapper">
+
+							</div>
+						</div>
+					</section>
+
+					<section id="corporate-culture" class="page-template page__corporate-culture corporate-culture _hidden-template section-padding">
+						<div class="corporate-culture__container page-container">
+							<h2 class="corporate-culture__title title-main-style">
+								Корпоративна культура
+							</h2>
+							<div class="corporate-culture__wrapper">
+								
+							</div>
+						</div>
+					</section>
+
+					<section id="aurora-sport" class="page-template page__aurora-sport aurora-sport _hidden-template section-padding">
+						<div class="aurora-sport__container page-container">
+							<h2 class="aurora-sport__title title-main-style">
+							 Аврора спорт
+							</h2>
+							<div class="aurora-sport__wrapper">
+								
+							</div>
+						</div>
+					</section>
+
+					<section id="social-responsibility" class="page-template page__social-responsibility social-responsibility _hidden-template section-padding">
+						<div class="social-responsibility__container page-container">
+							<h2 class="social-responsibility__title title-main-style">
+								Соціальна відповідальність
+							</h2>
+							<div class="social-responsibility__wrapper">
+								
+							</div>
+						</div>
+					</section>
+
+					<section id="directions-page" class="page-template page__directions directions-page _hidden-template">
 						<div class="directions-page__container page-container content-width-limiter">
 							<div class="directions-page__image-container">
-								<img src="@img/kinds/heroes.png" alt="" class="directions-page__image-top">
-								<img src="@img/kinds/message-image.png" alt="" class="directions-page__image-bottom">
+								<img src="@img/kinds/heroes.png" alt="" class="directions-page__image-top position-right">
+								<img src="@img/kinds/message-image.png" alt="" class="directions-page__image-bottom position-right">
 							</div>
-							<!-- <h2 class="directions-page__title title-main-style">
-								Оберіть напрямок:
-							</h2> -->
 							<div class="directions-page__buttons-block route-buttons-block">
 								
 							</div>
 						</div>
 					</section>
 
+
 					<section id="reserve-directions-page" class="page-template page__directions directions-page _hidden-template section-padding">
 						<div class="directions-page__container page-container content-width-limiter">
 							<div class="directions-page__image-container">
-								<img src="@img/kinds/heroes.png" alt="" class="directions-page__image-top">
-								<img src="@img/kinds/message-image.png" alt="" class="directions-page__image-bottom">
+								<img src="@img/kinds/heroes.png" alt="" class="directions-page__image-top position-right">
+								<img src="@img/kinds/message-image.png" alt="" class="directions-page__image-bottom position-right">
 							</div>
-							<!-- <h2 class="directions-page__title title-main-style">
-								Оберіть напрямок:
-							</h2> -->
 							<div class="reserve-directions-page__buttons-block route-buttons-block">
 								
 							</div>

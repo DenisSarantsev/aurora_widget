@@ -42,15 +42,15 @@ section {
 	height: 100%;
 	overflow-y: auto;
 
-	/* Для WebKit-браузеров (Chrome, Safari) */
-	&::-webkit-scrollbar {
-		width: 0px; /* Ширина полосы прокрутки */
-	}
+	// /* Для WebKit-браузеров (Chrome, Safari) */
+	// &::-webkit-scrollbar {
+	// 	width: 0px; /* Ширина полосы прокрутки */
+	// }
 
-	&::-webkit-scrollbar-thumb {
-		background-color: transparent; /* Прозрачный цвет полосы прокрутки */
-		border: none; /* Убираем границу полосы прокрутки */
-	}
+	// &::-webkit-scrollbar-thumb {
+	// 	background-color: transparent; /* Прозрачный цвет полосы прокрутки */
+	// 	border: none; /* Убираем границу полосы прокрутки */
+	// }
 }
 
 // Анимация кружков на фоне
@@ -360,55 +360,56 @@ section {
 
 // Анімація переходів
 .position-left {
-	animation: fadeOut 0.3s cubic-bezier(1,-0.25,1,.71);
+	animation: fadeOut 0.3s ease;
 }
 @keyframes fadeOut {
   0% {
-    margin-right: 0vw;
+    opacity: 1;
   }
   100% {
-    margin-right: 200vw;
+    opacity: 0;
   }
 }
 
 .position-left-reverse {
-	animation: fadeOutReverse 0.3s cubic-bezier(1,-0.25,1,.71);
+	animation: fadeOutReverse 0.3s ease;
 }
 @keyframes fadeOutReverse {
   0% {
-    margin-right: 0vw;
+    opacity: 1;
   }
   100% {
-    margin-right: -200vw;
+    opacity: 0;
   }
 }
 
 
-.position-right {
-	animation: fadeIn 0.3s cubic-bezier(0,1.49,.66,.9);
-}
 .position-center {
 	margin-right: 0vw;
 	transition: all 0.3s ease 0s;
 }
+
+.position-right {
+	animation: fadeIn 0.3s ease;
+}
 @keyframes fadeIn {
   0% {
-    margin-right: -200vw;
+    opacity: 0;
   }
   100% {
-    margin-right: 0vw;
+    opacity: 1;
   }
 }
 
 .position-right-reverse {
-	animation: fadeInReverse 0.3s cubic-bezier(0,1.49,.66,.9);
+	animation: fadeInReverse 0.3s ease;
 }
 @keyframes fadeInReverse {
   0% {
-    margin-left: -200vw;
+    opacity: 0;
   }
   100% {
-    margin-left: 0vw;
+    opacity: 1;
   }
 }
 
@@ -628,3 +629,7 @@ section {
 .icon-upload:before {
   content: "\e900";
 } 
+
+.about-company-content {
+	transition: all 0.3s ease 0s;
+}
