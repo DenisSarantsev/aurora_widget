@@ -1659,11 +1659,11 @@ section::-webkit-scrollbar-thumb {
 }
 
 .about-company__title {
-  text-align: left;
+  text-align: center;
 }
 
 .about-company__subtitle {
-  text-align: left;
+  text-align: center;
 }
 
 .about-company__image {
@@ -3104,6 +3104,19 @@ section::-webkit-scrollbar-thumb {
   }
 }
 
+@media (max-width: 500px) {
+  .jobs-list__item {
+    font-size: 0.9375rem;
+    text-align: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+}
+
 @media (max-width: 25em) {
   .route-button-main-style {
     font-size: 1rem;
@@ -3117,6 +3130,19 @@ section::-webkit-scrollbar-thumb {
 @media (max-width: 31.25em) {
   .header__logo-link {
     max-width: 26vw;
+  }
+
+  .footer__container {
+    padding: 0.4375rem 0.625rem;
+  }
+
+  .main-footer-container {
+    min-height: 2.1875rem;
+  }
+
+  .footer-button {
+    font-size: 1.0625rem;
+    line-height: 2.3125rem;
   }
 
   .check-request-vacancy-page__check-item {

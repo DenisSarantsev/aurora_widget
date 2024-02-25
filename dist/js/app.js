@@ -1355,7 +1355,7 @@
                 let preloaderContainer = document.querySelector(".preloader-in-widget");
                 setTimeout((function() {
                     preloaderContainer.classList.add("preloader-hidden");
-                }), 50);
+                }), 250);
             };
             const addListenerToAllRouteButtons = () => {
                 if (document.querySelector(".route-button")) {
