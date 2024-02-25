@@ -1648,6 +1648,10 @@ section::-webkit-scrollbar-thumb {
   right: 0;
 }
 
+.opacity-null {
+  opacity: 0;
+}
+
 .kinds-transitions {
   opacity: 1;
   -webkit-transition: all 0.3s ease 0s;
@@ -2965,7 +2969,7 @@ section::-webkit-scrollbar-thumb {
       -ms-flex-pack: center;
           justify-content: center;
   position: relative;
-  width: 100px;
+  width: 90px;
   height: 50px;
 }
 

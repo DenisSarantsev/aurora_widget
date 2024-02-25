@@ -183,12 +183,21 @@ const addVacanciesAndKindsToList = () => {
 			for ( let i = 0; i < globalKinds.length; i++ ) {
 				directionsButtons.insertAdjacentHTML("beforeend", 
 					`
-					<button id="${i}_jobs-list-page-${i}" class="route-button button route-button-main-style button-effect kind-vacancy-button">
+					<button id="${i}_jobs-list-page-${i}" class="route-button button route-button-main-style button-effect kind-vacancy-button opacity-null">
 						<div id="circle"></div>
 						<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>
 					</button>
 					`
 				)
+			}
+
+			removePreloaderInKindsList();
+			document.querySelector(".directions-page__image-container").classList.remove("opacity-null");
+			document.querySelector(".directions-page__image-container").classList.add("kinds-transitions");
+			let allKindsButtons = document.querySelectorAll(".kind-vacancy-button");
+			for ( let item of allKindsButtons ) {
+				item.classList.remove("opacity-null");
+				item.classList.add("kinds-transitions");
 			}
 	
 			// Вешаем прослушиватели на все кнопки выбора направления при выборе вакансии
@@ -216,8 +225,6 @@ const addVacanciesAndKindsToList = () => {
 					`
 				)
 			}
-
-			removePreloaderInKindsList();
 	
 			// Вставляем вакансии в сформированные шаблоны
 			for ( let i = 0; i < globalKinds.length; i++ ) {
@@ -331,7 +338,7 @@ const removePreloaderInKindsList = () => {
 	let preloaderContainer = document.querySelector(".preloader-in-widget");
 	setTimeout(function() {
 		preloaderContainer.classList.add("preloader-hidden");
-	}, 300)
+	}, 50)
 }
 
 // Проходимся по всем кнопкам с роутами, чтобы повесить на них событие клика и при необходимости включить функцию переключения шаблона

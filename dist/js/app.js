@@ -1277,7 +1277,15 @@
                         };
                         findAllKindsOfVacancies(globalVacancies);
                         let directionsButtons = document.querySelector(".directions-page__buttons-block");
-                        for (let i = 0; i < globalKinds.length; i++) directionsButtons.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<button id="${i}_jobs-list-page-${i}" class="route-button button route-button-main-style button-effect kind-vacancy-button">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>\n\t\t\t\t\t</button>\n\t\t\t\t\t`);
+                        for (let i = 0; i < globalKinds.length; i++) directionsButtons.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<button id="${i}_jobs-list-page-${i}" class="route-button button route-button-main-style button-effect kind-vacancy-button opacity-null">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>\n\t\t\t\t\t</button>\n\t\t\t\t\t`);
+                        removePreloaderInKindsList();
+                        document.querySelector(".directions-page__image-container").classList.remove("opacity-null");
+                        document.querySelector(".directions-page__image-container").classList.add("kinds-transitions");
+                        let allKindsButtons = document.querySelectorAll(".kind-vacancy-button");
+                        for (let item of allKindsButtons) {
+                            item.classList.remove("opacity-null");
+                            item.classList.add("kinds-transitions");
+                        }
                         const addListenerToAllKindButtons = () => {
                             const allKindButtons = document.querySelectorAll(".kind-vacancy-button");
                             for (let item of allKindButtons) item.addEventListener("click", (() => {
@@ -1287,7 +1295,6 @@
                         };
                         addListenerToAllKindButtons();
                         for (let i = 0; i < globalKinds.length; i++) document.querySelector(".page").insertAdjacentHTML("beforeend", `\n\t\t\t\t\t\t<section id="jobs-list-page-${i}" class="page-template page__jobs-list jobs-list-page-${i} jobs-list _hidden-template section-padding">\n\t\t\t\t\t\t\t<div class="jobs-list__container">\n\t\t\t\t\t\t\t\t<div class="jobs-list__buttons-block jobs-list__${i}">\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</section>\n\t\t\t\t\t`);
-                        removePreloaderInKindsList();
                         for (let i = 0; i < globalKinds.length; i++) {
                             let currentVacanciesTemplate = document.querySelector(`.jobs-list-page-${i}`);
                             for (let j = 0; j < globalVacancies.vacancies.length; j++) if (globalKinds[i] === globalVacancies.vacancies[j].kind) currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", `\n\t\t\t\t\t\t\t\t<button id="vacancy-page" data-vacancy-id="${globalVacancies.vacancies[j]._id}" class="route-button button button-effect jobs-list__item">\n\t\t\t\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t\t\t\t<div>${globalVacancies.vacancies[j].title}</div>\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t`);
@@ -1348,7 +1355,7 @@
                 let preloaderContainer = document.querySelector(".preloader-in-widget");
                 setTimeout((function() {
                     preloaderContainer.classList.add("preloader-hidden");
-                }), 300);
+                }), 50);
             };
             const addListenerToAllRouteButtons = () => {
                 if (document.querySelector(".route-button")) {
