@@ -633,3 +633,10 @@ section {
 .about-company-content {
 	transition: all 0.3s ease 0s;
 }
+
+.page-template {
+	padding-bottom: toRem(60);
+	@media (max-width: em(500)){
+		padding-bottom: toRem(51);
+	}
+}

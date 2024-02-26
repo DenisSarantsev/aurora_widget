@@ -73,9 +73,18 @@
 			align-items: center;
 			width: 100%;
 			justify-content: center;
+			@media (max-width: em(500)){
+				padding: toRem(0) toRem(20);
+			}
 		}
 		&__politics-label {
 			font-size: toRem(16);
+			@media (max-width: em(500)){
+				display: flex;
+				justify-content: center;
+				text-align: center;
+				font-size: toRem(15);
+			}
 			&:hover {
 				cursor: pointer;
 			}

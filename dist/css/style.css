@@ -1102,6 +1102,10 @@ section::-webkit-scrollbar-thumb {
   transition: all 0.3s ease 0s;
 }
 
+.page-template {
+  padding-bottom: 3.75rem;
+}
+
 @-webkit-keyframes headerMargin {
   0% {
     margin-top: -9.375rem;
@@ -1229,6 +1233,8 @@ section::-webkit-scrollbar-thumb {
   width: 100%;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
+  position: absolute;
+  bottom: 0;
 }
 
 .footer__container {
@@ -3126,6 +3132,10 @@ section::-webkit-scrollbar-thumb {
 }
 
 @media (max-width: 31.25em) {
+  .page-template {
+    padding-bottom: 3.1875rem;
+  }
+
   .header__logo-link {
     max-width: 26vw;
   }
@@ -3145,5 +3155,20 @@ section::-webkit-scrollbar-thumb {
 
   .check-request-vacancy-page__check-item {
     padding: 0.625rem 0.3125rem 0.625rem 0.3125rem;
+  }
+
+  .check-request-vacancy-page__politics-checkbox-label {
+    padding: 0rem 1.25rem;
+  }
+
+  .check-request-vacancy-page__politics-label {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    text-align: center;
+    font-size: 0.9375rem;
   }
 }
