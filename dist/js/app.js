@@ -1360,13 +1360,15 @@
             const addListenerToAllRouteButtons = () => {
                 if (document.querySelector(".route-button")) {
                     const listenerFunctions = e => {
-                        currentTemplateID = removeDigitsAndUnderscore(e.target.id);
-                        addBackButtonMechanics(e.target);
-                        firstEnter = false;
-                        includeCurrentTemplate(currentTemplateID);
-                        hiddenOrShowFooter();
-                        scrollToTop();
-                        console.log(templatesRoad);
+                        if (removeDigitsAndUnderscore(e.target.id) !== "post-request-vacancy-page") {
+                            currentTemplateID = removeDigitsAndUnderscore(e.target.id);
+                            addBackButtonMechanics(e.target);
+                            firstEnter = false;
+                            includeCurrentTemplate(currentTemplateID);
+                            hiddenOrShowFooter();
+                            scrollToTop();
+                            console.log(templatesRoad);
+                        } else addListenerToAllVacancyRequestButtons();
                     };
                     const allRouteButtons = document.querySelectorAll(".route-button");
                     for (let item of allRouteButtons) {
@@ -1397,11 +1399,40 @@
             let allQuestionsCounter = 5;
             let questionsCounter = -1;
             let answersCounter = -1;
-            const requestButtonsArray = document.querySelectorAll(".vacancy-page__request-button");
-            for (let button of requestButtonsArray) button.addEventListener("click", (() => {
-                addQuestionsToChat();
-                showTextInput();
-            }));
+            const addListenerToAllVacancyRequestButtons = () => {
+                const requestButtonsArray = document.querySelectorAll(".vacancy-page__request-button");
+                for (let button of requestButtonsArray) button.addEventListener("click", (event => {
+                    if (data.cabinet) {
+                        showMainMessage(`\n\t\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\t\tУ вас вже є створена заявка. У разі подачі повторної заявки попередня буде видалена\n\t\t\t\t\t</div>\n\t\t\t\t\t<button id="100_post-request-vacancy-page" class="route-button main-message-template-style__width route-button-main-style button-effect create-add">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Створити нову заявку</div>\n\t\t\t\t\t</button>\n\t\t\t\t\t<button class="route-button main-message-template-style__width route-button-main-style button-effect dont-create-add">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Не подавати заявку</div>\n\t\t\t\t\t</button>\n\t\t\t\t`);
+                        document.querySelector(".create-add").addEventListener("click", (e => {
+                            let message = document.querySelector(".main-message-template-style");
+                            message.classList.add("_hidden-template");
+                            addQuestionsToChat();
+                            showTextInput();
+                            currentTemplateID = removeDigitsAndUnderscore(e.target.id);
+                            addBackButtonMechanics(e.target);
+                            firstEnter = false;
+                            includeCurrentTemplate(currentTemplateID);
+                            hiddenOrShowFooter();
+                            scrollToTop();
+                        }));
+                        document.querySelector(".dont-create-add").addEventListener("click", (() => {
+                            let message = document.querySelector(".main-message-template-style");
+                            message.classList.add("_hidden-template");
+                        }));
+                    } else {
+                        addQuestionsToChat();
+                        showTextInput();
+                        currentTemplateID = removeDigitsAndUnderscore(event.target.id);
+                        addBackButtonMechanics(event.target);
+                        firstEnter = false;
+                        includeCurrentTemplate(currentTemplateID);
+                        hiddenOrShowFooter();
+                        scrollToTop();
+                    }
+                }));
+            };
+            addListenerToAllVacancyRequestButtons();
             const questionsArray = [ `Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`, `Вкажіть актуальний номер телефону для зв'язку:`, `Вкажіть місто проживання:`, `Вкажіть дату народження:`, `Додайте резюме у форматі .docx або .pdf:` ];
             const finalMessage = "Дякуємо за терпіння! Залишилось перевірити правильність введених даних і можна надсилати заявку)";
             let additionalQuestions;
@@ -1414,6 +1445,11 @@
                         additionalQuestions = data;
                         addAdditionalQuestionsToMainPostObject(additionalQuestions, postVacancyObject);
                         addAdditionalQuestionsToMainCheckQuestionsArray(additionalQuestions, checkQuestionsArray);
+                        console.log(additionalQuestions);
+                        console.log(fixedQuestionsCounter);
+                        console.log(allQuestionsCounter);
+                        console.log(questionsCounter);
+                        console.log(answersCounter);
                         return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
                     } else setTimeout((function() {
                         addQuestionsToChat();
@@ -1513,6 +1549,7 @@
                     postVacancyObject[objectKeys[questionsCounter]] = postVariablesArray[questionsCounter];
                     addUserAnswers(postVariablesArray[questionsCounter]);
                     scrollChatToBottom();
+                    console.log(questionsArray);
                     addMessagesAfterUserAnswers(questionsArray);
                     addPhoneAnswerBlock();
                     addBirthDateAnswerBlock();
@@ -1524,6 +1561,7 @@
                         [currentAdditionalQuestion]: `${chatInput.value}`
                     };
                     addUserAnswers(chatInput.value);
+                    console.log(questionsArray);
                     addMessagesAfterUserAnswers(questionsArray);
                     checkFinalAnswerMessage();
                     addResumeBlock();
@@ -1549,6 +1587,7 @@
                 scrollChatToBottom();
                 addUploadFileCode();
                 document.querySelector(".save-resume-button").addEventListener("click", (() => {
+                    addMessageInChatAfteraddedFile();
                     saveFiledataAndContinueChat();
                 }));
                 document.querySelector(".skip-resume-button").addEventListener("click", (() => {
@@ -1613,11 +1652,20 @@
             };
             const continueFileButton = () => {
                 document.querySelector(".add-resume-container").classList.add("hidden-file-buttons");
+                addMessageInChatAfterClickOnMissButton();
                 answersCounter++;
                 addMessagesAfterUserAnswers(questionsArray);
                 scrollChatToBottom();
                 showTextInput();
                 currentFile = {};
+            };
+            const addMessageInChatAfteraddedFile = () => {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element user-message__container">\n\t\t\t<div class="main-message-style user-message">\n\t\t\t\tФайл з резюме додано до анкети\n\t\t\t</div>\n\t\t</div>\n\t`);
+            };
+            const addMessageInChatAfterClickOnMissButton = () => {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t<div class="post-request-vacancy-page__message-element user-message__container">\n\t\t<div class="main-message-style user-message">\n\t\t\tКрок пропущено\n\t\t</div>\n\t</div>\n\t`);
             };
             const addBirthDateAnswerBlock = () => {
                 if (objectKeys[questionsCounter] === "birthday") {
@@ -1909,14 +1957,17 @@
                     if (key.startsWith("q")) objectToWrite[`${key}`] = "";
                 }
             };
-            const checkQuestionsArray = [ `Ім'я та прізвище:`, `Номер телефону для зв'язку:`, `Місто проживання:`, `Дата народження:`, `Завантажене резюме:` ];
+            const deleteAdditionalQuestionsInQuestionsArray = () => {
+                questionsArray.splice(-Object.keys(additionalQuestions.forms).length);
+            };
+            let checkQuestionsArray = [ `Ім'я та прізвище:`, `Номер телефону для зв'язку:`, `Місто проживання:`, `Дата народження:`, `fileName` ];
             const addAdditionalQuestionsToMainCheckQuestionsArray = (questionsObject, arrayToWrite) => {
                 for (var key in questionsObject.forms) if (key.startsWith("q")) arrayToWrite.push(questionsObject.forms[key]);
             };
             const addInputFieldsToCheckPage = () => {
                 const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
                 if (reserveBranch === false) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> \n\t\t\t\t\t<span class="icon-vacancy-icon vacancy-mark"></span> Назва вакансії:</div>\n\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t`); else if (reserveBranch === true) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> \n\t\t\t\t\t<span class="icon-vacancy-icon vacancy-mark"></span> Назва вакансії:</div>\n\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">Резерв</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t`);
-                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question"> \n\t\t\t\t\t\t<span class="icon-check green-check-mark"></span>\n\t\t\t\t\t\t<span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`); else {
+                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter && checkQuestionsArray[i] !== "fileName") checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question"> \n\t\t\t\t\t\t<span class="icon-check green-check-mark"></span>\n\t\t\t\t\t\t<span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`); else if (checkQuestionsArray[i] === "fileName") ; else {
                     let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i + 1]];
                     let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
                     checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question"> <span class="icon-check green-check-mark"></span> <span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`);
@@ -2035,6 +2086,10 @@
                     showMainMessage(errorMessage);
                 }));
             }
+            const clearCheckQuestionsArray = () => {
+                checkQuestionsArray = [];
+                checkQuestionsArray = [ `Ім'я та прізвище:`, `Номер телефону для зв'язку:`, `Місто проживання:`, `Дата народження:`, `fileName` ];
+            };
             const addAllInputsValidateListeners = () => {
                 const allCheckInputs = document.querySelectorAll(".check-request-vacancy-page__check-input");
                 for (let i = 0; i < allCheckInputs.length; i++) allCheckInputs[i].setAttribute("check-item-number", `${i}`);
@@ -2143,6 +2198,7 @@
                     if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
                     return response.json();
                 })).then((data => {
+                    console.log(data);
                     if (validateResponseAfterDeleteAdd(data)) showMainMessage(`\n\t\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\t\tВаша заявка успішно видалена\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="route-button main-message-template-style__home-button route-button-main-style button-effect">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>На головну</div>\n\t\t\t\t\t</button>\n\t\t\t\t`); else setTimeout((function() {
                         deleteAddInCabinet();
                     }), 2e3);
@@ -2171,16 +2227,18 @@
                     includeLastTemplate(lastTemplate);
                     currentTemplateID = lastTemplate;
                     deleteChatContent();
-                    console.log(templatesRoad);
                 } else if (templatesRoad[templatesRoad.length - 1] === "post-request-vacancy-page") {
                     templatesRoad.pop();
                     let lastTemplate = templatesRoad[templatesRoad.length - 1];
                     currentTemplateID = lastTemplate;
-                    console.log(lastTemplate);
-                    console.log(currentVacancyID);
                     includeLastTemplate("vacancy-page");
                     includeLastVacancyContent();
-                    deleteChatContent();
+                    deleteAdditionalQuestionsInQuestionsArray();
+                    clearCheckQuestionsArray();
+                    document.querySelector(".check-request-vacancy-page__items-container").innerHTML = "";
+                } else if (templatesRoad[templatesRoad.length - 1] === "check-request-vacancy-page") {
+                    clearCheckQuestionsArray();
+                    document.querySelector(".check-request-vacancy-page__items-container").innerHTML = "";
                 }
             };
             const deleteChatContent = () => {
@@ -2202,11 +2260,15 @@
                             document.querySelector(".main-message-template-style").classList.add("_hidden-template");
                         }));
                         document.querySelector(".back-out-chat-button").addEventListener("click", (() => {
+                            deleteChatContent();
                             document.querySelector(".main-message-template-style").classList.add("_hidden-template");
                             if (templatesRoad[templatesRoad.length - 2] === "reserve-directions-page") {
                                 includeLastTemplate("reserve-directions-page");
                                 templatesRoad.pop();
                                 currentTemplateID = templatesRoad[templatesRoad.length - 1];
+                            } else if (templatesRoad[templatesRoad.length - 1] === "check-request-vacancy-page") {
+                                templatesRoad.pop();
+                                backToPreviousTemplate();
                             } else backToPreviousTemplate();
                         }));
                     } else backToPreviousTemplate();
