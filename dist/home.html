@@ -9,9 +9,9 @@
 		/* Отключаем скролл по умолчанию */
 	</style>
 	<!-- <style>body{opacity: 0;}</style> -->
-	<link rel="stylesheet" href="css/style.min.css?_v=20240226202223">
+	<link rel="stylesheet" href="css/style.min.css?_v=20240226202802">
 	<link rel="shortcut icon" href="favicon.ico">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css?_v=20240226202223">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css?_v=20240226202802">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -348,28 +348,7 @@
 			</section>
 
 		</main>
-		<script src="https://cdn.jsdelivr.net/npm/@barba/core?_v=20240226202223"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js?_v=20240226202223"></script>
-		<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js?_v=20240226202223"></script>
-		<script>
-			const input = document.querySelector("#phone");
-			window.intlTelInput(input, {
-				initialCountry: "ua",
-				utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js",
-			});
-		</script>
-		<footer class="footer _hidden">
-			<div class="footer__container">
-				<a href="#" class="footer__button-back-link footer-button button-effect">
-					<div id="circle"></div>
-					<div>Назад</div>
-				</a>
-				<button class="route-button footer__button-main-link footer-button button-effect">
-					<div id="circle"></div>
-					<div>На головну</div>
-				</button>
-			</div>
-		</footer>
+
 	</div>
 	<!-- Стилі для body -->
 	<style>
@@ -525,7 +504,29 @@
 			reloadButton.classList.add("_hidden-yellow-bg");
 		</script>
 	</div>
-	<script src="js/app.min.js?_v=20240226202223"></script>
+	<script src="js/app.min.js?_v=20240226202802"></script>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/@barba/core?_v=20240226202802"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js?_v=20240226202802"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js?_v=20240226202802"></script>
+<script>
+	const input = document.querySelector("#phone");
+	window.intlTelInput(input, {
+		initialCountry: "ua",
+		utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js",
+	});
+</script>
+<footer class="footer _hidden">
+	<div class="footer__container">
+		<a href="#" class="footer__button-back-link footer-button button-effect">
+			<div id="circle"></div>
+			<div>Назад</div>
+		</a>
+		<button class="route-button footer__button-main-link footer-button button-effect">
+			<div id="circle"></div>
+			<div>На головну</div>
+		</button>
+	</div>
+</footer>
 
 </html>
