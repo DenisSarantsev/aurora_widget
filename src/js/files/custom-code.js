@@ -353,6 +353,7 @@ const addListenerToAllRouteButtons = () => {
 			// addWhiteBackground(item);
 			hiddenOrShowFooter();
 			scrollToTop();
+			console.log(templatesRoad);
 		}
 		// Находим все кнопки с роутами
 		const allRouteButtons = document.querySelectorAll(".route-button");
@@ -362,6 +363,7 @@ const addListenerToAllRouteButtons = () => {
 			item.removeEventListener('click', listenerFunctions);
 			// Отменяем всплытие и задаем событие при клике на дочерние элементы
 			item.addEventListener("click", listenerFunctions);
+			
 		}
 	}
 }
@@ -1130,6 +1132,7 @@ const addFinalMessageAfterAnswers = (message) => {
 						includeCurrentTemplate(currentTemplateID);
 						hiddenOrShowFooter();
 						scrollToTop();
+						templatesRoad.push("check-request-vacancy-page");
 					})
 
 			}

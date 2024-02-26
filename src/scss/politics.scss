@@ -1,9 +1,7 @@
 
 .politics-page {
-		padding: toRem(20) 0;
 		&__container {
-			background-color: rgba($color: #FFFFFF, $alpha: 0.95);
-			padding: toRem(20) toRem(15);
+			padding: toRem(20) 0;
 			display: flex;
 			flex-direction: column;
 			gap: toRem(15);
@@ -11,6 +9,9 @@
 		&__title {
 		}
 		&__wrapper {
+			border-radius: toRem(15);
+			padding: toRem(15) toRem(15);
+			background-color: rgba($color: #FFFFFF, $alpha: 0.95);
 			color: #000;
 			& li {
 				margin-left: 1px;

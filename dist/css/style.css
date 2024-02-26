@@ -2911,13 +2911,8 @@ section::-webkit-scrollbar-thumb {
           filter: invert(11%) sepia(79%) saturate(6803%) hue-rotate(359deg) brightness(107%) contrast(107%);
 }
 
-.politics-page {
-  padding: 1.25rem 0;
-}
-
 .politics-page__container {
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: 1.25rem 0.9375rem;
+  padding: 1.25rem 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2929,6 +2924,9 @@ section::-webkit-scrollbar-thumb {
 }
 
 .politics-page__wrapper {
+  border-radius: 0.9375rem;
+  padding: 0.9375rem 0.9375rem;
+  background-color: rgba(255, 255, 255, 0.95);
   color: #000;
 }
 
@@ -2969,7 +2967,7 @@ section::-webkit-scrollbar-thumb {
       -ms-flex-pack: center;
           justify-content: center;
   position: relative;
-  width: 90px;
+  width: 80px;
   height: 50px;
 }
 

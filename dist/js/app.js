@@ -1366,6 +1366,7 @@
                         includeCurrentTemplate(currentTemplateID);
                         hiddenOrShowFooter();
                         scrollToTop();
+                        console.log(templatesRoad);
                     };
                     const allRouteButtons = document.querySelectorAll(".route-button");
                     for (let item of allRouteButtons) {
@@ -1850,6 +1851,7 @@
                                 includeCurrentTemplate(currentTemplateID);
                                 hiddenOrShowFooter();
                                 scrollToTop();
+                                templatesRoad.push("check-request-vacancy-page");
                             }));
                         }
                     };
