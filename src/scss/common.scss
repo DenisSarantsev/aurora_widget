@@ -1,5 +1,6 @@
 // Заголовки, загальні БЕМ блоки та інше...
 body {
+	height: 100%;
 	background-color: $backGroundColor;
 	scrollbar-width: thin;
   scrollbar-color: transparent transparent;
@@ -434,6 +435,9 @@ section {
 				max-width: toRem(10);
 			}
 		}
+	}
+	&__container {
+		padding-bottom: toRem(15);
 	}
 	&__request-button {
 		width: 100%;
