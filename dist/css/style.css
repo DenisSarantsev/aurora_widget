@@ -1958,6 +1958,34 @@ section::-webkit-scrollbar-thumb {
           filter: invert(80%) sepia(65%) saturate(2048%) hue-rotate(3deg) brightness(106%) contrast(109%);
 }
 
+.answers-variants-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.question-variant {
+  border: 3px solid transparent;
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+.question-variant:hover {
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  background-color: rgba(255, 221, 0, 0.6);
+  border: 3px solid rgb(255, 221, 0);
+}
+
+.question-variant span {
+  font-weight: 600;
+}
+
 .add-resume-container {
   padding: 10px;
   width: 100%;

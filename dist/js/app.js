@@ -1435,36 +1435,73 @@
             addListenerToAllVacancyRequestButtons();
             const questionsArray = [ `Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`, `Вкажіть актуальний номер телефону для зв'язку:`, `Вкажіть місто проживання:`, `Вкажіть дату народження:`, `Додайте резюме у форматі .docx або .pdf:` ];
             const finalMessage = "Дякуємо за терпіння! Залишилось перевірити правильність введених даних і можна надсилати заявку)";
+            let additionalQuestionsWithAnswers;
             let additionalQuestions;
+            let withAnswers = true;
             function addQuestionsToChat() {
                 fetch(`${actualHost}/forms/${currentTelegramID}/${data.password}`).then((response => {
                     if (!response.ok) throw new Error("Network response was not ok");
                     return response.json();
                 })).then((data => {
-                    if (validateAdditionalAPIQuestions(data)) {
-                        additionalQuestions = data;
-                        addAdditionalQuestionsToMainPostObject(additionalQuestions, postVacancyObject);
-                        addAdditionalQuestionsToMainCheckQuestionsArray(additionalQuestions, checkQuestionsArray);
-                        console.log(additionalQuestions);
-                        console.log(fixedQuestionsCounter);
-                        console.log(allQuestionsCounter);
-                        console.log(questionsCounter);
-                        console.log(answersCounter);
-                        return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
-                    } else setTimeout((function() {
+                    data = {
+                        q1: {
+                            a: "Ігнорую і не втручаюся",
+                            b: "Критикую його при всіх за негативну поведінку",
+                            c: "У приватній розмові обоговорюю неприйнятну поведінку та допомагаю знайти шляхи рішення",
+                            point: "b",
+                            question: "Як реагуєш, якщо хтось у команді поводить себе безвідповідально або негативно?"
+                        },
+                        q2: {
+                            a: "Приймаю самостійно всі рішення, не раджусь ні з ким",
+                            b: "Раджусь з командою, щоб знайти краще рішення",
+                            c: "Чекаю, що відповідальність візьме на себе хтось інший",
+                            point: "b",
+                            question: "У тебе спільний проєкт/завдання з колегами. Твої дії?"
+                        },
+                        q3: {
+                            a: "Ігнорую ідеї інших",
+                            b: "Підтримую ініціативу, якщо вона співпадає з моїми власними ідеями",
+                            c: "Підтримую ініціативу і сприяю її втіленню, незалежно від відповідності моїм власним ідеям",
+                            point: "c",
+                            question: "Як ти сприймаєш ініціативу від інших членів команди?"
+                        },
+                        q4: {
+                            a: "Шукати спільне рішення, яке влаштує всіх",
+                            b: "Я не приймаю участі в конфліктах",
+                            c: "Переконати інших у своїй правоті",
+                            point: "a",
+                            question: "Якщо погляди колег відрізняються від ваших, що ти робиш?"
+                        },
+                        q5: {
+                            a: "Ігнорую, якщо вони відрізняються від моїх",
+                            b: "Враховую їх та використовую щоб знайти краще рішення",
+                            c: "Вислухаю, але зроблю так як вирішив до цього",
+                            point: "b",
+                            question: "Як ти ставишся до думок та ідей інших членів команди?"
+                        }
+                    };
+                    let dataKeys = Object.keys(data);
+                    let questionsObject = {
+                        forms: {}
+                    };
+                    for (let i = 0; i < Object.keys(data).length; i++) questionsObject.forms[`${dataKeys[i]}`] = data[`${dataKeys[i]}`]["question"];
+                    additionalQuestions = questionsObject;
+                    additionalQuestionsWithAnswers = data;
+                    addAdditionalQuestionsToMainPostObject(additionalQuestions, postVacancyObject);
+                    addAdditionalQuestionsToMainCheckQuestionsArray(additionalQuestions, checkQuestionsArray);
+                    if (data.q1.point === null) withAnswers = false; else if (data.q1.point !== null) withAnswers = true; else setTimeout((function() {
                         addQuestionsToChat();
                     }), 2e3);
+                    return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
                 })).then((array => {
                     addMessagesAfterUserAnswers(array);
-                })).catch((error => {
-                    console.error("Fetch error:", error);
                 }));
             }
             const addMessagesAfterUserAnswers = questionsArray => {
                 if (answersCounter === questionsCounter && questionsArray[questionsCounter + 1] !== void 0) {
-                    addMessageToChat(questionsArray[questionsCounter + 1]);
-                    questionsCounter++;
-                }
+                    if (withAnswers === false) addMessageToChat(questionsArray[questionsCounter + 1]); else if (withAnswers === true) addMessageAndAnswersToChat(questionsArray[questionsCounter + 1]);
+                } else if (questionsCounter === answersCounter && questionsArray[questionsCounter] !== void 0) addFinalMessageAfterAnswers(finalMessage);
+                questionsCounter++;
             };
             const deleteErrorMessagesInChat = () => {
                 const allErrorMessages = document.querySelectorAll(".main-error-style__container");
@@ -1549,30 +1586,49 @@
                     postVacancyObject[objectKeys[questionsCounter]] = postVariablesArray[questionsCounter];
                     addUserAnswers(postVariablesArray[questionsCounter]);
                     scrollChatToBottom();
-                    console.log(questionsArray);
                     addMessagesAfterUserAnswers(questionsArray);
+                    addUserMessageToChat(chatInput.value);
                     addPhoneAnswerBlock();
                     addBirthDateAnswerBlock();
                     addResumeBlock();
-                } else if (questionsCounter + 1 > fixedQuestionsCounter && answersCounter < allQuestionsCounter) {
-                    let currentQuestionKey = `q${questionsCounter + 1 - fixedQuestionsCounter}`;
-                    let currentAdditionalQuestion = additionalQuestions.forms[`${currentQuestionKey}`];
-                    postVacancyObject[`${currentQuestionKey}`] = {
-                        [currentAdditionalQuestion]: `${chatInput.value}`
-                    };
+                } else if (questionsCounter + 1 > fixedQuestionsCounter && answersCounter < allQuestionsCounter || questionsCounter + 1 === fixedQuestionsCounter) {
                     addUserAnswers(chatInput.value);
-                    console.log(questionsArray);
                     addMessagesAfterUserAnswers(questionsArray);
                     checkFinalAnswerMessage();
                     addResumeBlock();
+                    console.log("questionsCounter", questionsCounter);
+                    console.log("fixedQuestionsCounter", fixedQuestionsCounter);
+                    console.log("answersCounter", answersCounter);
+                    console.log("allQuestionsCounter", allQuestionsCounter);
+                    console.log("questionsCounter+1", questionsCounter + 1);
+                    console.log("fixedQuestionsCounter", fixedQuestionsCounter);
+                    console.log("questionsCounter+1 > fixedQuestionsCounter", questionsCounter + 1 > fixedQuestionsCounter);
+                    console.log("questionsCounter-1 === answersCounter", questionsCounter - 1 === answersCounter);
+                    console.log("questionsArray[questionsCounter-1]", questionsArray[questionsCounter - 1]);
+                    console.log("questionsArray[questionsCounter+1]", questionsArray[questionsCounter + 1]);
+                    console.log("questionsArray[questionsCounter]", questionsArray[questionsCounter]);
+                    console.log("current quetion", questionsArray[questionsCounter + 1]);
+                    console.log("questionsArray", questionsArray);
+                    if (withAnswers === false) {
+                        if (validateAdditionalAnswers(chatInput.value)) addUserMessageToChat(chatInput.value);
+                        writeAnswerToPostDataObject();
+                        addUserFreeAnswerToPostVacancyObject(questionsArray[questionsCounter - 1], chatInput.value);
+                    }
+                    console.log(postVacancyObject);
                 }
                 chatInput.value = "";
                 deleteErrorMessagesInChat();
             };
+            const addUserFreeAnswerToPostVacancyObject = (currentQuestion, inputValue) => {
+                let currentQuestionKey = `q${questionsCounter - fixedQuestionsCounter}`;
+                console.log("currentQuestionKey", currentQuestionKey);
+                postVacancyObject[`${currentQuestionKey}`] = {
+                    [`${currentQuestion}`]: `${inputValue}`,
+                    point: 0
+                };
+            };
             const addResumeBlock = () => {
-                console.log("function");
                 if (objectKeys[questionsCounter] === "cv") {
-                    console.log("function cv");
                     function delayedFunction() {
                         scrollChatToBottom();
                         addResumeField();
@@ -1648,7 +1704,6 @@
                 answersCounter++;
                 addMessagesAfterUserAnswers(questionsArray);
                 scrollChatToBottom();
-                showTextInput();
             };
             const continueFileButton = () => {
                 document.querySelector(".add-resume-container").classList.add("hidden-file-buttons");
@@ -1656,7 +1711,6 @@
                 answersCounter++;
                 addMessagesAfterUserAnswers(questionsArray);
                 scrollChatToBottom();
-                showTextInput();
                 currentFile = {};
             };
             const addMessageInChatAfteraddedFile = () => {
@@ -1688,7 +1742,6 @@
                     function delayedFunction() {
                         addMessagesAfterUserAnswers(questionsArray);
                         scrollChatToBottom();
-                        showTextInput();
                         addResumeBlock();
                     }
                     setTimeout(delayedFunction, 300);
@@ -1704,7 +1757,6 @@
                     function delayedFunction() {
                         addMessagesAfterUserAnswers(questionsArray);
                         scrollChatToBottom();
-                        showTextInput();
                         addResumeBlock();
                     }
                     setTimeout(delayedFunction, 300);
@@ -1885,6 +1937,8 @@
                 }
             };
             const addFinalMessageAfterAnswers = message => {
+                const allVariansInChat = document.querySelectorAll(".question-variant");
+                for (let item of allVariansInChat) item.remove();
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
                 function delayedFunction() {
                     chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element final-message__container input-hidden">\n\t\t\t<div class="main-message-style final-message">${message}</div>\n\t\t\t<button id="001_check-request-vacancy-page" class="route-button final-message__button route-button-main-style button-effect">\n\t\t\t\t<div id="circle"></div>\n\t\t\t\t<div>Продовжити</div>\n\t\t\t</button>\n\t\t</div>\n\t\t`);
@@ -1924,7 +1978,6 @@
             const addUserAnswers = userMessageText => {
                 inactiveInput();
                 inactiveMessageButton();
-                addUserMessageToChat(userMessageText);
                 answersCounter++;
             };
             function scrollChatToBottom() {
@@ -1940,6 +1993,7 @@
                 function delayedFunction() {
                     chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">\n\t\t\t<div class="main-message-style app-message">${question}</div>\n\t\t</div>\n\t`);
                 }
+                showTextInput();
                 setTimeout(delayedFunction, 1);
                 function onInput() {
                     activeInput();
@@ -1947,6 +2001,56 @@
                 }
                 setTimeout(onInput, 800);
             }
+            const addMessageAndAnswersToChat = currentQuestion => {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                if (questionsCounter + 2 > fixedQuestionsCounter || questionsCounter + 1 > fixedQuestionsCounter) {
+                    let a = "";
+                    let b = "";
+                    let c = "";
+                    for (let i = 0; i < Object.keys(additionalQuestionsWithAnswers).length; i++) {
+                        let currentQ = Object.keys(additionalQuestionsWithAnswers)[i];
+                        if (additionalQuestionsWithAnswers[currentQ].question === currentQuestion) {
+                            a = additionalQuestionsWithAnswers[currentQ].a;
+                            b = additionalQuestionsWithAnswers[currentQ].b;
+                            c = additionalQuestionsWithAnswers[currentQ].c;
+                        }
+                    }
+                    const allVariansInChat = document.querySelectorAll(".question-variant");
+                    for (let item of allVariansInChat) item.remove();
+                    const addQuestionWithAnswers = (currentQuestion, a, b, c) => {
+                        chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">\n\t\t\t\t\t<div class="answers-variants-container">\n\t\t\t\t\t\t<div class="main-message-style app-message">${currentQuestion}</div>\n\t\t\t\t\t\t\t<div class="answers-to-quetion-container">\n\t\t\t\t\t\t\t\t<div variant="a" class="main-message-style app-message question-variant"><span>Варіант 1:</span> ${a}</div>\n\t\t\t\t\t\t\t\t<div variant="b" class="main-message-style app-message question-variant"><span>Варіант 2:</span> ${b}</div>\n\t\t\t\t\t\t\t\t<div variant="c" class="main-message-style app-message question-variant"><span>Варіант 3:</span> ${c}</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t`);
+                    };
+                    addQuestionWithAnswers(currentQuestion, a, b, c);
+                    addListenerToAnswers(currentQuestion);
+                } else addMessageToChat(currentQuestion);
+            };
+            const addListenerToAnswers = currentQuestion => {
+                const allVariants = document.querySelectorAll(".question-variant");
+                for (let item of allVariants) item.addEventListener("click", (event => {
+                    let currentVariant = event.target.getAttribute("variant");
+                    let currentAnswer = event.target.textContent.slice(11);
+                    let currentQuestionKey = `q${questionsCounter + 1 - fixedQuestionsCounter}`;
+                    addUserMessageToChat(event.target.textContent);
+                    writeAnswerToPostDataObject(currentQuestionKey, getCurrentPointAfterClickToAnswer(currentVariant, currentQuestion), currentQuestion, currentAnswer);
+                }));
+            };
+            const getCurrentPointAfterClickToAnswer = (currentVariant, currentQuestion) => {
+                let correctCurrentVariant;
+                if (withAnswers === true) {
+                    for (let i = 0; i < Object.keys(additionalQuestionsWithAnswers).length; i++) {
+                        let currentQ = Object.keys(additionalQuestionsWithAnswers)[i];
+                        if (additionalQuestionsWithAnswers[currentQ].question === currentQuestion) correctCurrentVariant = additionalQuestionsWithAnswers[currentQ].point;
+                    }
+                    addAnswersAndQuestionsToChat();
+                    if (currentVariant === correctCurrentVariant) return 1; else return 0;
+                } else if (withAnswers === false) return "null";
+            };
+            const writeAnswerToPostDataObject = (currentQuestionKey, point, currentQuestion, currentAnswer) => {
+                if (withAnswers === true) postVacancyObject[`${currentQuestionKey}`] = {
+                    [currentQuestion]: `${currentAnswer}`,
+                    point
+                };
+            };
             const addAdditionalQuestionsToMainQuestionsArray = (questionsObject, arrayToWrite) => {
                 for (var key in questionsObject.forms) if (key.startsWith("q")) arrayToWrite.push(questionsObject.forms[key]);
                 return arrayToWrite;
@@ -1967,11 +2071,7 @@
             const addInputFieldsToCheckPage = () => {
                 const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
                 if (reserveBranch === false) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> \n\t\t\t\t\t<span class="icon-vacancy-icon vacancy-mark"></span> Назва вакансії:</div>\n\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t`); else if (reserveBranch === true) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> \n\t\t\t\t\t<span class="icon-vacancy-icon vacancy-mark"></span> Назва вакансії:</div>\n\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">Резерв</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t`);
-                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter && checkQuestionsArray[i] !== "fileName") checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question"> \n\t\t\t\t\t\t<span class="icon-check green-check-mark"></span>\n\t\t\t\t\t\t<span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`); else if (checkQuestionsArray[i] === "fileName") ; else {
-                    let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i + 1]];
-                    let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
-                    checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question"> <span class="icon-check green-check-mark"></span> <span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`);
-                }
+                for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter && checkQuestionsArray[i] !== "fileName") checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question"> \n\t\t\t\t\t\t<span class="icon-check green-check-mark"></span>\n\t\t\t\t\t\t<span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`); else if (checkQuestionsArray[i] === "fileName") ;
                 addListenerOnEditButtons();
                 inactiveCheckInputs();
                 addAllInputsValidateListeners();
@@ -2063,7 +2163,7 @@
                 const data = addCVObjectToMainObject(objectData);
                 objectData.kind = currentVacancyKind.toLowerCase();
                 objectData.cv = currentFile;
-                console.log(objectData);
+                console.log(data);
                 const requestOptions = {
                     method: "POST",
                     headers: {
@@ -2075,12 +2175,8 @@
                     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                     return response.json();
                 })).then((data => {
-                    if (validateAPIPostDataVacancy(data)) {
-                        console.log("Отримано дані від сервера:", data);
-                        showMainMessage(`\n\t\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\t\tЗаявка успішно надіслана. Перевірити статус, свої анкетні дані, або відкликати заявку ви можете в особистому кабінеті\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="route-button main-message-template-style__home-button route-button-main-style button-effect">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Зрозуміло</div>\n\t\t\t\t\t</button>\n\t\t\t\t`);
-                    } else setTimeout((function() {
-                        fetchPostData(objectData, vacancyID);
-                    }), 2e3);
+                    console.log("Отримано дані від сервера:", data);
+                    showMainMessage(`\n\t\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\t\tЗаявка успішно надіслана. Перевірити статус, свої анкетні дані, або відкликати заявку ви можете в особистому кабінеті\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="route-button main-message-template-style__home-button route-button-main-style button-effect">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Зрозуміло</div>\n\t\t\t\t\t</button>\n\t\t\t\t`);
                 })).catch((error => {
                     console.error("Помилка під час виконання POST-запиту:", error);
                     showMainMessage(errorMessage);
@@ -2304,12 +2400,6 @@
                 vacancyPageTitle.innerHTML = lastVacancyTitle;
                 vacancyPageDescription.innerHTML = lastVacancyContent;
             };
-            const validateAPIPostDataVacancy = data => {
-                if (data.first_name || data.telegram_id) return true;
-            };
-            const validateAdditionalAPIQuestions = data => {
-                if (Object.keys(data.forms).length > 0) return true;
-            };
             const validateResponseAfterDeleteAdd = data => {
                 if (data.response === "the application has been withdrawn") return true;
             };
@@ -2371,6 +2461,14 @@
                 }));
             };
             downloadInformationAboutCompany();
+            fetch(`${actualHost}/forms/${currentTelegramID}/${currentPassword}`).then((response => {
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.json();
+            })).then((data => {
+                console.log(data);
+            })).catch((error => {
+                console.error("Fetch error:", error);
+            }));
         }));
         __webpack_require__(69);
         document.addEventListener("DOMContentLoaded", (() => {}));

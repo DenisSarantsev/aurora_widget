@@ -93,7 +93,6 @@ footerButtonToHome.addEventListener("click", () => {
 	firstEnter = true;
 	currentTemplateID = "home-page";
 })
-
 // Прокрутка страницы в самый верх
 function scrollToTop() {
 	function delayedFunction() {
@@ -106,18 +105,6 @@ function scrollToTop() {
 	}
 	setTimeout(delayedFunction, 300);
 }
-
-// Добавляем полупрозрачный белый фон на блок page при открытии шаблона chat\
-// const mainPageContainer = document.querySelector(".page");
-// function addWhiteBackground(button) {
-// 	let itemID = removeDigitsAndUnderscore(button.id);
-// 	if ( itemID === "post-request-vacancy-page" ) {
-// 		mainPageContainer.classList.add("white-background");
-// 	} else {
-// 		mainPageContainer.classList.remove("white-background");
-// 	}
-// }
-
 // Функция удаления префикса из ID
 function removeDigitsAndUnderscore(inputString) {
 	let prefix = inputString.slice(0, 4);
@@ -126,7 +113,6 @@ function removeDigitsAndUnderscore(inputString) {
 	let resultString = resultPrefix+rest;
 	return resultString;
 }
-
 // Функция для включения нужного шаблона (выполняется по клике кнопки роута)
 const includeCurrentTemplate = (currentTemplateID) => {
 // Находим все шаблоны
@@ -153,7 +139,6 @@ const allWidgetTemplates = document.querySelectorAll(".page-template");
 	}
 }
 includeCurrentTemplate(currentTemplateID);
-
 
 // ---------------------------------------------------------------------- Отлавливаем вакансии через API и формируем шаблоны
 const addVacanciesAndKindsToList = () => {
@@ -315,7 +300,6 @@ const addVacanciesAndKindsToList = () => {
 		});
 	} else {}
 }
-
 // Вешаем прослушиватель на кнопку вакансий на главной странице
 document.querySelector(".find-vacancy-main-page-button").addEventListener("click", () => {
 	// includeCurrentTemplate(currentTemplateID);
@@ -324,7 +308,6 @@ document.querySelector(".find-vacancy-main-page-button").addEventListener("click
 	}
 	addVacanciesAndKindsToList();
 })
-
 // Добавляем прелоадер до момента, пока не подгрузились кнопки направлений
 const addPreloaderInKindsList = () => {
 	let preloaderContainer = document.querySelector(".preloader-in-widget");
@@ -332,7 +315,6 @@ const addPreloaderInKindsList = () => {
 		preloaderContainer.classList.remove("preloader-hidden");
 	}, 200)
 }
-
 // Удаляем прелоадер после момента, когда уже подгрузились вакансии
 const removePreloaderInKindsList = () => {
 	let preloaderContainer = document.querySelector(".preloader-in-widget");
@@ -340,7 +322,6 @@ const removePreloaderInKindsList = () => {
 		preloaderContainer.classList.add("preloader-hidden");
 	}, 250)
 }
-
 // Проходимся по всем кнопкам с роутами, чтобы повесить на них событие клика и при необходимости включить функцию переключения шаблона
 const addListenerToAllRouteButtons = () => {
 	if (document.querySelector(".route-button")) {
@@ -372,11 +353,9 @@ const addListenerToAllRouteButtons = () => {
 	}
 }
 addListenerToAllRouteButtons()
-
 // Работа с data (вставляем актуальное имя)
 const headerUserName = document.querySelector(".header__user-name-text");
 headerUserName.insertAdjacentText("afterbegin", `${data.first_name}`);
-
 
 // ------------------------------------------------------------------------------------------------------------ Работа с чатом
 
@@ -414,7 +393,6 @@ let answersCounter = -1; // Количество написаннхы польз
 const addListenerToAllVacancyRequestButtons = () => {
 const requestButtonsArray = document.querySelectorAll(".vacancy-page__request-button");
 for ( let button of requestButtonsArray ) {
-
 	button.addEventListener("click", (event) => {
 		if ( data.cabinet ) {
 			showMainMessage(
@@ -436,7 +414,6 @@ for ( let button of requestButtonsArray ) {
 					message.classList.add("_hidden-template");
 					addQuestionsToChat();
 					showTextInput();
-	
 					currentTemplateID = removeDigitsAndUnderscore(e.target.id);
 					addBackButtonMechanics(e.target);
 					firstEnter = false;
@@ -451,7 +428,6 @@ for ( let button of requestButtonsArray ) {
 		} else {
 			addQuestionsToChat();
 			showTextInput();
-
 			currentTemplateID = removeDigitsAndUnderscore(event.target.id);
 			addBackButtonMechanics(event.target);
 			firstEnter = false;
@@ -477,9 +453,10 @@ const questionsArray = [
 
 // Финальное сообщение после ответа на все вопросы
 const finalMessage = "Дякуємо за терпіння! Залишилось перевірити правильність введених даних і можна надсилати заявку)"
-
 // Отримуємо список додаткових питань
-let additionalQuestions;
+let additionalQuestionsWithAnswers; // Змінна, в яку ми записємо дані у новому формати (питання + відповіді) для подальшщої обробки
+let additionalQuestions; // Змінна, в яку ми записуємо дані у старому форматі (тільки питання)
+let withAnswers = true;  // Если вопросы с готовыми ответами, то далее по коду устанавливается true, если вариант с свободными ответами - false
 function addQuestionsToChat() {
 	fetch(`${actualHost}/forms/${currentTelegramID}/${data.password}`)
 	.then(response => {
@@ -489,40 +466,115 @@ function addQuestionsToChat() {
 		return response.json();
 	})
 	.then(data => {
-		if ( validateAdditionalAPIQuestions(data) ) {
-			additionalQuestions = data;
-			// Добавляем нужное количество свойств в обьект, который отправляется на бэк
-			addAdditionalQuestionsToMainPostObject(additionalQuestions, postVacancyObject);
-			// Запись дополнительных вопросов в массив с вопросами для проверочной страницы
-			addAdditionalQuestionsToMainCheckQuestionsArray(additionalQuestions, checkQuestionsArray);
-			// Обработка данных, передача их в общий массив с вопросами
-			console.log(additionalQuestions);
-			console.log(fixedQuestionsCounter);
-			console.log(allQuestionsCounter);
-			console.log(questionsCounter);
-			console.log(answersCounter);
+		data = {
+			"q1": {
+					"a": "Ігнорую і не втручаюся",
+					"b": "Критикую його при всіх за негативну поведінку",
+					"c": "У приватній розмові обоговорюю неприйнятну поведінку та допомагаю знайти шляхи рішення",
+					"point": "b",
+					"question": "Як реагуєш, якщо хтось у команді поводить себе безвідповідально або негативно?"
+			},
+			"q2": {
+					"a": "Приймаю самостійно всі рішення, не раджусь ні з ким",
+					"b": "Раджусь з командою, щоб знайти краще рішення",
+					"c": "Чекаю, що відповідальність візьме на себе хтось інший",
+					"point": "b",
+					"question": "У тебе спільний проєкт/завдання з колегами. Твої дії?"
+			},
+			"q3": {
+					"a": "Ігнорую ідеї інших",
+					"b": "Підтримую ініціативу, якщо вона співпадає з моїми власними ідеями",
+					"c": "Підтримую ініціативу і сприяю її втіленню, незалежно від відповідності моїм власним ідеям",
+					"point": "c",
+					"question": "Як ти сприймаєш ініціативу від інших членів команди?"
+			},
+			"q4": {
+					"a": "Шукати спільне рішення, яке влаштує всіх",
+					"b": "Я не приймаю участі в конфліктах",
+					"c": "Переконати інших у своїй правоті",
+					"point": "a",
+					"question": "Якщо погляди колег відрізняються від ваших, що ти робиш?"
+			},
+			"q5": {
+					"a": "Ігнорую, якщо вони відрізняються від моїх",
+					"b": "Враховую їх та використовую щоб знайти краще рішення",
+					"c": "Вислухаю, але зроблю так як вирішив до цього",
+					"point": "b",
+					"question": "Як ти ставишся до думок та ідей інших членів команди?"
+			}
+	};
 
-			return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
-		} else {
-			setTimeout(function() {
-				addQuestionsToChat()
-			}, 2000)
-		}
+	// Формируем вопросы в обьект в старом формате
+	let dataKeys = Object.keys(data);
+	let questionsObject = { forms: {} };
+	for ( let i = 0; i < Object.keys(data).length; i++ ) {
+		questionsObject.forms[`${dataKeys[i]}`] = data[`${dataKeys[i]}`]['question'];
+	}
+	additionalQuestions = questionsObject;
+
+	// Записываем данные (вопросы с ответами) в глобальную переменную
+	additionalQuestionsWithAnswers = data;
+
+	// Добавляем нужное количество свойств в обьект, который отправляется на бэк
+	addAdditionalQuestionsToMainPostObject(additionalQuestions, postVacancyObject);
+	// Запись дополнительных вопросов в массив с вопросами для проверочной страницы
+	addAdditionalQuestionsToMainCheckQuestionsArray(additionalQuestions, checkQuestionsArray);
+
+	if ( data.q1.point === null ) {
+		withAnswers = false;
+	} else if ( data.q1.point !== null ) {
+		withAnswers = true;
+	} else {
+		setTimeout(function() {
+			addQuestionsToChat()
+		}, 2000)
+	}
+
+	// Обработка данных, передача их в общий массив с вопросами
+	return addAdditionalQuestionsToMainQuestionsArray(additionalQuestions, questionsArray);
 	})
 	.then (array => {
 		// Активируем функционал последовательного добавления вопросов в чат по мере записи ответов для появления первого вопроса
 		addMessagesAfterUserAnswers(array);
 	})
-	.catch(error => { console.error('Fetch error:', error); });
+	// .catch(error => { console.error('Fetch error:', error); });
 }
-
 // Функционал последовательного добавления вопросов в чат по мере записи ответов
 const addMessagesAfterUserAnswers = (questionsArray) => {
+	// console.log("questionsCounter", questionsCounter)
+	// console.log("fixedQuestionsCounter", fixedQuestionsCounter)
+	// console.log("answersCounter", answersCounter)
+	// console.log("allQuestionsCounter", allQuestionsCounter)
+	// console.log("questionsCounter+1", questionsCounter+1)
+	// console.log("fixedQuestionsCounter", fixedQuestionsCounter)
+	// console.log("questionsCounter+1 > fixedQuestionsCounter", questionsCounter+1 > fixedQuestionsCounter) 
+	// console.log("questionsCounter-1 === answersCounter", questionsCounter-1 === answersCounter)
+	// console.log("questionsArray[questionsCounter-1]", questionsArray[questionsCounter-1])
+	// console.log("questionsArray[questionsCounter+1]", questionsArray[questionsCounter+1])
+	// console.log("questionsArray[questionsCounter]", questionsArray[questionsCounter])
+
 	if ( answersCounter === questionsCounter && questionsArray[questionsCounter+1] !== undefined ) {
-		addMessageToChat(questionsArray[questionsCounter+1]);
-		questionsCounter++;
+		// Если мы не используем готовые варианты ответов, то тогда просто записываем вопрос в чат
+		if ( withAnswers === false ) {
+			addMessageToChat(questionsArray[questionsCounter+1]);
+		// Если мы используем готовые варианты ответов, то вызываем функцию, которая добавляет в чат вопрос и варианты ответов
+		} else if ( withAnswers === true ) {
+			// Здесь будет функция добавления вопроса с вариантами ответов
+			addMessageAndAnswersToChat(questionsArray[questionsCounter+1])
+		}
+	} else if ( questionsCounter === answersCounter && questionsArray[questionsCounter] !== undefined ) {
+		addFinalMessageAfterAnswers(finalMessage)
 	}
+	questionsCounter++;
 }
+
+// console.log(questionsCounter)
+// console.log(fixedQuestionsCounter)
+// console.log(answersCounter)
+// console.log(allQuestionsCounter)
+// console.log("questionsCounter+1", questionsCounter+1)
+// console.log("fixedQuestionsCounter", fixedQuestionsCounter)
+// console.log( questionsCounter+1 > fixedQuestionsCounter ) 
 
 // -------------------------------------------------------------------------------------------------- Функции валидации в чате
 
@@ -533,7 +585,6 @@ const deleteErrorMessagesInChat = () => {
 		item.classList.add("_hidden-error-messages");
 	}
 }
-
 // Валидация имени
 const validateName = (value) => {
 	if ( value.length <= 3 || value.length > 100 ) {
@@ -542,7 +593,6 @@ const validateName = (value) => {
 		return true
 	}
 }
-
 // Сообщение при неправильной валидации имени
 const errorValidateNameMessage = () => {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
@@ -553,7 +603,6 @@ const errorValidateNameMessage = () => {
 	`);
 	scrollChatToBottom();
 }
-
 // Валидация телефона
 const validatePhone = (phone) => {
 	let phoneNumber = phone.replaceAll(" ", "");
@@ -572,7 +621,6 @@ const validatePhone = (phone) => {
 		return true
 	}
 }
-
 // Сообщение при неправильной валидации телефона
 const errorValidatePhoneMessage = () => {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
@@ -583,7 +631,6 @@ const errorValidatePhoneMessage = () => {
 	`);
 	scrollChatToBottom();
 }
-
 // Валидация города
 const validateCity = (city) => {
 	if ( city.length < 2 || city.length > 100 ) {
@@ -592,7 +639,6 @@ const validateCity = (city) => {
 		return true
 	}
 }
-
 // Сообщение при неправилной валидации города
 const errorValidateCityMessage = () => {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
@@ -603,7 +649,6 @@ const errorValidateCityMessage = () => {
 	`);
 	scrollChatToBottom();
 }
-
 // Валидация дня рождения
 const validateBirthday = (date) => {
 	let formattedDate = formateDate(date);
@@ -628,7 +673,6 @@ const findAge = (birthdate) => {
 	const ageInYears = Math.floor(ageInMillis / (365.25 * 24 * 60 * 60 * 1000));
 	return ageInYears
 }
-
 // Сообщение при ошибках валидации даты рождения
 const errorValidateBirthday = () => {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
@@ -639,7 +683,6 @@ const errorValidateBirthday = () => {
 	`);
 	scrollChatToBottom();
 }
-
 // Валидация ответов на дополнительные вопросы
 const validateAdditionalAnswers = (data) => {
 	if ( data.length < 10 || data.length > 500 ) {
@@ -648,7 +691,6 @@ const validateAdditionalAnswers = (data) => {
 		return true
 	}
 }
-
 // Сообщение при ошибках валидации ответов по дополнительным вопросам
 const errorValidateAdditionalAnswersMessage = () => {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
@@ -659,7 +701,6 @@ const errorValidateAdditionalAnswersMessage = () => {
 	`);
 	scrollChatToBottom();
 }
-
 // Сообщение при неправаильном расширении файла
 const errorValidateFileFormat = () => {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
@@ -671,7 +712,7 @@ const errorValidateFileFormat = () => {
 	scrollChatToBottom();
 }
 
-// -------------------------------------------------------------------------------------------------- Конец функций валидации в чате
+// -------------------------------------------------------------------------------------------------- Добавление вопросов в чат
 
 // Получаем инпут для ввода текста, и записываем значение при отправке сообщения и вызываем функцию для вывода нового вопроса в чате
 const chatInput = document.querySelector(".post-request-vacancy-page__input");
@@ -698,7 +739,6 @@ sendMessageButton.addEventListener("click", () => {
 		validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
 	}
 })
-
 // Данная функция отвечает за добавление вопросов и ответов в чат, записывает данные в обьект для отправки на бэк и вызывает функицю для перехода к следующей странице после ответа не все вопросы
 const addAnswersAndQuestionsToChat = () => {
 	if ( questionsCounter+1 <= fixedQuestionsCounter ) {
@@ -706,30 +746,53 @@ const addAnswersAndQuestionsToChat = () => {
 		postVacancyObject[objectKeys[questionsCounter]] = postVariablesArray[questionsCounter];
 		addUserAnswers(postVariablesArray[questionsCounter]);
 		scrollChatToBottom();
-		console.log(questionsArray)
 		addMessagesAfterUserAnswers(questionsArray);
+		addUserMessageToChat(chatInput.value);
 		addPhoneAnswerBlock();
 		addBirthDateAnswerBlock();
 		addResumeBlock();
-	} else if ( questionsCounter+1 > fixedQuestionsCounter && answersCounter < allQuestionsCounter ){
-		let currentQuestionKey = `q${(questionsCounter+1)-fixedQuestionsCounter}`;
-		let currentAdditionalQuestion = additionalQuestions.forms[`${currentQuestionKey}`];
-		postVacancyObject[`${currentQuestionKey}`] = {[currentAdditionalQuestion]: `${chatInput.value}`}
+	} else if ( questionsCounter+1 > fixedQuestionsCounter && answersCounter < allQuestionsCounter || questionsCounter+1 === fixedQuestionsCounter ){
 		addUserAnswers(chatInput.value);
-		console.log(questionsArray)
 		addMessagesAfterUserAnswers(questionsArray)
 		checkFinalAnswerMessage();
 		addResumeBlock();
+		
+		console.log("questionsCounter", questionsCounter)
+		console.log("fixedQuestionsCounter", fixedQuestionsCounter)
+		console.log("answersCounter", answersCounter)
+		console.log("allQuestionsCounter", allQuestionsCounter)
+		console.log("questionsCounter+1", questionsCounter+1)
+		console.log("fixedQuestionsCounter", fixedQuestionsCounter)
+		console.log("questionsCounter+1 > fixedQuestionsCounter", questionsCounter+1 > fixedQuestionsCounter) 
+		console.log("questionsCounter-1 === answersCounter", questionsCounter-1 === answersCounter)
+		console.log("questionsArray[questionsCounter-1]", questionsArray[questionsCounter-1])
+		console.log("questionsArray[questionsCounter+1]", questionsArray[questionsCounter+1])
+		console.log("questionsArray[questionsCounter]", questionsArray[questionsCounter]);
+		console.log("current quetion", questionsArray[questionsCounter+1]);
+		console.log("questionsArray", questionsArray)
+		if ( withAnswers === false ) {
+			if ( validateAdditionalAnswers(chatInput.value) )
+			addUserMessageToChat(chatInput.value);
+			writeAnswerToPostDataObject();
+			addUserFreeAnswerToPostVacancyObject(questionsArray[questionsCounter-1], chatInput.value);
+		} else {}
+		console.log(postVacancyObject)
 	}
 	chatInput.value = "";
 	deleteErrorMessagesInChat();
 }
-
+// Записываем ответ пользователя в случае свободного ответа
+const addUserFreeAnswerToPostVacancyObject = (currentQuestion, inputValue) => {
+	let currentQuestionKey = `q${(questionsCounter)-fixedQuestionsCounter}`; // Текущий ключ вопроса (Например q1)
+	console.log("currentQuestionKey", currentQuestionKey)
+	postVacancyObject[`${currentQuestionKey}`] = {
+		[`${currentQuestion}`]: `${inputValue}`,
+		point: 0
+	};
+}
 // Проверяем, когда появляется предложение добавить резюме
 const addResumeBlock = () => {
-	console.log("function")
 	if ( objectKeys[questionsCounter] === "cv"  ) {
-		console.log("function cv")
 		function delayedFunction() {
 			scrollChatToBottom();
 			addResumeField();
@@ -737,7 +800,6 @@ const addResumeBlock = () => {
 		setTimeout(delayedFunction, 900);
 	}
 }
-
 // Добавляем поле для выбора файла
 const addResumeField = () => {
 	hiddenTextInput();
@@ -773,7 +835,6 @@ const addResumeField = () => {
 		continueFileButton();
 	})
 }
-
 // Подключаем поля и кнопки для манипуляций и загрузки файла на сервер
 const addUploadFileCode = () => {
 	let fileInput = document.querySelector('.add-resume-input');
@@ -833,7 +894,6 @@ const addUploadFileCode = () => {
 
 	});
 }
-
 // Появление кнопок удаления и сохранения после добалвения файла. Скрываем кнопку "Пропустить"
 const addDeleteAndSaveButtons = (fileName) => {
 	if ( fileName ) {
@@ -847,7 +907,6 @@ const addDeleteAndSaveButtons = (fileName) => {
 		removeDeleteAndSaveButtons(document.querySelector(".delete-resume-button"));
 	}
 }
-
 // Появление кнопки "Пропустить" и удаление кнопок "Удалить" и "Сохранить". Функционал удаления файла
 const removeDeleteAndSaveButtons = (deleteButton, fileInput) => {
 	deleteButton.addEventListener("click", () => {
@@ -861,16 +920,13 @@ const removeDeleteAndSaveButtons = (deleteButton, fileInput) => {
 		fileInput.value = '';
 	})
 }
-
 // Нажатие кнопки "Сохранить"
 const saveFiledataAndContinueChat = () => {
 	document.querySelector(".add-resume-container").classList.add("hidden-file-buttons");
 	answersCounter++;
 	addMessagesAfterUserAnswers(questionsArray);
 	scrollChatToBottom();
-	showTextInput();
 }
-
 // Нажатие кнопки "Пропустить"
 const continueFileButton = () => {
 	document.querySelector(".add-resume-container").classList.add("hidden-file-buttons");
@@ -878,10 +934,8 @@ const continueFileButton = () => {
 	answersCounter++;
 	addMessagesAfterUserAnswers(questionsArray);
 	scrollChatToBottom();
-	showTextInput();
 	currentFile = {};
 }
-
 // Добавление сообщения в чат после добавления файла
 const addMessageInChatAfteraddedFile = () => {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
@@ -893,7 +947,6 @@ const addMessageInChatAfteraddedFile = () => {
 		</div>
 	`)
 }
-
 // Добавление сообщения в чат после нажатия кнопки "Пропустить" на шаге файла
 const addMessageInChatAfterClickOnMissButton = () => {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
@@ -905,7 +958,6 @@ const addMessageInChatAfterClickOnMissButton = () => {
 	</div>
 	`)
 }
-
 // Проверяем, когда появится вопрос про дату рождения
 const addBirthDateAnswerBlock = () => {
 	if ( objectKeys[questionsCounter] === "birthday" ) {
@@ -916,7 +968,6 @@ const addBirthDateAnswerBlock = () => {
 		setTimeout(delayedFunction, 300);
 	} else {}
 }
-
 // Вешаем события на инпут даты и кнопку отправки даты
 const dateInput = document.querySelector(".post-request-vacancy-page__date-input");
 const dateSendButton =  document.querySelector(".post-request-vacancy-page__send-date");
@@ -930,7 +981,7 @@ dateSendButton.addEventListener("click", () => {
 		function delayedFunction() {
 			addMessagesAfterUserAnswers(questionsArray);
 			scrollChatToBottom();
-			showTextInput();
+
 			addResumeBlock();
 		}
 		setTimeout(delayedFunction, 300);
@@ -949,7 +1000,7 @@ dateInput.addEventListener("keyup", (event) => {
 			function delayedFunction() {
 				addMessagesAfterUserAnswers(questionsArray);
 				scrollChatToBottom();
-				showTextInput();
+
 				addResumeBlock();
 			}
 			setTimeout(delayedFunction, 300);
@@ -958,7 +1009,6 @@ dateInput.addEventListener("keyup", (event) => {
 		}
 	}
 })
-
 // Показываем календарь
 const showCalendarInput = () => {
 	document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-hidden-animation");
@@ -978,7 +1028,6 @@ const hiddenCalendarInput = () => {
 	}
 	setTimeout(delayedFunction, 300);
 }
-
 // Записываем актуальную дату рождения в переменную и в обьект + обрабатываем данные перед записью
 const writeActualBirthDate = (date) => {
 	let parts = date.split("-");
@@ -986,7 +1035,6 @@ const writeActualBirthDate = (date) => {
 	dataBornDate = formattedDate;
 	postVacancyObject.birthday = formattedDate;
 }
-
 // Делаем проверку номера телефона и даем пользователю две кнопки на выбор
 const addPhoneAnswerBlock = () => {
 	if ( objectKeys[questionsCounter] === "feedback_phone" ) {
@@ -1006,7 +1054,6 @@ const addPhoneAnswerBlock = () => {
 					</button>
 				</div>
 				`);
-
 				const actualNumberButton = document.querySelector(".actual-number-button");
 				const noActualNumberButton = document.querySelector(".no-actual-number-button");
 				const numberButtonsArray = [actualNumberButton, noActualNumberButton]
@@ -1035,7 +1082,6 @@ const addPhoneAnswerBlock = () => {
 		})
 	}
 }
-
 // Вешаем событие клика на кнопку отправку телефона (инпут с номером)
 const sendNumberAsMessageInput = document.querySelector(".post-request-vacancy-page__phone-input");
 const sendNumberAsMessageButton = document.querySelector(".post-request-vacancy-page__send-phone");
@@ -1059,7 +1105,6 @@ sendNumberAsMessageButton.addEventListener("click", () => {
 	}
 	
 })
-
 // Вешаем событие на нажатие Enter на инпуте номера телефона
 sendNumberAsMessageInput.addEventListener("keyup", (event) => {
 	if ( event.key === "Enter" && validatePhone(sendNumberAsMessageInput.value) ) {
@@ -1080,7 +1125,6 @@ sendNumberAsMessageInput.addEventListener("keyup", (event) => {
 		scrollChatToBottom();
 	}
 })
-
 // Функция для удаления кнопок подтвержения номера телефона
 const deleteNumbersButtons = () => {
 	document.querySelector(".change-number-container").classList.remove("phone-buttons-show-animations");
@@ -1091,7 +1135,6 @@ const deleteNumbersButtons = () => {
 	}
 	setTimeout(delayedFunction, 300);
 }
-
 // Функция для включения поля ввода телефона
 const showPhoneNumberInput = () => {
 	document.querySelector(".post-request-vacancy-page__phone-input-container").classList.remove("input-hidden-animation");
@@ -1102,7 +1145,6 @@ function delayedFunction() {
 }
 setTimeout(delayedFunction, 300);
 }
-
 // Функция для выключения поля ввода телефона
 const hiddenPhoneNumberInput = () => {
 	document.querySelector(".post-request-vacancy-page__phone-input-container").classList.remove("input-show-animation");
@@ -1113,7 +1155,6 @@ function delayedFunction() {
 }
 setTimeout(delayedFunction, 300);
 }
-
 // Функция обработки номера телефона и приведения его в нужный формат, 380951234567
 const adaptPhoneNumber = (data) => {
 	const cleanSpace = data.replaceAll(" ", "").replaceAll("+", "").replaceAll(")", "").replaceAll("(", "");
@@ -1128,14 +1169,11 @@ const adaptPhoneNumber = (data) => {
 		return false
 	}
 }
-
-
 // Функция для записи текущего актуального номера в обьект для отправки на бэк и продолжения алгоритма
 const writeCurrentNumber = (number) => {
 	dataPhone = adaptPhoneNumber(number);
 	postVacancyObject.feedback_phone = dataPhone;
 }
-
 // Делаем кнопку отправки сообщения неактивной
 const inactiveMessageButton = () => {
 	document.querySelector(".post-request-vacancy-page__send-message").disabled = true;
@@ -1144,7 +1182,6 @@ const inactiveMessageButton = () => {
 const activeMesssageButton = () => {
 	document.querySelector(".post-request-vacancy-page__send-message").disabled = false;
 }
-
 // Делаем инпут неактивным
 const inactiveInput = () => {
 	document.querySelector(".post-request-vacancy-page__input").disabled = true;
@@ -1154,7 +1191,6 @@ const activeInput = () => {
 	document.querySelector(".post-request-vacancy-page__input").disabled = false;
 	document.querySelector(".post-request-vacancy-page__input").focus();
 }
-
 // Скрываем контейнер с инпутом
 const hiddenTextInput = () => {
 		document.querySelector(".post-request-vacancy-page__input-container").classList.remove("input-visible");
@@ -1164,7 +1200,6 @@ const hiddenTextInput = () => {
 	}
 	setTimeout(delayedFunction, 300);
 }
-
 // Возвращаем контейнер с инпутом
 const showTextInput = () => {
 	document.querySelector(".post-request-vacancy-page__input-container").classList.remove("input-hidden-animation");
@@ -1174,7 +1209,6 @@ function delayedFunction() {
 }
 setTimeout(delayedFunction, 300);
 }
-
 // Ждем ответ на финальный вопрос и выводим финальное сообщение
 const checkFinalAnswerMessage = () => {
 	scrollChatToBottom()
@@ -1188,9 +1222,12 @@ const checkFinalAnswerMessage = () => {
 		hiddenTextInput();
 	} else {}
 }
-
 // Функционал вывода финального сообщения после ответа на все вопросы
 const addFinalMessageAfterAnswers = (message) => {
+	const allVariansInChat = document.querySelectorAll(".question-variant");
+	for ( let item of allVariansInChat ) {
+		item.remove()
+	}
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
 	function delayedFunction() {
 		chatMessagesBlock.insertAdjacentHTML("beforeend", `
@@ -1226,13 +1263,11 @@ const addFinalMessageAfterAnswers = (message) => {
 	}
 	setTimeout(delayedFunction, 300);
 }
-
 // Уменьшаем отступ внизу чата после появления финального сообщения
 const changeMessageContainerPadding = () => {
 	document.querySelector(".post-request-vacancy-page__messages-container").classList.remove("padding-message-container-chat");
 	document.querySelector(".post-request-vacancy-page__messages-container").classList.add("padding-message-container-final");
 }
-
 // Анимация появления блока с финальным сообщением и кнопкой Продолжить
 const showFinalBlock = () => {
 	document.querySelector(".final-message__container").classList.add("show-final-message");
@@ -1243,22 +1278,17 @@ const showFinalBlock = () => {
 	}
 	setTimeout(delayedFunction, 300);
 }
-
-
 // Функционал обновления счетчика при добавлении ответа + вызов функции для добавления ответа в чат + вызов функции для деактивации инпута
 const addUserAnswers = (userMessageText) => {
 	inactiveInput();
 	inactiveMessageButton();
-	addUserMessageToChat(userMessageText);
 	answersCounter++;
 }
-
 //Прокручиваем содержимое в самый низ
 function scrollChatToBottom() {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
 	chatMessagesBlock.scrollTo(0, chatMessagesBlock.scrollHeight);
 }
-
 function addUserMessageToChat(userMessage) {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
 	chatMessagesBlock.insertAdjacentHTML("beforeend", `
@@ -1266,9 +1296,10 @@ function addUserMessageToChat(userMessage) {
 			<div class="main-message-style user-message">${userMessage}</div>
 		</div>
 	`);
-}
 
-// Вставляем вопрос в чат и вызываем функцию активации инпута
+
+}
+// Вставляем вопрос без вариантов ответа в чат и вызываем функцию активации инпута
 function addMessageToChat(question) {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
 	function delayedFunction() {
@@ -1278,6 +1309,7 @@ function addMessageToChat(question) {
 		</div>
 	`);
 	}
+	showTextInput();
 	setTimeout(delayedFunction, 1);
 	function onInput() {
 		activeInput();
@@ -1285,7 +1317,95 @@ function addMessageToChat(question) {
 	}
 	setTimeout(onInput, 800);
 }
+// Вставляем вопрос с вариантами ответа в чат и не вызываем функцию активации инпута, так как инпут не нужен
+const addMessageAndAnswersToChat = (currentQuestion) => {
+	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+	if ( questionsCounter+2 > fixedQuestionsCounter || questionsCounter+1 > fixedQuestionsCounter ) {
+		let a = "";
+		let b = "";
+		let c = "";
+		for ( let i = 0; i < Object.keys(additionalQuestionsWithAnswers).length; i++ ) {
+			let currentQ = Object.keys(additionalQuestionsWithAnswers)[i];
+			if ( additionalQuestionsWithAnswers[currentQ].question === currentQuestion ) {
+				a = additionalQuestionsWithAnswers[currentQ].a;
+				b = additionalQuestionsWithAnswers[currentQ].b;
+				c = additionalQuestionsWithAnswers[currentQ].c;
+			}
+		}
+		const allVariansInChat = document.querySelectorAll(".question-variant");
+		for ( let item of allVariansInChat ) {
+			item.remove()
+		}
+		const addQuestionWithAnswers = (currentQuestion, a, b, c) => {
+			chatMessagesBlock.insertAdjacentHTML("beforeend", `
+				<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">
+					<div class="answers-variants-container">
+						<div class="main-message-style app-message">${currentQuestion}</div>
+							<div class="answers-to-quetion-container">
+								<div variant="a" class="main-message-style app-message question-variant"><span>Варіант 1:</span> ${a}</div>
+								<div variant="b" class="main-message-style app-message question-variant"><span>Варіант 2:</span> ${b}</div>
+								<div variant="c" class="main-message-style app-message question-variant"><span>Варіант 3:</span> ${c}</div>
+							</div>
+					</div>
+				</div>
+			`);
+		}
+		addQuestionWithAnswers(currentQuestion, a, b, c);
+		addListenerToAnswers(currentQuestion);
+	} else {
+		addMessageToChat(currentQuestion)
+	}
+}
+// Проходимся по всем варинатам ответа и навешиваем на каждый из них событие клика
+const addListenerToAnswers = (currentQuestion) => {
+	const allVariants = document.querySelectorAll(".question-variant");
+	for ( let item of allVariants ) {
+		item.addEventListener("click", (event) => {
+			// Вызов функции для включения следующего вопроса
+			// Вызов функции для получения балла и дальнейшей обработки
+			let currentVariant = event.target.getAttribute("variant"); // Текущий вариант ответа (а, b, с)
+			let currentAnswer = event.target.textContent.slice(11); // Актуальный ответ, на который кликнул пользователь (с вырезанным текстом "Вариант 1: ")
+			let currentQuestionKey = `q${(questionsCounter+1)-fixedQuestionsCounter}`; // Текущий ключ вопроса (Например q1)
+			// Вызываем функцию, в которую передаем 4 аргумента: номер вопроса (например q1), point (0 или 1), текущий вопрос и текущий ответ
+			addUserMessageToChat(event.target.textContent);
+			writeAnswerToPostDataObject(currentQuestionKey, getCurrentPointAfterClickToAnswer(currentVariant, currentQuestion), currentQuestion, currentAnswer);
+		})
+	}
+}
+// Получаем текущий балл при клике на конкретный вопрос
+const getCurrentPointAfterClickToAnswer = (currentVariant, currentQuestion) => {
+	let correctCurrentVariant;
+	if ( withAnswers === true ) {
+		for ( let i = 0; i < Object.keys(additionalQuestionsWithAnswers).length; i++ ) {
+			let currentQ = Object.keys(additionalQuestionsWithAnswers)[i];
+			if ( additionalQuestionsWithAnswers[currentQ].question === currentQuestion ) {
+				correctCurrentVariant = additionalQuestionsWithAnswers[currentQ].point;
+			}
+		}
+		addAnswersAndQuestionsToChat();
+		// Если ответ совпадает с правильным вариантом, то
+		if ( currentVariant === correctCurrentVariant ) {
+			return 1
+		// Если ответ не совпадает с правильным вариантом, то 
+		} else {
+			return 0
+		}
+	} else if ( withAnswers === false ) {
+		return "null"
+	}
 
+}
+// Записываем в финальный объект ответы на вопросы
+const writeAnswerToPostDataObject = (currentQuestionKey, point, currentQuestion, currentAnswer) => {
+	if ( withAnswers === true ) {
+		postVacancyObject[`${currentQuestionKey}`] = {
+			[currentQuestion]: `${currentAnswer}`,
+			point: point
+		};
+	} else {
+		
+	}
+}
 // Проходимся по всем второстепенным вопросам и добавляем их в массив со всеми вопросами questionsArray
 const addAdditionalQuestionsToMainQuestionsArray = (questionsObject, arrayToWrite) => {
 	for (var key in questionsObject.forms) {
@@ -1295,7 +1415,7 @@ const addAdditionalQuestionsToMainQuestionsArray = (questionsObject, arrayToWrit
 	}
 	return arrayToWrite;
 }
-
+// Добавляем в обьект для постинга нужное количество ключей
 const addAdditionalQuestionsToMainPostObject = (questionsObject, objectToWrite) => {
 	for (var key in questionsObject.forms) {
 		allQuestionsCounter++; // Добавляем +1 в счетчик общего количество вопросов
@@ -1304,7 +1424,6 @@ const addAdditionalQuestionsToMainPostObject = (questionsObject, objectToWrite) 
 		}
 	}
 }
-
 // Удаление дополнительных вопросов из массива questionsArray при выходе из чата или страницы проверки ответов
 const deleteAdditionalQuestionsInQuestionsArray = () => {
 	questionsArray.splice(-Object.keys(additionalQuestions.forms).length);
@@ -1320,7 +1439,7 @@ let checkQuestionsArray = [
 	`Дата народження:`,
 	`fileName`
 ]
-
+// Добавляем список дополнительных вопросов в основной спысок проверочных вопросов
 const addAdditionalQuestionsToMainCheckQuestionsArray = (questionsObject, arrayToWrite) => {
 	for (var key in questionsObject.forms) {
 		if (key.startsWith('q')) {
@@ -1328,7 +1447,6 @@ const addAdditionalQuestionsToMainCheckQuestionsArray = (questionsObject, arrayT
 		}
 	}
 }
-
 // Получаем объект и выводим данные на странице в инпутах
 const addInputFieldsToCheckPage = () => {
 	const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
@@ -1353,7 +1471,6 @@ const addInputFieldsToCheckPage = () => {
 			</div>
 		`)
 	}
-
 	for ( let i = 0; i < Object.keys(postVacancyObject).length-1; i++ ) {
 		if ( i < fixedQuestionsCounter && checkQuestionsArray[i] !== "fileName" ) {
 			checkPageMainContainer.insertAdjacentHTML("beforeend", `
@@ -1371,26 +1488,26 @@ const addInputFieldsToCheckPage = () => {
 			`)
 		} else if ( checkQuestionsArray[i] === "fileName" ) {
 		} else {
-			let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i+1]];
-			let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
-			checkPageMainContainer.insertAdjacentHTML("beforeend", `
-				<div class="check-request-vacancy-page__check-item">
-					<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
-						<div class="check-request-vacancy-page__check-question"> <span class="icon-check green-check-mark"></span> <span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>
-						<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>
-					</div>
-					<button class="check-request-vacancy-page__edit-button">
-						<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>
-					</button>
-				</div>
-			`)
+			// let objectElement = postVacancyObject[Object.keys(postVacancyObject)[i+1]];
+			// let objectElementAnswer = objectElement[Object.keys(objectElement)[0]];
+			// checkPageMainContainer.insertAdjacentHTML("beforeend", `
+			// 	<div class="check-request-vacancy-page__check-item">
+			// 		<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
+			// 			<div class="check-request-vacancy-page__check-question"> <span class="icon-check green-check-mark"></span> <span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>
+			// 			<textarea disabled type="text" class="check-request-vacancy-page__check-input check-textarea">${objectElementAnswer}</textarea>
+			// 		</div>
+			// 		<button class="check-request-vacancy-page__edit-button">
+			// 			<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>
+			// 		</button>
+			// 	</div>
+			// 	`
+			// )
 		}
 	}
 	addListenerOnEditButtons();
 	inactiveCheckInputs();
 	addAllInputsValidateListeners();
 }
-
 // Вешаем событие клика на все кнопки "редактировать" для каждого инпута
 const addListenerOnEditButtons = () => {
 	const allEditButtons = document.querySelectorAll(".check-request-vacancy-page__edit-button");
@@ -1405,7 +1522,6 @@ const addListenerOnEditButtons = () => {
 		})
 	}
 }
-
 // Разблокируем текущий инпут для редактирования при клике на кнопку редактирования
 const activeCheckInput = (button) => {
 	if ( button.classList.contains("check-request-vacancy-page__edit-button") ) {
@@ -1427,7 +1543,6 @@ const activeCheckInput = (button) => {
 		inputContainer.nextElementSibling.children[0].classList.add("_hidden-icon");
 	}
 }
-
 // Блокируем все инпуты при клике вне кнопок и вне активного инпута
 const inactiveCheckInputs = () => {
 	const allCheckInputs = document.querySelectorAll(".check-request-vacancy-page__check-input");
@@ -1454,7 +1569,6 @@ const inactiveCheckInputs = () => {
 		}
 	})
 }
-
 // Перезапись новых данных в обьекте для отправки
 const writeNewDataToPostVacancyObject = (button) => {
 	let inputElement = button.previousElementSibling.lastElementChild;
@@ -1467,7 +1581,6 @@ const writeNewDataToPostVacancyObject = (button) => {
 		postVacancyObject[currentObjectKey] = inputElement.value;
 	}
 }
-
 // Проверяем, активен ли чекбокс
 const checkActiveCheckbox = () => {
  let checkbox = document.querySelector(".check-request-vacancy-page__politics-input");
@@ -1475,13 +1588,11 @@ const checkActiveCheckbox = () => {
 	return true
  } else {}
 }
-
 // Показываем сообщение о том, что нужно поставить галочку
 const noCheckActiveCheckboxMessage = () =>{
 	let message = document.querySelector(".check-request-vacancy-page__politics-message");
 	message.classList.remove("_hidden");
 }
-
 const addListenerToPoliticsCheckbox = () => {
 	let checkbox = document.querySelector(".check-request-vacancy-page__politics-input");
 	let message = document.querySelector(".check-request-vacancy-page__politics-message");
@@ -1492,7 +1603,6 @@ const addListenerToPoliticsCheckbox = () => {
 	})
 }
 addListenerToPoliticsCheckbox()
-
 // Вешаем событие на кнопку отправки заявки
 const sendObjectDataToServer = () => {
 	const checkRequestVacancyButton = document.querySelector(".check-request-vacancy-page__request-button");
@@ -1507,13 +1617,11 @@ const sendObjectDataToServer = () => {
 	})
 }
 sendObjectDataToServer();
-
 // Добавляем в обьект для отправки  на бэк поле, содержащее информацию о резюме
 const addCVObjectToMainObject = (cvObject) => {
 	cvObject.cv = {};
 	return cvObject
 }
-
 // Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
 function fetchPostData(objectData, vacancyID) {
 
@@ -1528,8 +1636,7 @@ function fetchPostData(objectData, vacancyID) {
 	const data = addCVObjectToMainObject(objectData);
 	objectData.kind = currentVacancyKind.toLowerCase();
 	objectData.cv = currentFile;
-
-	console.log(objectData)
+	console.log(data);
 	const requestOptions = {
 		method: 'POST',
 		headers: {
@@ -1537,7 +1644,6 @@ function fetchPostData(objectData, vacancyID) {
 		},
 		body: JSON.stringify(data) // Перетворюємо дані у JSON-рядок
 	};
-
 	// Відправляємо POST-запит за допомогою Fetch API
 		fetch(apiPostDataURL, requestOptions)
 		.then(response => {
@@ -1549,7 +1655,6 @@ function fetchPostData(objectData, vacancyID) {
 			return response.json(); // Перетворюємо отриману відповідь у JSON
 		})
 		.then(data => {
-			if ( validateAPIPostDataVacancy(data) ) {
 				console.log('Отримано дані від сервера:', data);
 				showMainMessage(
 				`
@@ -1561,36 +1666,25 @@ function fetchPostData(objectData, vacancyID) {
 						<div>Зрозуміло</div>
 					</button>
 				`);
-			} else {
-				setTimeout(function() {
-					fetchPostData(objectData, vacancyID)
-				}, 2000)
-			}
-			
-
 		})
 		.catch(error => {
 			console.error('Помилка під час виконання POST-запиту:', error);
 			showMainMessage(errorMessage);
 		});
-	}
-
-	// Очыщаем массив проверочных вопросов на странице проверки при выходе из чата или страницы проверки ответов
-	const clearCheckQuestionsArray = () => {
-		checkQuestionsArray = [];
-		checkQuestionsArray = [
-			`Ім'я та прізвище:`,
-			`Номер телефону для зв'язку:`,
-			`Місто проживання:`,
-			`Дата народження:`,
-			`fileName`
-		]
-	}
-	
+}
+// Очыщаем массив проверочных вопросов на странице проверки при выходе из чата или страницы проверки ответов
+const clearCheckQuestionsArray = () => {
+	checkQuestionsArray = [];
+	checkQuestionsArray = [
+		`Ім'я та прізвище:`,
+		`Номер телефону для зв'язку:`,
+		`Місто проживання:`,
+		`Дата народження:`,
+		`fileName`
+	]
+}
 
 // -------------------------------------------------------------------------------- Валидация полей на странице проверки данных
-
-
 const addAllInputsValidateListeners = () => {
 	const allCheckInputs = document.querySelectorAll(".check-request-vacancy-page__check-input");
 	for ( let i = 0; i < allCheckInputs.length; i++ ) {
@@ -1612,7 +1706,6 @@ const addAllInputsValidateListeners = () => {
 		})
 	}
 }
-
 // Валидация даты рождения
 const validateBirthdayOnCheckPage = (date) => {
 	let errorsCounter = 0;
@@ -1630,7 +1723,6 @@ const validateBirthdayOnCheckPage = (date) => {
 		return true
 	}
 }
-
 // Рассчитываем возраст
 const findAgeOnCheckPage = (birthdate) => {
 	const [day, month, year] = birthdate.split('.');
@@ -1640,7 +1732,6 @@ const findAgeOnCheckPage = (birthdate) => {
 	const ageInYears = Math.floor(ageInMillis / (365.25 * 24 * 60 * 60 * 1000));
 	return ageInYears
 }
-
 // Валидация телефона на странице проверки данных
 const validatePhoneOnCheckPage = (phone) => {
 	let phoneToString = phone.toString();
@@ -1660,7 +1751,6 @@ const validatePhoneOnCheckPage = (phone) => {
 		return true
 	}
 }
-
 // Добавляем красный крестик
 const addRedCross = (item, messageNumber) => {
 	// Сообщения об ошибках
@@ -1681,7 +1771,6 @@ const addGreenCheck = (item) => {
 	item.previousElementSibling.querySelector(".red-cross").classList.add("_hidden-icon");
 	deleteErrorMessageOnCheckPage();
 }
-
 // Добавляем сообщение сверху об неправильной валидации
 const addErrorMessageOnCheckPage = (message) => {
 	const errorMessageElement = document.querySelector(".error-message-check-input");
@@ -1690,7 +1779,6 @@ const addErrorMessageOnCheckPage = (message) => {
 		errorMessageElement.classList.remove("_hidden-error-message");
 	}
 }
-
 // Удаляем сообщение сверху
 const deleteErrorMessageOnCheckPage = () => {
 	const errorMessageElement = document.querySelector(".error-message-check-input");
@@ -1705,7 +1793,6 @@ const deleteErrorMessageOnCheckPage = () => {
 }
 
 // ---------------------------------------------------------------------------------------------------- Логика показа сообщения
-
 // Вызываем сообщение о том, указывая в нем нужный текст и добавляя кнопки
 const showMainMessage = (messageText) => {
 	let message = document.querySelector(".main-message-template-style");
@@ -1716,7 +1803,6 @@ const showMainMessage = (messageText) => {
 		reloadPageAfterClickHomeButton() // Событие клика по кнопке
 	}
 }
-
 // Вызываем анимацию появления сообщения
 const showMessageAnimation = () => {
 	document.querySelector(".main-message-template-style__wrapper").classList.add("position-message-animation");
@@ -1729,7 +1815,6 @@ const showMessageAnimation = () => {
 	}
 	setTimeout(delay, 990);
 }
-
 // Вешаем событие на шаблон с сообщением для перехода на главную страницу и скрытия сообщения
 const reloadPageAfterClickHomeButton = () => {
 	document.querySelector(".main-message-template-style__home-button").addEventListener("click", () => {
@@ -1740,9 +1825,6 @@ const reloadPageAfterClickHomeButton = () => {
 }
 	
 // ---------------------------------------------------------------------------------------------------- Логика личного кабинета и проверки заявки
-	
-
-
 // Запись данных клиента на страницу кабинета
 const writeDataToCabinet = (data) => {
 	const cabinetWrapper = document.querySelector(".cabinet-page__wrapper");
@@ -1801,7 +1883,6 @@ const writeDataToCabinet = (data) => {
 writeDataToCabinet(globalCabinet);
 currentVacancyID = data.cabinet._id;
 searchButtonDeleteAddDelay();
-
 // Удаление заявки
 const deleteAddInCabinet = () => {
 	fetch(`${actualHost}/del_order/${currentTelegramID}/${currentPassword}`)
@@ -1839,9 +1920,6 @@ const deleteAddInCabinet = () => {
 		console.error('Fetch error:', error);
 	});
 }
-
-
-
 // Вывод сообщения об удаленной заявке
 function searchButtonDeleteAddDelay() {
 	if ( document.querySelector(".cabinet-page__delete-button") ) {
@@ -1850,7 +1928,6 @@ function searchButtonDeleteAddDelay() {
 		})
 	} else {}
 }
-
 // Функционал кнопки "Назад"
 // Добавлем в массив весь путь, по которому шел пользователь
 const addBackButtonMechanics = (targetButton) => {
@@ -1868,7 +1945,6 @@ const addBackButtonMechanics = (targetButton) => {
 		templatesRoad.pop();
 	}
 } 
-
 // Включам предыдущий шаблон
 const backToPreviousTemplate = () => {
 	if ( templatesRoad[templatesRoad.length - 1] !== 'post-request-vacancy-page' ) {
@@ -1891,7 +1967,6 @@ const backToPreviousTemplate = () => {
 		document.querySelector(".check-request-vacancy-page__items-container").innerHTML = "";
 	}
 }
-
 // Обнуляем данные и стили чата
 const deleteChatContent = () => {
 	fixedQuestionsCounter = 5;
@@ -1902,7 +1977,6 @@ const deleteChatContent = () => {
 	document.querySelector(".post-request-vacancy-page__messages-container").classList.remove("padding-message-container-final");
 	document.querySelector(".post-request-vacancy-page__messages-container").classList.add("padding-message-container-chat");
 }
-
 // Вешаем прослушиватель на кнопку "Назад"
 const addListenerToBackButton = () => {
 	const backButton = document.querySelector('.footer__button-back-link');
@@ -1970,7 +2044,6 @@ const allWidgetTemplates = document.querySelectorAll(".page-template");
 		} else {}
 	}
 }
-
 // Функционал включения шаблона вакансии с нужным контентом при клике по кнопке "Назад"
 const includeLastVacancyContent = () => {
 	let lastVacancyTitle = "";
@@ -1996,14 +2069,12 @@ const validateAPIPostDataVacancy = (data) => {
 		return true
 	} else {}
 }
-
 // Валидация получения дополнительных вопросов по API
 const validateAdditionalAPIQuestions = (data) => {
 	if ( Object.keys(data.forms).length > 0 ) {
 		return true
 	} else {}
 }
-
 // Валидация удаления заявки
 const validateResponseAfterDeleteAdd = (data) => {
 	if ( data.response === "the application has been withdrawn" ) {
@@ -2018,7 +2089,6 @@ const validateResponseAfterDeleteAdd = (data) => {
 // Также необходимо повесить функцию добавления счетчика и повторного вызова на catch
 
 // -------------------------------------------------------------------------------------------------------------- Подкладка желтого фона при перезагрузке
-
 const addYellowBGAfterClickOnReloadButton = () => {
 	let reloadButton = document.querySelector(".footer__button-main-link");
 	reloadButton.addEventListener("click", () => {
@@ -2028,7 +2098,6 @@ const addYellowBGAfterClickOnReloadButton = () => {
 addYellowBGAfterClickOnReloadButton();
 
 // -------------------------------------------------------------------------------------------------------------- Подтягиваем политику конфиденциальности
-
 // Делаем запрос и вставляем текст
 const downloadPolitics = () => {
 	const politicsContainer = document.querySelector(".politics-page__wrapper")
@@ -2046,33 +2115,27 @@ const downloadPolitics = () => {
 		console.error('Fetch error:', error);
 	});
 }
-
 // Проходимся по всем тегам содержимого и убираем все стили
 const cleanTagsStylesAndAttributes = (data) => {
 	let doc = new DOMParser().parseFromString(data.text, 'text/html');
-
 	// Удаляем все теги "style"
 	let styleTags = doc.querySelectorAll('style');
 	styleTags.forEach(function(styleTag) {
 			styleTag.parentNode.removeChild(styleTag);
 	});
-
 	// Удаляем атрибут "style" и "font-family" у всех элементов
 	let elements = doc.querySelectorAll('*');
 	elements.forEach(function(element) {
 			element.removeAttribute('style');
 			element.style.fontFamily = '';
 	});
-
 	// Добавляем отступ сверху в 15 пикселей для каждого тега <p>
 	let pTags = doc.querySelectorAll('p');
 	pTags.forEach(function(pTag) {
 			pTag.style.marginTop = '15px';
 	});
-
 	// Получаем обновленный HTML-код
 	let cleanedHtml = new XMLSerializer().serializeToString(doc);
-
 	return cleanedHtml;
 }
 
@@ -2155,6 +2218,24 @@ downloadInformationAboutCompany()
 
 // })
 // .catch(error => { console.error('Fetch error:', error); });
+
+
+
+fetch(`${actualHost}/forms/${currentTelegramID}/${currentPassword}`)
+.then(response => {
+	if (!response.ok) {
+		throw new Error('Network response was not ok');
+	}
+	return response.json();
+})
+.then(data => {
+	console.log(data);
+})
+.catch(error => { console.error('Fetch error:', error); });
+
+
+
+
 
 
 

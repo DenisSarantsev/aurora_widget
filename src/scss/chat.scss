@@ -156,6 +156,30 @@
 		}
 }
 
+.answers-variants-container {
+	display: flex;
+	flex-direction: column;
+
+}
+
+.answers-to-quetion-container {
+
+}
+
+.question-variant {
+	border: 3px solid transparent;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+	&:hover {
+		transition: all 0.3s ease 0s;
+		background-color: rgba($color: $mainYellow, $alpha: 0.6);
+		border: 3px solid $mainYellow;
+	}
+	& span {
+		font-weight: 600;
+	}
+}
+
 .add-resume-container {
 	padding: 10px;
 	width: 100%;
