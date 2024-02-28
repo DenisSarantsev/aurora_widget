@@ -54,6 +54,10 @@ section {
 	// }
 }
 
+.button {
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 // Анимация кружков на фоне
 .bg-circles-container {
 	position: absolute;
