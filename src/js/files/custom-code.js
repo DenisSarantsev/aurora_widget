@@ -1477,7 +1477,7 @@ const addInputFieldsToCheckPage = () => {
 				<div class="check-request-vacancy-page__check-item">
 					<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
 						<div class="check-request-vacancy-page__check-question"> 
-						<span class="icon-check green-check-mark"></span>
+						<span class="icon-check green-check-mark">✔✅</span>
 						<span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>
 						<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i+1]]}" type="text" class="check-request-vacancy-page__check-input">
 					</div>
