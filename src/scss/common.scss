@@ -292,6 +292,7 @@ section {
 	font-size: toRem(18);
 	transition: all 0.3s ease 0s;
 	padding: toRem(12) toRem(15);
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	&:hover {
 		transition: all 0.3s ease 0s;
 	}

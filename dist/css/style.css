@@ -683,6 +683,7 @@ section::-webkit-scrollbar-thumb {
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
   padding: 0.75rem 0.9375rem;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .route-button-main-style:hover {
