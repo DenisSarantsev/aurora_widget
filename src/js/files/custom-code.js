@@ -814,11 +814,11 @@ const addResumeField = () => {
 			</button>
 			<div class="save-delete-resume-buttons-container">
 				<button class="delete-resume-button hidden-file-buttons">
-					<span class="icon-cross"></span>
+					<span class="red-cross">×</span>
 					Видалити
 				</button>
 				<button class="save-resume-button hidden-file-buttons">
-					<span class="icon-check"></span>
+					<span class="green-check-mark">✔</span>
 					Зберегти
 				</button>
 			</div>
@@ -1477,8 +1477,8 @@ const addInputFieldsToCheckPage = () => {
 				<div class="check-request-vacancy-page__check-item">
 					<div data-key="${Object.keys(postVacancyObject)[i+1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">
 						<div class="check-request-vacancy-page__check-question"> 
-						<span class="icon-check green-check-mark">✔✅</span>
-						<span class="icon-cross red-cross _hidden-icon"></span> ${checkQuestionsArray[i]}</div>
+						<span class="green-check-mark">✔</span>
+						<span class="red-cross _hidden-icon">×</span> ${checkQuestionsArray[i]}</div>
 						<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i+1]]}" type="text" class="check-request-vacancy-page__check-input">
 					</div>
 					<button class="check-request-vacancy-page__edit-button">
