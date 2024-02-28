@@ -268,6 +268,9 @@ section {
 	text-align: center;
 	font-size: toRem(20);
 	font-weight: 600;
+	@media (max-width: em(500)){
+		font-size: toRem(18);
+	}
 }
 
 // Головний стиль тексту та підзаголовків

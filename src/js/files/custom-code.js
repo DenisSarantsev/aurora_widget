@@ -45,7 +45,7 @@ let currentVacancyTitle = "";
 let vacancies = data.vacancies;
 let globalVacancies = {vacancies}; // Глобальная переменная для всех вакансий
 let currentVacancyKind; // Глобальная переменная, в которую записываем вид вакансии при клике на него
-let reserveBranch = false; // Зашел ли пользователь на ветку оформления резерва
+let reserveBranch = false; // Зашел ли пользователь на ветку оформления резерва. Если да, то true
 let currentFile = {}; // Текущий выбранный файлы
 let templatesRoad = ["home-page"]; // Путь, пройденный пользователем для работы кнопки "Назад"
 let vacanciesFetch = false; // Проверяем, делался ли уже запрос по вакансиям
@@ -652,10 +652,13 @@ const errorValidateCityMessage = () => {
 // Валидация дня рождения
 const validateBirthday = (date) => {
 	let formattedDate = formateDate(date);
-	if ( formattedDate.length !== 10 || findAge(formattedDate) < 18  || findAge(formattedDate) > 70 ) {
-		return false
+	console.log("findAge(formattedDate) < 18", findAge(formattedDate) < 18)
+	console.log(findAge(formattedDate))
+	if ( findAge(formattedDate) < 18 ) {
+		hiddenCalendarInput();
+		return findAge(formattedDate);
 	} else {
-		return true
+		return "condition"
 	}
 }
 // Форматируем дату рождения
@@ -673,15 +676,42 @@ const findAge = (birthdate) => {
 	const ageInYears = Math.floor(ageInMillis / (365.25 * 24 * 60 * 60 * 1000));
 	return ageInYears
 }
-// Сообщение при ошибках валидации даты рождения
-const errorValidateBirthday = () => {
+// Сообщение при ошибках валидации даты рождения (неправильный формат данных)
+const errorValidateBirthdayFormat = () => {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
 	chatMessagesBlock.insertAdjacentHTML("beforeend", `
 		<div class="post-request-vacancy-page__message-element main-error-style__container">
-			<div class="main-error-style">Для того, щоб подати заявку вам має бути не менше 18 і не більше 70 років</div>
+			<div class="main-error-style">Неправильний формат даних</div>
 		</div>
 	`);
 	scrollChatToBottom();
+}
+// Ошибка валидации даты рождения и предложение записи в резерв, если кандидату менне 18 лет
+const errorValidateBirthdayAge = () => {
+	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+	chatMessagesBlock.insertAdjacentHTML("beforeend", `
+		<div class="post-request-vacancy-page__message-element main-error-style__container">
+			<div class="error-style-age">Привіт! 
+				Цінуємо твоє бажання долучитись до команди Аврори!
+				<p>
+				Та, на жаль, на цю вакансію ми не розглядаємо кандидатів молодше 18 років.
+				Ми б хотіли зберегти твоє резюме у базі кандидатів на майбутнє 😉
+				Якщо ти хочеш поділитись з нами своїм резюме, натисни «Потрапити в базу».
+				Коли у нас зʼявляться вакансії для тебе - ми з тобою зв’яжемось!
+				</p>
+				<p>
+				Якщо у тебе лишились додаткові питання, телефонуй:
+				+380675039118  Анастасія.
+				</p>
+				Твоя Аврора мультимаркет 💛
+			</div>
+			<div class="error-message-age-button">
+				Потрапити в базу
+			</div>
+		</div>
+	`);
+	scrollChatToBottom();
+	addListenerToButtonGetIntoTheDatabase();
 }
 // Валидация ответов на дополнительные вопросы
 const validateAdditionalAnswers = (data) => {
@@ -972,7 +1002,7 @@ const addBirthDateAnswerBlock = () => {
 const dateInput = document.querySelector(".post-request-vacancy-page__date-input");
 const dateSendButton =  document.querySelector(".post-request-vacancy-page__send-date");
 dateSendButton.addEventListener("click", () => {
-	if ( validateBirthday(dateInput.value) ) {
+	if ( validateBirthday(dateInput.value) === "condition" ) {
 		deleteErrorMessagesInChat();
 		writeActualBirthDate(dateInput.value);
 		addUserMessageToChat(formateDate(dateInput.value));
@@ -981,17 +1011,16 @@ dateSendButton.addEventListener("click", () => {
 		function delayedFunction() {
 			addMessagesAfterUserAnswers(questionsArray);
 			scrollChatToBottom();
-
 			addResumeBlock();
 		}
 		setTimeout(delayedFunction, 300);
-	} else {
-		errorValidateBirthday();
-	}
+	} else if ( validateBirthday(dateInput.value) < 18 ) {
+		errorValidateBirthdayAge();
+	} else {}
 })
 dateInput.addEventListener("keyup", (event) => {
 	if ( event.key === "Enter" ) {
-		if ( validateBirthday(dateInput.value) ) {
+		if ( validateBirthday(dateInput.value) === "condition" ) {
 			deleteErrorMessagesInChat();
 			writeActualBirthDate(dateInput.value);
 			addUserMessageToChat(formateDate(dateInput.value));
@@ -1000,15 +1029,34 @@ dateInput.addEventListener("keyup", (event) => {
 			function delayedFunction() {
 				addMessagesAfterUserAnswers(questionsArray);
 				scrollChatToBottom();
-
 				addResumeBlock();
 			}
 			setTimeout(delayedFunction, 300);
-		} else {
-			errorValidateBirthday();
-		}
+			console.log("true")
+		} else if ( validateBirthday(dateInput.value) < 18 ) {
+			errorValidateBirthdayAge();
+		} else {}
 	}
 })
+// Функционал при клике на кнопку "Потрапити в базу" если кандидату менее 18 лет
+const addListenerToButtonGetIntoTheDatabase = () => {
+	const button = document.querySelector(".error-message-age-button");
+	button.addEventListener("click", () => {
+		console.log("Запись в резерв")
+		reserveBranch = true;
+		deleteErrorMessagesInChat();
+			writeActualBirthDate(dateInput.value);
+			addUserMessageToChat(formateDate(dateInput.value));
+			hiddenCalendarInput();
+			answersCounter++;
+			function delayedFunction() {
+				addMessagesAfterUserAnswers(questionsArray);
+				scrollChatToBottom();
+				addResumeBlock();
+			}
+			setTimeout(delayedFunction, 300);
+	})
+}
 // Показываем календарь
 const showCalendarInput = () => {
 	document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-hidden-animation");

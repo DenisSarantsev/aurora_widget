@@ -7,11 +7,14 @@
 			height: 100%;
 			width: 100%;
 			padding: toRem(25) toRem(15);
+			@media (max-width: em(500)){
+				gap: toRem(10);
+			}
 		}
 		&__items-container {
 			display: flex;
 			flex-direction: column;
-			gap: toRem(10);
+			gap: toRem(3);
 			background-color: rgba($color:#FFFFFF, $alpha: 0.95);
 			border-radius: 10px;
 			padding: toRem(10);
@@ -151,12 +154,13 @@
 }
 
 .red-cross {
-	margin-left: toRem(2);
-	margin-right: toRem(8);
-	height: toRem(16);
-	width: toRem(16);
+	color: red;
+	font-size: toRem(32);
+	margin-right: toRem(9);
+	margin-left: -1px;
 }
 .green-check-mark {
+	font-size: toRem(17);
 	margin-right: toRem(6);
 	height: toRem(20);
 	width: toRem(20);

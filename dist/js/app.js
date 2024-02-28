@@ -1539,7 +1539,12 @@
             };
             const validateBirthday = date => {
                 let formattedDate = formateDate(date);
-                if (formattedDate.length !== 10 || findAge(formattedDate) < 18 || findAge(formattedDate) > 70) return false; else return true;
+                console.log("findAge(formattedDate) < 18", findAge(formattedDate) < 18);
+                console.log(findAge(formattedDate));
+                if (findAge(formattedDate) < 18) {
+                    hiddenCalendarInput();
+                    return findAge(formattedDate);
+                } else return "condition";
             };
             const formateDate = date => {
                 let parts = date.split("-");
@@ -1554,10 +1559,11 @@
                 const ageInYears = Math.floor(ageInMillis / (365.25 * 24 * 60 * 60 * 1e3));
                 return ageInYears;
             };
-            const errorValidateBirthday = () => {
+            const errorValidateBirthdayAge = () => {
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="main-error-style">Для того, щоб подати заявку вам має бути не менше 18 і не більше 70 років</div>\n\t\t</div>\n\t`);
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="error-style-age">Привіт! \n\t\t\t\tЦінуємо твоє бажання долучитись до команди Аврори!\n\t\t\t\t<p>\n\t\t\t\tТа, на жаль, на цю вакансію ми не розглядаємо кандидатів молодше 18 років.\n\t\t\t\tМи б хотіли зберегти твоє резюме у базі кандидатів на майбутнє 😉\n\t\t\t\tЯкщо ти хочеш поділитись з нами своїм резюме, натисни «Потрапити в базу».\n\t\t\t\tКоли у нас зʼявляться вакансії для тебе - ми з тобою зв’яжемось!\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\tЯкщо у тебе лишились додаткові питання, телефонуй:\n\t\t\t\t+380675039118  Анастасія.\n\t\t\t\t</p>\n\t\t\t\tТвоя Аврора мультимаркет 💛\n\t\t\t</div>\n\t\t\t<div class="error-message-age-button">\n\t\t\t\tПотрапити в базу\n\t\t\t</div>\n\t\t</div>\n\t`);
                 scrollChatToBottom();
+                addListenerToButtonGetIntoTheDatabase();
             };
             const validateAdditionalAnswers = data => {
                 if (data.length < 10 || data.length > 500) return false; else return true;
@@ -1733,7 +1739,7 @@
             const dateInput = document.querySelector(".post-request-vacancy-page__date-input");
             const dateSendButton = document.querySelector(".post-request-vacancy-page__send-date");
             dateSendButton.addEventListener("click", (() => {
-                if (validateBirthday(dateInput.value)) {
+                if (validateBirthday(dateInput.value) === "condition") {
                     deleteErrorMessagesInChat();
                     writeActualBirthDate(dateInput.value);
                     addUserMessageToChat(formateDate(dateInput.value));
@@ -1745,10 +1751,10 @@
                         addResumeBlock();
                     }
                     setTimeout(delayedFunction, 300);
-                } else errorValidateBirthday();
+                } else if (validateBirthday(dateInput.value) < 18) errorValidateBirthdayAge();
             }));
             dateInput.addEventListener("keyup", (event => {
-                if (event.key === "Enter") if (validateBirthday(dateInput.value)) {
+                if (event.key === "Enter") if (validateBirthday(dateInput.value) === "condition") {
                     deleteErrorMessagesInChat();
                     writeActualBirthDate(dateInput.value);
                     addUserMessageToChat(formateDate(dateInput.value));
@@ -1760,8 +1766,27 @@
                         addResumeBlock();
                     }
                     setTimeout(delayedFunction, 300);
-                } else errorValidateBirthday();
+                    console.log("true");
+                } else if (validateBirthday(dateInput.value) < 18) errorValidateBirthdayAge();
             }));
+            const addListenerToButtonGetIntoTheDatabase = () => {
+                const button = document.querySelector(".error-message-age-button");
+                button.addEventListener("click", (() => {
+                    console.log("Запись в резерв");
+                    reserveBranch = true;
+                    deleteErrorMessagesInChat();
+                    writeActualBirthDate(dateInput.value);
+                    addUserMessageToChat(formateDate(dateInput.value));
+                    hiddenCalendarInput();
+                    answersCounter++;
+                    function delayedFunction() {
+                        addMessagesAfterUserAnswers(questionsArray);
+                        scrollChatToBottom();
+                        addResumeBlock();
+                    }
+                    setTimeout(delayedFunction, 300);
+                }));
+            };
             const showCalendarInput = () => {
                 document.querySelector(".post-request-vacancy-page__date-input-container").classList.remove("input-hidden-animation");
                 document.querySelector(".post-request-vacancy-page__date-input-container").classList.add("input-show-animation");
