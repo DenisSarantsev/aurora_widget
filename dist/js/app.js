@@ -2440,6 +2440,10 @@
                         if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
                         return response.json();
                     })).then((data => {
+                        aboutAurora.innerHTML = "";
+                        corporateCulture.innerHTML = "";
+                        auroraSport.innerHTML = "";
+                        socialResponsibility.innerHTML = "";
                         aboutAurora.insertAdjacentHTML("beforeend", `<div class="about-company-content">${data["Що ти знаєш про Аврору?"]}<div>`);
                         corporateCulture.insertAdjacentHTML("beforeend", `<div class="about-company-content">${data["Корпоративна культура"]}<div>`);
                         auroraSport.insertAdjacentHTML("beforeend", `<div class="about-company-content">${data["Аврора спорт"]}<div>`);

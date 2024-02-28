@@ -443,7 +443,6 @@ for ( let button of requestButtonsArray ) {
 }
 addListenerToAllVacancyRequestButtons()
 
-
 // Cписок основных вопросов
 const questionsArray = [
 	`Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`,
@@ -1724,7 +1723,7 @@ function fetchPostData(objectData, vacancyID) {
 			showMainMessage(errorMessage);
 		});
 }
-// Очыщаем массив проверочных вопросов на странице проверки при выходе из чата или страницы проверки ответов
+// Очищаем массив проверочных вопросов на странице проверки при выходе из чата или страницы проверки ответов
 const clearCheckQuestionsArray = () => {
 	checkQuestionsArray = [];
 	checkQuestionsArray = [
@@ -2198,6 +2197,7 @@ const downloadInformationAboutCompany = () => {
 	let auroraSport = document.querySelector(".aurora-sport__container");
 	let socialResponsibility = document.querySelector(".social-responsibility__container");
 	let aboutAuroraMainButton = document.querySelector(".about-company-main-page-button");
+
 	aboutAuroraMainButton.addEventListener("click", () => {
 		fetch(`${actualHost}/about_avrora/${currentTelegramID}/${currentPassword}`)
 		.then(response => {
@@ -2205,6 +2205,10 @@ const downloadInformationAboutCompany = () => {
 			return response.json();
 		})
 		.then(data => {
+			aboutAurora.innerHTML = "";
+			corporateCulture.innerHTML = "";
+			auroraSport.innerHTML = "";
+			socialResponsibility.innerHTML = "";
 			aboutAurora.insertAdjacentHTML("beforeend", `<div class="about-company-content">${data['Що ти знаєш про Аврору?']}<div>`);
 			corporateCulture.insertAdjacentHTML("beforeend", `<div class="about-company-content">${data['Корпоративна культура']}<div>`);
 			auroraSport.insertAdjacentHTML("beforeend", `<div class="about-company-content">${data['Аврора спорт']}<div>`);
@@ -2216,12 +2220,6 @@ const downloadInformationAboutCompany = () => {
 	})
 }
 downloadInformationAboutCompany()
-
-
-
-
-
-
 
 // Декодируем файл
 
@@ -2284,14 +2282,6 @@ downloadInformationAboutCompany()
 // 	console.log(data);
 // })
 // .catch(error => { console.error('Fetch error:', error); });
-
-
-
-
-
-
-
-
 
 })
 
