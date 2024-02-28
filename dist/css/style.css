@@ -1973,6 +1973,7 @@ section::-webkit-scrollbar-thumb {
   cursor: pointer;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
+  background-color: #ffe875;
 }
 
 .question-variant:hover {
@@ -2176,12 +2177,13 @@ section::-webkit-scrollbar-thumb {
 }
 
 .main-message-style {
-  padding: 0.625rem 0.9375rem;
+  padding: 0.4375rem 0.625rem;
   width: auto;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 0.9375rem;
   line-height: 110%;
   margin-top: 0.625rem;
+  font-size: 0.875rem;
 }
 
 .bot-message-animation {
@@ -2191,7 +2193,7 @@ section::-webkit-scrollbar-thumb {
 
 .app-message {
   background-color: rgb(255, 221, 0);
-  max-width: 80%;
+  max-width: 95%;
   text-align: left;
 }
 
