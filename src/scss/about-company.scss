@@ -16,6 +16,27 @@
 		width: 100%;
 		margin-bottom: toRem(10);
 	}
+	&__image-container {
+		max-width: toRem(310);
+		height: toRem(190);
+		width: 100%;
+		position: relative;
+		display: flex;
+		justify-content: center;
+		margin-bottom: -15px;
+	}
+	&__image-top {
+		max-width: toRem(110);
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+	&__image-bottom {
+		max-width: toRem(260);
+		position: absolute;
+		bottom: 0;
+		left: 0;
+	}
 	&__list {
 		&>* {
 			margin-top: toRem(10);

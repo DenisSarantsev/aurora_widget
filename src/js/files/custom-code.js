@@ -1894,39 +1894,39 @@ const writeDataToCabinet = (data) => {
 			cabinetWrapper.insertAdjacentHTML("beforeend", `
 				<div class="cabinet-page__item">
 					<div class="cabinet-page__item-name">Назва вакансії:</div>
-					<textarea class="cabinet-page__item-value-vacancy" data-item="title">Резерв</textarea>
+					<div class="cabinet-page__item-value-vacancy" data-item="title">Резерв</div>
 				</div>
 			`)
 		} else if ( data.cabinet.title !== "Хочу бути номер 1" ) {
 			cabinetWrapper.insertAdjacentHTML("beforeend", `
 				<div class="cabinet-page__item">
 					<div class="cabinet-page__item-name">Назва вакансії:</div>
-					<textarea class="cabinet-page__item-value-vacancy" data-item="title">${data.cabinet.title}</textarea>
+					<div class="cabinet-page__item-value-vacancy" data-item="title">${data.cabinet.title}</div>
 				</div>
 			`)
 		}
 		cabinetWrapper.insertAdjacentHTML("beforeend",`
 			<div class="cabinet-page__item">
 				<div class="cabinet-page__item-name">Ім'я та прізвище:</div>
-				<textarea class="cabinet-page__item-value cabinet-page__item-value-name" data-item="name">${data.cabinet.name}</textarea>
+				<div class="cabinet-page__item-value cabinet-page__item-value-name" data-item="name">${data.cabinet.name}</div>
 			</div>
 		`)
 		cabinetWrapper.insertAdjacentHTML("beforeend",`
 			<div class="cabinet-page__item">
 				<div class="cabinet-page__item-name">Телефон:</div>
-				<textarea class="cabinet-page__item-value cabinet-page__item-value-phone" data-item="phone">${data.cabinet.feedback_phone}</textarea>
+				<div class="cabinet-page__item-value cabinet-page__item-value-phone" data-item="phone">${data.cabinet.feedback_phone}</div>
 			</div>
 		`)
 		cabinetWrapper.insertAdjacentHTML("beforeend",`
 			<div class="cabinet-page__item">
 				<div class="cabinet-page__item-name">Місто:</div>
-				<textarea class="cabinet-page__item-value cabinet-page__item-value-city" data-item="city">${data.cabinet.city}</textarea>
+				<div class="cabinet-page__item-value cabinet-page__item-value-city" data-item="city">${data.cabinet.city}</div>
 			</div>
 		`)
 		cabinetWrapper.insertAdjacentHTML("beforeend",`
 			<div class="cabinet-page__item">
 				<div class="cabinet-page__item-name">Дата народження:</div>
-				<textarea class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</textarea>
+				<div class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</div>
 			</div>
 		`)
 
@@ -2273,17 +2273,17 @@ downloadInformationAboutCompany()
 
 
 
-fetch(`${actualHost}/forms/${currentTelegramID}/${currentPassword}`)
-.then(response => {
-	if (!response.ok) {
-		throw new Error('Network response was not ok');
-	}
-	return response.json();
-})
-.then(data => {
-	console.log(data);
-})
-.catch(error => { console.error('Fetch error:', error); });
+// fetch(`${actualHost}/forms/${currentTelegramID}/${currentPassword}`)
+// .then(response => {
+// 	if (!response.ok) {
+// 		throw new Error('Network response was not ok');
+// 	}
+// 	return response.json();
+// })
+// .then(data => {
+// 	console.log(data);
+// })
+// .catch(error => { console.error('Fetch error:', error); });
 
 
 

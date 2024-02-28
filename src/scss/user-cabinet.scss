@@ -37,11 +37,17 @@
 			&>* {
 				font-size: toRem(16);
 			}
+			@media (max-width: em(500)){
+				gap: toRem(10);
+			}
 		}
 		&__item-name {
 			width: 50%;
 			color: rgba($color: #000000, $alpha: 0.7);
 			padding: toRem(5) toRem(0);
+			@media (max-width: em(500)){
+				font-size: toRem(14);
+			}
 		}
 		&__item-value {
 			width: 50%;
@@ -53,6 +59,9 @@
 			padding: toRem(5);
 			border-radius: toRem(10);
 			background-color: transparent;
+			@media (max-width: em(500)){
+				font-size: toRem(14);
+			}
 		}
 		&__item-value-vacancy {
 			width: 50%;
@@ -64,6 +73,9 @@
 			padding: toRem(5);
 			border-radius: toRem(10);
 			background-color: transparent;
+			@media (max-width: em(500)){
+				font-size: toRem(14);
+			}
 		}
 		&__yellow-input-border {
 			border: 1px solid $mainYellow;

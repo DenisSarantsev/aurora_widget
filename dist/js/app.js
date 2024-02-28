@@ -2268,11 +2268,11 @@
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\tЗаявки відсутні\n\t\t\t</div>\n\t\t`);
                 } else {
                     cabinetMainButton.classList.remove("_hidden-cabinet-button");
-                    if (data.cabinet.title === "Хочу бути номер 1") cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="cabinet-page__item">\n\t\t\t\t\t<div class="cabinet-page__item-name">Назва вакансії:</div>\n\t\t\t\t\t<textarea class="cabinet-page__item-value-vacancy" data-item="title">Резерв</textarea>\n\t\t\t\t</div>\n\t\t\t`); else if (data.cabinet.title !== "Хочу бути номер 1") cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="cabinet-page__item">\n\t\t\t\t\t<div class="cabinet-page__item-name">Назва вакансії:</div>\n\t\t\t\t\t<textarea class="cabinet-page__item-value-vacancy" data-item="title">${data.cabinet.title}</textarea>\n\t\t\t\t</div>\n\t\t\t`);
-                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Ім'я та прізвище:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-name" data-item="name">${data.cabinet.name}</textarea>\n\t\t\t</div>\n\t\t`);
-                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Телефон:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-phone" data-item="phone">${data.cabinet.feedback_phone}</textarea>\n\t\t\t</div>\n\t\t`);
-                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Місто:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-city" data-item="city">${data.cabinet.city}</textarea>\n\t\t\t</div>\n\t\t`);
-                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Дата народження:</div>\n\t\t\t\t<textarea class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</textarea>\n\t\t\t</div>\n\t\t`);
+                    if (data.cabinet.title === "Хочу бути номер 1") cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="cabinet-page__item">\n\t\t\t\t\t<div class="cabinet-page__item-name">Назва вакансії:</div>\n\t\t\t\t\t<div class="cabinet-page__item-value-vacancy" data-item="title">Резерв</div>\n\t\t\t\t</div>\n\t\t\t`); else if (data.cabinet.title !== "Хочу бути номер 1") cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="cabinet-page__item">\n\t\t\t\t\t<div class="cabinet-page__item-name">Назва вакансії:</div>\n\t\t\t\t\t<div class="cabinet-page__item-value-vacancy" data-item="title">${data.cabinet.title}</div>\n\t\t\t\t</div>\n\t\t\t`);
+                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Ім'я та прізвище:</div>\n\t\t\t\t<div class="cabinet-page__item-value cabinet-page__item-value-name" data-item="name">${data.cabinet.name}</div>\n\t\t\t</div>\n\t\t`);
+                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Телефон:</div>\n\t\t\t\t<div class="cabinet-page__item-value cabinet-page__item-value-phone" data-item="phone">${data.cabinet.feedback_phone}</div>\n\t\t\t</div>\n\t\t`);
+                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Місто:</div>\n\t\t\t\t<div class="cabinet-page__item-value cabinet-page__item-value-city" data-item="city">${data.cabinet.city}</div>\n\t\t\t</div>\n\t\t`);
+                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Дата народження:</div>\n\t\t\t\t<div class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</div>\n\t\t\t</div>\n\t\t`);
                 }
             };
             writeDataToCabinet(globalCabinet);
@@ -2450,14 +2450,6 @@
                 }));
             };
             downloadInformationAboutCompany();
-            fetch(`${actualHost}/forms/${currentTelegramID}/${currentPassword}`).then((response => {
-                if (!response.ok) throw new Error("Network response was not ok");
-                return response.json();
-            })).then((data => {
-                console.log(data);
-            })).catch((error => {
-                console.error("Fetch error:", error);
-            }));
         }));
         __webpack_require__(69);
         document.addEventListener("DOMContentLoaded", (() => {}));
