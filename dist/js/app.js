@@ -1301,7 +1301,7 @@
                             currentVacanciesTemplate.querySelector(".jobs-list__container").querySelector(`.jobs-list__${i}`).insertAdjacentHTML("beforeend", `\n\t\t\t\t\t\t<button id="005_reserve-directions-page" class="route-button button button-effect reserve-template-main-page-button">\n\t\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t\t<div>Не знайшов вакансії для себе?</div>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t`);
                         }
                         let reserveDirectionsButtons = document.querySelector(".reserve-directions-page__buttons-block");
-                        for (let i = 0; i < globalKinds.length; i++) reserveDirectionsButtons.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<button id="0${i}_post-request-vacancy-page" class="route-button button route-button-main-style button-effect kind-reserve-button">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>\n\t\t\t\t\t</button>\n\t\t\t\t\t`);
+                        for (let i = 0; i < globalKinds.length; i++) reserveDirectionsButtons.insertAdjacentHTML("beforeend", `\n\t\t\t\t\t<button id="10${i}_post-request-vacancy-page" class="route-button button route-button-main-style button-effect kind-reserve-button">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>\n\t\t\t\t\t</button>\n\t\t\t\t\t`);
                         const addListenerToAllKindReserveButtons = () => {
                             const allKindsReserveButtons = document.querySelectorAll(".kind-reserve-button");
                             for (let item of allKindsReserveButtons) item.addEventListener("click", (e => {
@@ -1309,6 +1309,8 @@
                                 currentVacancyKind = item.lastElementChild.textContent;
                                 reserveBranch = true;
                                 addBackButtonMechanics(e.target);
+                                includeCurrentTemplate(removeDigitsAndUnderscore(e.target.id));
+                                console.log(e.target.id);
                             }));
                         };
                         addListenerToAllKindReserveButtons();
@@ -1443,43 +1445,6 @@
                     if (!response.ok) throw new Error("Network response was not ok");
                     return response.json();
                 })).then((data => {
-                    data = {
-                        q1: {
-                            a: "Ігнорую і не втручаюся",
-                            b: "Критикую його при всіх за негативну поведінку",
-                            c: "У приватній розмові обоговорюю неприйнятну поведінку та допомагаю знайти шляхи рішення",
-                            point: "b",
-                            question: "Як реагуєш, якщо хтось у команді поводить себе безвідповідально або негативно?"
-                        },
-                        q2: {
-                            a: "Приймаю самостійно всі рішення, не раджусь ні з ким",
-                            b: "Раджусь з командою, щоб знайти краще рішення",
-                            c: "Чекаю, що відповідальність візьме на себе хтось інший",
-                            point: "b",
-                            question: "У тебе спільний проєкт/завдання з колегами. Твої дії?"
-                        },
-                        q3: {
-                            a: "Ігнорую ідеї інших",
-                            b: "Підтримую ініціативу, якщо вона співпадає з моїми власними ідеями",
-                            c: "Підтримую ініціативу і сприяю її втіленню, незалежно від відповідності моїм власним ідеям",
-                            point: "c",
-                            question: "Як ти сприймаєш ініціативу від інших членів команди?"
-                        },
-                        q4: {
-                            a: "Шукати спільне рішення, яке влаштує всіх",
-                            b: "Я не приймаю участі в конфліктах",
-                            c: "Переконати інших у своїй правоті",
-                            point: "a",
-                            question: "Якщо погляди колег відрізняються від ваших, що ти робиш?"
-                        },
-                        q5: {
-                            a: "Ігнорую, якщо вони відрізняються від моїх",
-                            b: "Враховую їх та використовую щоб знайти краще рішення",
-                            c: "Вислухаю, але зроблю так як вирішив до цього",
-                            point: "b",
-                            question: "Як ти ставишся до думок та ідей інших членів команди?"
-                        }
-                    };
                     let dataKeys = Object.keys(data);
                     let questionsObject = {
                         forms: {}
@@ -1561,7 +1526,7 @@
             };
             const errorValidateBirthdayAge = () => {
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="error-style-age">Привіт! \n\t\t\t\tЦінуємо твоє бажання долучитись до команди Аврори!\n\t\t\t\t<p>\n\t\t\t\tТа, на жаль, на цю вакансію ми не розглядаємо кандидатів молодше 18 років.\n\t\t\t\tМи б хотіли зберегти твоє резюме у базі кандидатів на майбутнє 😉\n\t\t\t\tЯкщо ти хочеш поділитись з нами своїм резюме, натисни «Потрапити в базу».\n\t\t\t\tКоли у нас зʼявляться вакансії для тебе - ми з тобою зв’яжемось!\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\tЯкщо у тебе лишились додаткові питання, телефонуй:\n\t\t\t\t+380675039118  Анастасія.\n\t\t\t\t</p>\n\t\t\t\tТвоя Аврора мультимаркет 💛\n\t\t\t</div>\n\t\t\t<div class="error-message-age-button">\n\t\t\t\tПотрапити в базу\n\t\t\t</div>\n\t\t</div>\n\t`);
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="error-style-age">Привіт! \n\t\t\t\t<strong>Цінуємо твоє бажання долучитись до команди Аврори!</strong>\n\t\t\t\t<br>\n\t\t\t\t<p>\n\t\t\t\tТа, на жаль, на цю вакансію ми не розглядаємо кандидатів молодше 18 років.\n\t\t\t\tМи б хотіли зберегти твоє резюме у базі кандидатів на майбутнє 😉\n\t\t\t\tЯкщо ти хочеш поділитись з нами своїм резюме, натисни «Потрапити в базу».\n\t\t\t\tКоли у нас зʼявляться вакансії для тебе - ми з тобою зв’яжемось!\n\t\t\t\t</p>\n\t\t\t\t<br>\n\t\t\t\t<p>\n\t\t\t\tЯкщо у тебе лишились додаткові питання, телефонуй:\n\t\t\t\t+380675039118  Анастасія.\n\t\t\t\t</p>\n\t\t\t\t<br>\n\t\t\t\tТвоя Аврора мультимаркет 💛\n\t\t\t</div>\n\t\t\t<div class="error-message-age-button">\n\t\t\t\tПотрапити в базу\n\t\t\t</div>\n\t\t</div>\n\t`);
                 scrollChatToBottom();
                 addListenerToButtonGetIntoTheDatabase();
             };
@@ -1645,7 +1610,7 @@
             const addResumeField = () => {
                 hiddenTextInput();
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="add-resume-container phone-buttons-show-animations">\n\t\t\t<input class="input-hidden add-resume-input" type="file" id="fileInput" accept=".pdf, .docx">\n\t\t\t<button class="add-resume-file-button">\n\t\t\t\t<span class="icon-upload-1 add-resume-choose-image"></span>\n\t\t\t\t<span class="icon-vacancy-icon add-resume-file-image hidden-file-buttons"></span>\n\t\t\t\t<div class="add-resume-choose-text">Вибрати файл</div>\n\t\t\t</button>\n\t\t\t<div class="save-delete-resume-buttons-container">\n\t\t\t\t<button class="delete-resume-button hidden-file-buttons">\n\t\t\t\t\t<span class="red-cross">×</span>\n\t\t\t\t\tВидалити\n\t\t\t\t</button>\n\t\t\t\t<button class="save-resume-button hidden-file-buttons">\n\t\t\t\t\t<span class="green-check-mark">✔</span>\n\t\t\t\t\tЗберегти\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<button class="skip-resume-button">Пропустити</button>\n\t\t</div>\n\t`);
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="add-resume-container phone-buttons-show-animations">\n\t\t\t<input class="input-hidden add-resume-input" type="file" id="fileInput" accept=".pdf, .docx">\n\t\t\t<button class="add-resume-file-button">\n\t\t\t\t<span class="add-resume-choose-image"></span>\n\t\t\t\t<span class="hidden-file-buttons"></span>\n\t\t\t\t<div>Вибрати файл</div>\n\t\t\t</button>\n\t\t\t<div class="save-delete-resume-buttons-container">\n\t\t\t\t<button class="delete-resume-button hidden-file-buttons">\n\t\t\t\t\t<span class="red-cross">×</span>\n\t\t\t\t\tВидалити\n\t\t\t\t</button>\n\t\t\t\t<button class="save-resume-button hidden-file-buttons">\n\t\t\t\t\t<span class="green-check-mark">✔</span>\n\t\t\t\t\tЗберегти\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<button class="skip-resume-button">Пропустити</button>\n\t\t</div>\n\t`);
                 scrollChatToBottom();
                 addUploadFileCode();
                 document.querySelector(".save-resume-button").addEventListener("click", (() => {
@@ -1933,7 +1898,6 @@
             };
             const activeInput = () => {
                 document.querySelector(".post-request-vacancy-page__input").disabled = false;
-                document.querySelector(".post-request-vacancy-page__input").focus();
             };
             const hiddenTextInput = () => {
                 document.querySelector(".post-request-vacancy-page__input-container").classList.remove("input-visible");
@@ -2095,7 +2059,7 @@
             };
             const addInputFieldsToCheckPage = () => {
                 const checkPageMainContainer = document.querySelector(".check-request-vacancy-page__items-container");
-                if (reserveBranch === false) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> \n\t\t\t\t\t<span class="icon-vacancy-icon vacancy-mark"></span> Назва вакансії:</div>\n\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t`); else if (reserveBranch === true) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> \n\t\t\t\t\t<span class="icon-vacancy-icon vacancy-mark"></span> Назва вакансії:</div>\n\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">Резерв</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t`);
+                if (reserveBranch === false) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> \n\t\t\t\t\t<span class="icon-vacancy-icon vacancy-mark"></span> Назва вакансії:</div>\n\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t`); else if (reserveBranch === true) checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t<div class="check-request-vacancy-page__question-input-container">\n\t\t\t\t\t<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page">Назва вакансії:</div>\n\t\t\t\t\t<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">Резерв</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t`);
                 for (let i = 0; i < Object.keys(postVacancyObject).length - 1; i++) if (i < fixedQuestionsCounter && checkQuestionsArray[i] !== "fileName") checkPageMainContainer.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="check-request-vacancy-page__check-item">\n\t\t\t\t\t<div data-key="${Object.keys(postVacancyObject)[i + 1]}" class="check-request-vacancy-page__question-input-container inactive-input-container-border">\n\t\t\t\t\t\t<div class="check-request-vacancy-page__check-question"> \n\t\t\t\t\t\t<span class="green-check-mark">✔</span>\n\t\t\t\t\t\t<span class="red-cross _hidden-icon">×</span> ${checkQuestionsArray[i]}</div>\n\t\t\t\t\t\t<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i + 1]]}" type="text" class="check-request-vacancy-page__check-input">\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="check-request-vacancy-page__edit-button">\n\t\t\t\t\t\t<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t`); else if (checkQuestionsArray[i] === "fileName") ;
                 addListenerOnEditButtons();
                 inactiveCheckInputs();

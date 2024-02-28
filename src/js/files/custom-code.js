@@ -241,7 +241,7 @@ const addVacanciesAndKindsToList = () => {
 			for ( let i = 0; i < globalKinds.length; i++ ) {
 				reserveDirectionsButtons.insertAdjacentHTML("beforeend", 
 					`
-					<button id="0${i}_post-request-vacancy-page" class="route-button button route-button-main-style button-effect kind-reserve-button">
+					<button id="10${i}_post-request-vacancy-page" class="route-button button route-button-main-style button-effect kind-reserve-button">
 						<div id="circle"></div>
 						<div>${globalKinds[i][0].toUpperCase() + globalKinds[i].slice(1)}</div>
 					</button>
@@ -258,6 +258,8 @@ const addVacanciesAndKindsToList = () => {
 						currentVacancyKind = item.lastElementChild.textContent;
 						reserveBranch = true;
 						addBackButtonMechanics(e.target);
+						includeCurrentTemplate(removeDigitsAndUnderscore(e.target.id));
+						console.log(e.target.id)
 					})
 				}
 			}
@@ -466,43 +468,43 @@ function addQuestionsToChat() {
 		return response.json();
 	})
 	.then(data => {
-		data = {
-			"q1": {
-					"a": "Ігнорую і не втручаюся",
-					"b": "Критикую його при всіх за негативну поведінку",
-					"c": "У приватній розмові обоговорюю неприйнятну поведінку та допомагаю знайти шляхи рішення",
-					"point": "b",
-					"question": "Як реагуєш, якщо хтось у команді поводить себе безвідповідально або негативно?"
-			},
-			"q2": {
-					"a": "Приймаю самостійно всі рішення, не раджусь ні з ким",
-					"b": "Раджусь з командою, щоб знайти краще рішення",
-					"c": "Чекаю, що відповідальність візьме на себе хтось інший",
-					"point": "b",
-					"question": "У тебе спільний проєкт/завдання з колегами. Твої дії?"
-			},
-			"q3": {
-					"a": "Ігнорую ідеї інших",
-					"b": "Підтримую ініціативу, якщо вона співпадає з моїми власними ідеями",
-					"c": "Підтримую ініціативу і сприяю її втіленню, незалежно від відповідності моїм власним ідеям",
-					"point": "c",
-					"question": "Як ти сприймаєш ініціативу від інших членів команди?"
-			},
-			"q4": {
-					"a": "Шукати спільне рішення, яке влаштує всіх",
-					"b": "Я не приймаю участі в конфліктах",
-					"c": "Переконати інших у своїй правоті",
-					"point": "a",
-					"question": "Якщо погляди колег відрізняються від ваших, що ти робиш?"
-			},
-			"q5": {
-					"a": "Ігнорую, якщо вони відрізняються від моїх",
-					"b": "Враховую їх та використовую щоб знайти краще рішення",
-					"c": "Вислухаю, але зроблю так як вирішив до цього",
-					"point": "b",
-					"question": "Як ти ставишся до думок та ідей інших членів команди?"
-			}
-	};
+	// 	data = {
+	// 		"q1": {
+	// 				"a": "Ігнорую і не втручаюся",
+	// 				"b": "Критикую його при всіх за негативну поведінку",
+	// 				"c": "У приватній розмові обоговорюю неприйнятну поведінку та допомагаю знайти шляхи рішення",
+	// 				"point": "b",
+	// 				"question": "Як реагуєш, якщо хтось у команді поводить себе безвідповідально або негативно?"
+	// 		},
+	// 		"q2": {
+	// 				"a": "Приймаю самостійно всі рішення, не раджусь ні з ким",
+	// 				"b": "Раджусь з командою, щоб знайти краще рішення",
+	// 				"c": "Чекаю, що відповідальність візьме на себе хтось інший",
+	// 				"point": "b",
+	// 				"question": "У тебе спільний проєкт/завдання з колегами. Твої дії?"
+	// 		},
+	// 		"q3": {
+	// 				"a": "Ігнорую ідеї інших",
+	// 				"b": "Підтримую ініціативу, якщо вона співпадає з моїми власними ідеями",
+	// 				"c": "Підтримую ініціативу і сприяю її втіленню, незалежно від відповідності моїм власним ідеям",
+	// 				"point": "c",
+	// 				"question": "Як ти сприймаєш ініціативу від інших членів команди?"
+	// 		},
+	// 		"q4": {
+	// 				"a": "Шукати спільне рішення, яке влаштує всіх",
+	// 				"b": "Я не приймаю участі в конфліктах",
+	// 				"c": "Переконати інших у своїй правоті",
+	// 				"point": "a",
+	// 				"question": "Якщо погляди колег відрізняються від ваших, що ти робиш?"
+	// 		},
+	// 		"q5": {
+	// 				"a": "Ігнорую, якщо вони відрізняються від моїх",
+	// 				"b": "Враховую їх та використовую щоб знайти краще рішення",
+	// 				"c": "Вислухаю, але зроблю так як вирішив до цього",
+	// 				"point": "b",
+	// 				"question": "Як ти ставишся до думок та ідей інших членів команди?"
+	// 		}
+	// };
 
 	// Формируем вопросы в обьект в старом формате
 	let dataKeys = Object.keys(data);
@@ -692,17 +694,20 @@ const errorValidateBirthdayAge = () => {
 	chatMessagesBlock.insertAdjacentHTML("beforeend", `
 		<div class="post-request-vacancy-page__message-element main-error-style__container">
 			<div class="error-style-age">Привіт! 
-				Цінуємо твоє бажання долучитись до команди Аврори!
+				<strong>Цінуємо твоє бажання долучитись до команди Аврори!</strong>
+				<br>
 				<p>
 				Та, на жаль, на цю вакансію ми не розглядаємо кандидатів молодше 18 років.
 				Ми б хотіли зберегти твоє резюме у базі кандидатів на майбутнє 😉
 				Якщо ти хочеш поділитись з нами своїм резюме, натисни «Потрапити в базу».
 				Коли у нас зʼявляться вакансії для тебе - ми з тобою зв’яжемось!
 				</p>
+				<br>
 				<p>
 				Якщо у тебе лишились додаткові питання, телефонуй:
 				+380675039118  Анастасія.
 				</p>
+				<br>
 				Твоя Аврора мультимаркет 💛
 			</div>
 			<div class="error-message-age-button">
@@ -838,9 +843,9 @@ const addResumeField = () => {
 		<div class="add-resume-container phone-buttons-show-animations">
 			<input class="input-hidden add-resume-input" type="file" id="fileInput" accept=".pdf, .docx">
 			<button class="add-resume-file-button">
-				<span class="icon-upload-1 add-resume-choose-image"></span>
-				<span class="icon-vacancy-icon add-resume-file-image hidden-file-buttons"></span>
-				<div class="add-resume-choose-text">Вибрати файл</div>
+				<span class="add-resume-choose-image"></span>
+				<span class="hidden-file-buttons"></span>
+				<div>Вибрати файл</div>
 			</button>
 			<div class="save-delete-resume-buttons-container">
 				<button class="delete-resume-button hidden-file-buttons">
@@ -1237,7 +1242,7 @@ const inactiveInput = () => {
 // Делаем инпут активным
 const activeInput = () => {
 	document.querySelector(".post-request-vacancy-page__input").disabled = false;
-	document.querySelector(".post-request-vacancy-page__input").focus();
+	// document.querySelector(".post-request-vacancy-page__input").focus();
 }
 // Скрываем контейнер с инпутом
 const hiddenTextInput = () => {
@@ -1337,6 +1342,7 @@ function scrollChatToBottom() {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
 	chatMessagesBlock.scrollTo(0, chatMessagesBlock.scrollHeight);
 }
+// Общая функция для добавления сообщения в чат. Текст сообщения передаем в качестве аргумента
 function addUserMessageToChat(userMessage) {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
 	chatMessagesBlock.insertAdjacentHTML("beforeend", `
@@ -1344,8 +1350,6 @@ function addUserMessageToChat(userMessage) {
 			<div class="main-message-style user-message">${userMessage}</div>
 		</div>
 	`);
-
-
 }
 // Вставляем вопрос без вариантов ответа в чат и вызываем функцию активации инпута
 function addMessageToChat(question) {
@@ -1512,8 +1516,7 @@ const addInputFieldsToCheckPage = () => {
 		checkPageMainContainer.insertAdjacentHTML("beforeend", `
 			<div class="check-request-vacancy-page__check-item">
 				<div class="check-request-vacancy-page__question-input-container">
-					<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> 
-					<span class="icon-vacancy-icon vacancy-mark"></span> Назва вакансії:</div>
+					<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page">Назва вакансії:</div>
 					<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">Резерв</div>
 				</div>
 			</div>
@@ -1641,6 +1644,7 @@ const noCheckActiveCheckboxMessage = () =>{
 	let message = document.querySelector(".check-request-vacancy-page__politics-message");
 	message.classList.remove("_hidden");
 }
+// Добавляем прослушиватель на чекбокс политики конфиденциальности
 const addListenerToPoliticsCheckbox = () => {
 	let checkbox = document.querySelector(".check-request-vacancy-page__politics-input");
 	let message = document.querySelector(".check-request-vacancy-page__politics-message");
