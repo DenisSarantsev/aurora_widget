@@ -1505,8 +1505,7 @@ const addInputFieldsToCheckPage = () => {
 		checkPageMainContainer.insertAdjacentHTML("beforeend", `
 			<div class="check-request-vacancy-page__check-item">
 				<div class="check-request-vacancy-page__question-input-container">
-					<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> 
-					<span class="icon-vacancy-icon vacancy-mark"></span> Назва вакансії:</div>
+					<div class="check-request-vacancy-page__check-question vacancy-title-on-check-page"> Назва вакансії:</div>
 					<div type="text" class="check-request-vacancy-page__check-input vacancy-check-title">${currentVacancyTitle}</div>
 				</div>
 			</div>
@@ -1532,7 +1531,7 @@ const addInputFieldsToCheckPage = () => {
 						<input disabled value="${postVacancyObject[Object.keys(postVacancyObject)[i+1]]}" type="text" class="check-request-vacancy-page__check-input">
 					</div>
 					<button class="check-request-vacancy-page__edit-button">
-						<span class="icon-edit check-request-vacancy-page__edit-button-image edit-icon"></span>
+						<span class="check-request-vacancy-page__edit-button-image edit-icon">&#9998;</span>
 					</button>
 				</div>
 			`)

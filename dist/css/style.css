@@ -2615,6 +2615,8 @@ section::-webkit-scrollbar-thumb {
 
 .check-request-vacancy-page__edit-button-image {
   max-width: 1.5625rem;
+  font-size: 1.875rem;
+  color: #000;
 }
 
 .check-request-vacancy-page__politics-container {
