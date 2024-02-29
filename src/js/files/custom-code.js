@@ -1984,8 +1984,14 @@ const addBackButtonMechanics = (targetButton) => {
 	let currentId = removeDigitsAndUnderscore(targetButton.id);
 	if ( currentId !== 'vacancy-page' && currentId !== 'post-request-vacancy-page' ) {
 		templatesRoad.push(currentId);
-	} else if ( currentId.includes('post-request-vacancy-page') && !templatesRoad[templatesRoad.length - 1].includes('post-request-vacancy-page') ) {
+	} else if ( currentId.includes('post-request-vacancy-page') && !templatesRoad[templatesRoad.length - 1].includes('post-request-vacancy-page') && !templatesRoad[templatesRoad.length - 2].includes('reserve-directions-page') ) {
 		templatesRoad.push(currentId);
+	} else if ( currentId.includes('post-request-vacancy-page') && !templatesRoad[templatesRoad.length - 1].includes('post-request-vacancy-page') && templatesRoad[templatesRoad.length - 2].includes('reserve-directions-page') ) {
+		templatesRoad.pop();
+		currentTemplateID = "reserve-directions-page";
+		includeLastTemplate('reserve-directions-page');
+		deleteAdditionalQuestionsInQuestionsArray();
+		clearCheckQuestionsArray();
 	} else if ( currentId === 'vacancy-page' ) {
 		let vacancyTitle = targetButton.lastElementChild.textContent;
 		let uniteName = currentId + ': ' + vacancyTitle;
@@ -1997,18 +2003,25 @@ const addBackButtonMechanics = (targetButton) => {
 } 
 // Включам предыдущий шаблон
 const backToPreviousTemplate = () => {
-	if ( templatesRoad[templatesRoad.length - 1] !== 'post-request-vacancy-page' ) {
+	if ( templatesRoad[templatesRoad.length - 1] !== 'post-request-vacancy-page' && templatesRoad[templatesRoad.length - 2] !== 'reserve-directions-page' ) {
 		templatesRoad.pop();
 		let lastTemplate = templatesRoad[templatesRoad.length - 1];
 		includeLastTemplate(lastTemplate);
 		currentTemplateID = lastTemplate;
 		deleteChatContent();
-	} else if ( templatesRoad[templatesRoad.length - 1] === 'post-request-vacancy-page' ) {
+	} else if ( templatesRoad[templatesRoad.length - 1] === 'post-request-vacancy-page' && templatesRoad[templatesRoad.length - 2] !== 'reserve-directions-page' ) {
 		templatesRoad.pop();
 		let lastTemplate = templatesRoad[templatesRoad.length - 1];
 		currentTemplateID = lastTemplate;
 		includeLastTemplate('vacancy-page');
 		includeLastVacancyContent();
+		deleteAdditionalQuestionsInQuestionsArray();
+		clearCheckQuestionsArray();
+		document.querySelector(".check-request-vacancy-page__items-container").innerHTML = "";
+	} else if ( templatesRoad[templatesRoad.length - 1] === 'post-request-vacancy-page' && templatesRoad[templatesRoad.length - 2] === 'reserve-directions-page' ) {
+		templatesRoad.pop();
+		currentTemplateID = "reserve-directions-page";
+		includeLastTemplate('reserve-directions-page');
 		deleteAdditionalQuestionsInQuestionsArray();
 		clearCheckQuestionsArray();
 		document.querySelector(".check-request-vacancy-page__items-container").innerHTML = "";

@@ -1959,6 +1959,7 @@ section::-webkit-scrollbar-thumb {
 }
 
 .post-request-vacancy-page__date-input-container {
+  max-width: 767.98px;
   position: fixed;
   bottom: 3.75rem;
   height: auto;
