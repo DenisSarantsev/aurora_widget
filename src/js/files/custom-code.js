@@ -17,12 +17,12 @@ let data = {
 			"qualities": null,
 			"questionnaire": "Що для вас є ключовими цінностями в житті?: ифжвоаждолфиваждол\nЯк ви відповідаєте на виклики та труднощі в роботі?: двлоажфдиоваждлфоивад\nЯк ви володієте навичками управління часом?: фиждвлоажфдиоаждфиоваж\nЯк ви реагуєте на критику?: жфдивлоаджфоиваждлофиважд\nЯк ви вирішуєте складні завдання чи проблеми?: ифвждлоаижфлдоваждфиоваждф\n",
 			"rating": null,
-			"status": null,
+			"status": "Ваша заявка прийнята і буде розглянута менеджерами",
 			"telegram_id": 210325718,
 			"title": "Менеджер/ка з організаційного документообігу та комунікацій" 
 	},
 	'first_name': "Денис",
-	'host': "https://avrora-hr.fly.dev/",
+	'host': "https://fastapi-avrora-hr.fly.dev",
 	'phone_number': '+380675478881',
 	'telegram_id': 210325718,
 	'password': "519d9a296dd5ccb730e1c3bac2255aae90ead3690c81c0b5a31b3f191c01c051696ede10d2f5d14b9edcb72b28844e1b34",
@@ -37,6 +37,7 @@ let currentUserName = data.first_name;
 let currentTelegramID = data.telegram_id;
 let currentPassword = data.password;
 let currentUserPhone = data.phone_number;
+let currentStatus = data.cabinet.status;
 let actualHost = data.host;
 let currentTemplateID = "home-page"; // Изначальное значение домашняя страница. Впоследствии перезаписывается при переходах между страницами
 let firstEnter = true;
@@ -150,10 +151,10 @@ const addVacanciesAndKindsToList = () => {
 			return response.json();
 		})
 		.then(data => {
-			
 			let globalKinds = [] // Добавляем все виды вакансий в один массив
 			globalVacancies = data;
 			const findAllKindsOfVacancies = (vacancies) => {
+				console.log(vacancies)
 				for ( let i = 0; i < vacancies.vacancies.length; i++ ) {
 					let currentKind = vacancies.vacancies[i].kind;
 					if ( !globalKinds.includes(currentKind) ) {
@@ -692,7 +693,8 @@ const errorValidateBirthdayAge = () => {
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
 	chatMessagesBlock.insertAdjacentHTML("beforeend", `
 		<div class="post-request-vacancy-page__message-element main-error-style__container">
-			<div class="error-style-age">Привіт! 
+			<div class="error-style-age">
+				Привіт! 
 				<strong>Цінуємо твоє бажання долучитись до команди Аврори!</strong>
 				<br>
 				<p>
@@ -821,7 +823,7 @@ const addUserFreeAnswerToPostVacancyObject = (currentQuestion, inputValue) => {
 	console.log("currentQuestionKey", currentQuestionKey)
 	postVacancyObject[`${currentQuestionKey}`] = {
 		[`${currentQuestion}`]: `${inputValue}`,
-		point: 0
+		point: null
 	};
 }
 // Проверяем, когда появляется предложение добавить резюме
@@ -844,7 +846,7 @@ const addResumeField = () => {
 			<button class="add-resume-file-button">
 				<span class="add-resume-choose-image"></span>
 				<span class="hidden-file-buttons"></span>
-				<div>Вибрати файл</div>
+				<div class="add-resume-choose-text">Вибрати файл</div>
 			</button>
 			<div class="save-delete-resume-buttons-container">
 				<button class="delete-resume-button hidden-file-buttons">
@@ -879,55 +881,65 @@ const addUploadFileCode = () => {
 	});
 
 	fileInput.addEventListener('change', function(event) {
+			
 			let file = event.target.files[0];
 			let fileName = event.target.files[0].name;
 			let fileExtension = fileName.split('.').pop().toLowerCase();
 			removeDeleteAndSaveButtons(document.querySelector(".delete-resume-button"), fileInput);
-
 			if ( file && fileExtension === "docx" || file && fileExtension === "pdf" ) {
-				addDeleteAndSaveButtons(fileName);
+
+				createBase64StringAndWriteFileDataToObject(fileName, file)
+				.then(result => {
+					postVacancyObject['cv'] = {'file_name': `${result.fileName}`, 'file_data': `${result.fileInBase64String}`};
+					addDeleteAndSaveButtons(fileName)
+				})
+				.catch(error => {
+					console.error("Произошла ошибка:", error);
+				});
+
 			} else if ( fileExtension !== "docx" || fileExtension !== "pdf" ) {
 				errorValidateFileFormat();
 				deleteErrorMessagesInChat();
 			} 
 
-			// ОРИГИНАЛ
-				let reader = new FileReader();
-				reader.onload = function(e) {
-						let fileBytes = new Uint8Array(e.target.result);
-
-						let base64String = btoa(String.fromCharCode.apply(null, fileBytes));
-						currentFile = {'file_name': fileName, 'file_data': base64String};
-						// Теперь jsonData можно использовать или отправить на сервер
-						// console.log(jsonData);
-				};
-				reader.readAsArrayBuffer(file);
 
 
-				// let reader = new FileReader();
-				// reader.onload = function(e) {
-				// 		let fileBytes = new Uint8Array(e.target.result);
-				// 		let counterElements = Math.floor(fileBytes.length / 1000);
-				// 		console.log(counterElements)
 
-				// 		let startIndex = 0;
-				// 		let finishIndex = counterElements;
-				// 		let sectionBytes = []
-						
-				// 		for ( let i = 0; i < counterElements; i++ ) {
-				// 			sectionBytes.push(fileBytes[i])
-				// 		}
-
-				// 		console.log(fileBytes)
-				// 		let base64String = btoa(String.fromCharCode.apply(null, fileBytes));
-				// 		currentFile = {'file_name': fileName, 'file_data': base64String};
-				// 		// Теперь jsonData можно использовать или отправить на сервер
-				// 		// console.log(jsonData);
-				// };
-				// reader.readAsArrayBuffer(file);
 
 	});
 }
+// Cчитываем файл и переводим в формат строки + добавляем данные в финальный обьект
+const createBase64StringAndWriteFileDataToObject = (nameData, file) => {
+	let reader = new FileReader();
+	return new Promise((resolve, reject) => {
+		reader.onload = function(e) {
+			let fileInBase64String = '';
+			let fileName = nameData;
+			let fileBytes = new Uint8Array(e.target.result);
+			fileInBase64String = btoa(fileBytes);
+			let result = {fileInBase64String, fileName};
+			resolve(result);
+		}
+		reader.readAsArrayBuffer(file);
+	});
+}
+
+// Добавляем прелоадер до момента, пока не подгрузились кнопки направлений
+const addPreloaderInChat = () => {
+	let preloaderContainer = document.querySelector(".preloader-in-widget");
+	setTimeout(function() {
+		preloaderContainer.classList.remove("preloader-hidden");
+	}, 200)
+}
+// Удаляем прелоадер после момента, когда уже подгрузились вакансии
+const removePreloaderInChat = () => {
+	let preloaderContainer = document.querySelector(".preloader-in-widget");
+	setTimeout(function() {
+		preloaderContainer.classList.add("preloader-hidden");
+	}, 250)
+}
+
+
 // Появление кнопок удаления и сохранения после добалвения файла. Скрываем кнопку "Пропустить"
 const addDeleteAndSaveButtons = (fileName) => {
 	if ( fileName ) {
@@ -936,7 +948,7 @@ const addDeleteAndSaveButtons = (fileName) => {
 		document.querySelector(".skip-resume-button").classList.add("hidden-file-buttons");
 		document.querySelector(".add-resume-choose-text").innerText = `${fileName}`;
 		document.querySelector(".add-resume-choose-image").classList.add("hidden-file-buttons");
-		document.querySelector(".add-resume-file-image").classList.remove("hidden-file-buttons");
+		// document.querySelector(".add-resume-file-image").classList.remove("hidden-file-buttons");
 	} else {
 		removeDeleteAndSaveButtons(document.querySelector(".delete-resume-button"));
 	}
@@ -948,8 +960,8 @@ const removeDeleteAndSaveButtons = (deleteButton, fileInput) => {
 		document.querySelector(".save-resume-button").classList.add("hidden-file-buttons");
 		document.querySelector(".skip-resume-button").classList.remove("hidden-file-buttons");
 		document.querySelector(".add-resume-choose-text").innerText = "Вибрати файл";
-		document.querySelector(".add-resume-choose-image").classList.remove("hidden-file-buttons");
-		document.querySelector(".add-resume-file-image").classList.add("hidden-file-buttons");
+		// document.querySelector(".add-resume-choose-image").classList.remove("hidden-file-buttons");
+		// document.querySelector(".add-resume-file-image").classList.add("hidden-file-buttons");
 		currentFile = {};
 		fileInput.value = '';
 	})
@@ -1281,6 +1293,7 @@ const addFinalMessageAfterAnswers = (message) => {
 		item.remove()
 	}
 	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+	hiddenTextInput();
 	function delayedFunction() {
 		chatMessagesBlock.insertAdjacentHTML("beforeend", `
 		<div class="post-request-vacancy-page__message-element final-message__container input-hidden">
@@ -1634,6 +1647,7 @@ const writeNewDataToPostVacancyObject = (button) => {
 const checkActiveCheckbox = () => {
  let checkbox = document.querySelector(".check-request-vacancy-page__politics-input");
  if ( checkbox.checked ) {
+	console.log("checkbox active")
 	return true
  } else {}
 }
@@ -1657,7 +1671,7 @@ addListenerToPoliticsCheckbox()
 const sendObjectDataToServer = () => {
 	const checkRequestVacancyButton = document.querySelector(".check-request-vacancy-page__request-button");
 	checkRequestVacancyButton.addEventListener("click", () => {
-		if ( checkActiveCheckbox() ) {
+		if ( checkActiveCheckbox() === true ) {
 			fetchPostData(postVacancyObject, currentVacancyID);
 		} else {
 			noCheckActiveCheckboxMessage();
@@ -1927,9 +1941,15 @@ const writeDataToCabinet = (data) => {
 				<div class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</div>
 			</div>
 		`)
-
+		cabinetWrapper.insertAdjacentHTML("beforeend",`
+		<div class="cabinet-page__item">
+			<div class="cabinet-page__item-name">Статус заявки:</div>
+			<div class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${currentStatus}</div>
+		</div>
+	`)
 	}
 }
+
 writeDataToCabinet(globalCabinet);
 currentVacancyID = data.cabinet._id;
 searchButtonDeleteAddDelay();
@@ -2040,12 +2060,11 @@ const deleteChatContent = () => {
 	document.querySelector(".post-request-vacancy-page__messages-container").classList.remove("padding-message-container-final");
 	document.querySelector(".post-request-vacancy-page__messages-container").classList.add("padding-message-container-chat");
 }
-// Вешаем прослушиватель на кнопку "Назад"
+// Вешаем прослушиватель на кнопку "Назад" в чате и на странице проверки данных
 const addListenerToBackButton = () => {
 	const backButton = document.querySelector('.footer__button-back-link');
 	backButton.addEventListener("click", () => {
 		if ( currentTemplateID === 'post-request-vacancy-page' || currentTemplateID === 'check-request-vacancy-page' ) {
-			console.log(currentTemplateID)
 			showMainMessage(
 			`
 				<div class="main-message-template-style__message">
@@ -2084,6 +2103,51 @@ const addListenerToBackButton = () => {
 	})
 }
 addListenerToBackButton();
+
+// Вешаем прослушиватель на кнопку "На головну" в чате и на странице проверки данных
+// const addListenerToMainPageButton = () => {
+// 	const mainButton = document.querySelector('.footer__button-main-link');
+// 	mainButton.addEventListener("click", () => {
+// 		if ( currentTemplateID === 'post-request-vacancy-page' || currentTemplateID === 'check-request-vacancy-page' ) {
+// 			console.log("main click")
+// 			showMainMessage(
+// 			`
+// 				<div class="main-message-template-style__message">
+// 					Після виходу з чату ваші відповіді будуть видалені
+// 				</div>
+// 				<button class="route-button main-message-template-style__width route-button-main-style button-effect stay-in-chat-button">
+// 					<div id="circle"></div>
+// 					<div>Залишитись</div>
+// 				</button>
+// 				<button class="route-button main-message-template-style__width route-button-main-style button-effect back-out-chat-button">
+// 					<div id="circle"></div>
+// 					<div>Вийти</div>
+// 				</button>
+// 			`);
+// 				document.querySelector(".stay-in-chat-button").addEventListener("click", () => {
+// 					document.querySelector(".main-message-template-style").classList.add("_hidden-template");
+// 				})
+// 				document.querySelector(".back-out-chat-button").addEventListener("click", () => {
+// 					deleteChatContent();
+// 					document.querySelector(".main-message-template-style").classList.add("_hidden-template");
+// 					if ( templatesRoad[templatesRoad.length - 2] === "reserve-directions-page" ) {
+// 						includeLastTemplate("reserve-directions-page");
+// 						templatesRoad.pop();
+// 						currentTemplateID = templatesRoad[templatesRoad.length - 1];
+// 					} else if ( templatesRoad[templatesRoad.length - 1] === "check-request-vacancy-page" ) {
+// 						templatesRoad.pop();
+// 						backToPreviousTemplate();
+// 					} else {
+// 						backToPreviousTemplate();
+// 					}
+// 				})
+// 		} else {
+// 			backToPreviousTemplate();
+// 		}
+// 		hiddenOrShowFooter();
+// 	})
+// }
+// addListenerToMainPageButton();
 
 // Функционал включения предыдущего шаблона
 const includeLastTemplate = (currentTemplateID) => {
@@ -2233,67 +2297,35 @@ const downloadInformationAboutCompany = () => {
 }
 downloadInformationAboutCompany()
 
-// Декодируем файл
-
-// fetch(`${actualHost}/cabinet/${currentTelegramID}/${data.password}`)
-// .then(response => {
-// 	if (!response.ok) {
-// 		throw new Error('Network response was not ok');
-// 	}
-// 	return response.json();
-// })
-// .then(data => {
-// 	console.log(data.cabinet);
+/*
+						let reader = new FileReader();
+						reader.onload = function(e) {
+						let fileBytes = new Uint8Array(e.target.result);
+						let base64String = btoa(fileBytes);
+						console.log(base64String)
+						};
+						reader.readAsArrayBuffer(file);
 
 
-// 	function convertBase64ToPDF() {
-// 		// Получаем введенную строку Base64
-// 		var base64String = encodedData;
+						// Разбираем строку Base64 в массив байтов
+						let binaryString = atob(base64String);
 
-// 		// Преобразуем строку Base64 в бинарные данные
-// 		var binaryData = atob(base64String);
+						// Разбиваем строку на массив чисел
+						let numbers = binaryString.split(',').map(Number);
 
-// 		// Создаем массив байт из бинарных данных
-// 		var arrayBuffer = new ArrayBuffer(binaryData.length);
-// 		var byteArray = new Uint8Array(arrayBuffer);
-// 		for (var i = 0; i < binaryData.length; i++) {
-// 			byteArray[i] = binaryData.charCodeAt(i);
-// 		}
+						// Создаем Uint8Array из массива чисел
+						let uintArray = new Uint8Array(numbers);
 
-// 		// Создаем Blob из массива байт
-// 		var blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+						// Создаем Blob из массива Uint8Array
+						let blob = new Blob([uintArray], { type: 'application/octet-stream' });
 
-// 		// Создаем ссылку для скачивания файла
-// 		var link = document.createElement('a');
-// 		link.href = window.URL.createObjectURL(blob);
-// 		link.download = 'converted_file.docx';
+						// Создаем ссылку для скачивания файла
+						let link = document.createElement('a');
+						link.href = URL.createObjectURL(blob);
+						link.download = 'yourfile.pdf'; // Указываем имя файла для скачивания
+						link.click(); // Автоматически запускаем скачивание файла
 
-// 		// Добавляем ссылку на страницу и эмулируем клик для запуска скачивания
-// 		document.body.appendChild(link);
-// 		link.click();
-
-// 		// Удаляем ссылку из DOM
-// 		document.body.removeChild(link);
-// 	}
-// 	convertBase64ToPDF()
-
-
-// })
-// .catch(error => { console.error('Fetch error:', error); });
-
-
-
-// fetch(`${actualHost}/forms/${currentTelegramID}/${currentPassword}`)
-// .then(response => {
-// 	if (!response.ok) {
-// 		throw new Error('Network response was not ok');
-// 	}
-// 	return response.json();
-// })
-// .then(data => {
-// 	console.log(data);
-// })
-// .catch(error => { console.error('Fetch error:', error); });
+						*/
 
 })
 

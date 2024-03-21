@@ -1,9 +1,11 @@
 .page {
 	&__about-company {
+
 	}
 }
 .about-company {
 	&__container {
+		margin-bottom: toRem(20);
 	}
 	&__title {
 		text-align: center
@@ -26,16 +28,25 @@
 		margin-bottom: -15px;
 	}
 	&__image-top {
-		max-width: toRem(110);
+		max-width: toRem(170);
 		position: absolute;
-		right: 0;
-		top: 0;
+		right: toRem(-32);
+		top: toRem(-25);
+		@media (max-width: em(400)){
+			max-width: toRem(150);
+			right: toRem(-15);
+			top: toRem(-20);
+		}
 	}
 	&__image-bottom {
-		max-width: toRem(260);
+		max-width: toRem(280);
 		position: absolute;
 		bottom: 0;
-		left: 0;
+		left: toRem(-40);
+		@media (max-width: em(400)){
+			max-width: toRem(260);
+			left: toRem(-20);
+		}
 	}
 	&__list {
 		&>* {

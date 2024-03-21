@@ -1636,11 +1636,13 @@ section::-webkit-scrollbar-thumb {
           justify-content: center;
   gap: 1.25rem;
   width: 100%;
+  margin-bottom: 1.25rem;
+  margin-top: 1.25rem;
 }
 
 .directions-page__image-container {
   max-width: 15rem;
-  height: 9.375rem;
+  height: 10.625rem;
   width: 100%;
   position: relative;
   display: -webkit-box;
@@ -1653,14 +1655,14 @@ section::-webkit-scrollbar-thumb {
 }
 
 .directions-page__image-top {
-  max-width: 5rem;
+  max-width: 6.25rem;
   position: absolute;
-  left: 0;
-  top: 0;
+  left: -1.25rem;
+  top: -1.875rem;
 }
 
 .directions-page__image-bottom {
-  max-width: 10.625rem;
+  max-width: 13.125rem;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -1674,6 +1676,10 @@ section::-webkit-scrollbar-thumb {
   opacity: 1;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
+}
+
+.about-company__container {
+  margin-bottom: 1.25rem;
 }
 
 .about-company__title {
@@ -1705,17 +1711,17 @@ section::-webkit-scrollbar-thumb {
 }
 
 .about-company__image-top {
-  max-width: 6.875rem;
+  max-width: 10.625rem;
   position: absolute;
-  right: 0;
-  top: 0;
+  right: -2rem;
+  top: -1.5625rem;
 }
 
 .about-company__image-bottom {
-  max-width: 16.25rem;
+  max-width: 17.5rem;
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: -2.5rem;
 }
 
 .about-company__list > * {
@@ -2224,12 +2230,12 @@ section::-webkit-scrollbar-thumb {
 }
 
 .main-message-style {
-  padding: 0.4375rem 0.625rem;
+  padding: 0.4375rem 0.9375rem;
   width: auto;
-  border-radius: 10px;
+  border-radius: 1.875rem;
   font-size: 0.9375rem;
   line-height: 110%;
-  margin-top: 0.625rem;
+  margin-top: 0.4375rem;
   font-size: 0.875rem;
 }
 
@@ -3253,6 +3259,17 @@ section::-webkit-scrollbar-thumb {
 
   .reserve-template-main-page-button {
     font-size: 1rem;
+  }
+
+  .about-company__image-top {
+    max-width: 9.375rem;
+    right: -0.9375rem;
+    top: -1.25rem;
+  }
+
+  .about-company__image-bottom {
+    max-width: 16.25rem;
+    left: -1.25rem;
   }
 
   .error-message-age-button {

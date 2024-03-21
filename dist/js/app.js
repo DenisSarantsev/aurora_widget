@@ -1158,12 +1158,12 @@
                     qualities: null,
                     questionnaire: "Що для вас є ключовими цінностями в житті?: ифжвоаждолфиваждол\nЯк ви відповідаєте на виклики та труднощі в роботі?: двлоажфдиоваждлфоивад\nЯк ви володієте навичками управління часом?: фиждвлоажфдиоаждфиоваж\nЯк ви реагуєте на критику?: жфдивлоаджфоиваждлофиважд\nЯк ви вирішуєте складні завдання чи проблеми?: ифвждлоаижфлдоваждфиоваждф\n",
                     rating: null,
-                    status: null,
+                    status: "Ваша заявка прийнята і буде розглянута менеджерами",
                     telegram_id: 210325718,
                     title: "Менеджер/ка з організаційного документообігу та комунікацій"
                 },
                 first_name: "Денис",
-                host: "https://avrora-hr.fly.dev/",
+                host: "https://fastapi-avrora-hr.fly.dev",
                 phone_number: "+380675478881",
                 telegram_id: 210325718,
                 password: "519d9a296dd5ccb730e1c3bac2255aae90ead3690c81c0b5a31b3f191c01c051696ede10d2f5d14b9edcb72b28844e1b34",
@@ -1179,6 +1179,7 @@
             let currentTelegramID = data.telegram_id;
             let currentPassword = data.password;
             let currentUserPhone = data.phone_number;
+            let currentStatus = data.cabinet.status;
             let actualHost = data.host;
             let currentTemplateID = "home-page";
             let firstEnter = true;
@@ -1270,6 +1271,7 @@
                         let globalKinds = [];
                         globalVacancies = data;
                         const findAllKindsOfVacancies = vacancies => {
+                            console.log(vacancies);
                             for (let i = 0; i < vacancies.vacancies.length; i++) {
                                 let currentKind = vacancies.vacancies[i].kind;
                                 if (!globalKinds.includes(currentKind)) globalKinds.push(currentKind);
@@ -1526,7 +1528,7 @@
             };
             const errorValidateBirthdayAge = () => {
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="error-style-age">Привіт! \n\t\t\t\t<strong>Цінуємо твоє бажання долучитись до команди Аврори!</strong>\n\t\t\t\t<br>\n\t\t\t\t<p>\n\t\t\t\tТа, на жаль, на цю вакансію ми не розглядаємо кандидатів молодше 18 років.\n\t\t\t\tМи б хотіли зберегти твоє резюме у базі кандидатів на майбутнє 😉\n\t\t\t\tЯкщо ти хочеш поділитись з нами своїм резюме, натисни «Потрапити в базу».\n\t\t\t\tКоли у нас зʼявляться вакансії для тебе - ми з тобою зв’яжемось!\n\t\t\t\t</p>\n\t\t\t\t<br>\n\t\t\t\t<p>\n\t\t\t\tЯкщо у тебе лишились додаткові питання, телефонуй:\n\t\t\t\t+380675039118  Анастасія.\n\t\t\t\t</p>\n\t\t\t\t<br>\n\t\t\t\tТвоя Аврора мультимаркет 💛\n\t\t\t</div>\n\t\t\t<div class="error-message-age-button">\n\t\t\t\tПотрапити в базу\n\t\t\t</div>\n\t\t</div>\n\t`);
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="error-style-age">\n\t\t\t\tПривіт! \n\t\t\t\t<strong>Цінуємо твоє бажання долучитись до команди Аврори!</strong>\n\t\t\t\t<br>\n\t\t\t\t<p>\n\t\t\t\tТа, на жаль, на цю вакансію ми не розглядаємо кандидатів молодше 18 років.\n\t\t\t\tМи б хотіли зберегти твоє резюме у базі кандидатів на майбутнє 😉\n\t\t\t\tЯкщо ти хочеш поділитись з нами своїм резюме, натисни «Потрапити в базу».\n\t\t\t\tКоли у нас зʼявляться вакансії для тебе - ми з тобою зв’яжемось!\n\t\t\t\t</p>\n\t\t\t\t<br>\n\t\t\t\t<p>\n\t\t\t\tЯкщо у тебе лишились додаткові питання, телефонуй:\n\t\t\t\t+380675039118  Анастасія.\n\t\t\t\t</p>\n\t\t\t\t<br>\n\t\t\t\tТвоя Аврора мультимаркет 💛\n\t\t\t</div>\n\t\t\t<div class="error-message-age-button">\n\t\t\t\tПотрапити в базу\n\t\t\t</div>\n\t\t</div>\n\t`);
                 scrollChatToBottom();
                 addListenerToButtonGetIntoTheDatabase();
             };
@@ -1595,7 +1597,7 @@
                 console.log("currentQuestionKey", currentQuestionKey);
                 postVacancyObject[`${currentQuestionKey}`] = {
                     [`${currentQuestion}`]: `${inputValue}`,
-                    point: 0
+                    point: null
                 };
             };
             const addResumeBlock = () => {
@@ -1610,7 +1612,7 @@
             const addResumeField = () => {
                 hiddenTextInput();
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="add-resume-container phone-buttons-show-animations">\n\t\t\t<input class="input-hidden add-resume-input" type="file" id="fileInput" accept=".pdf, .docx">\n\t\t\t<button class="add-resume-file-button">\n\t\t\t\t<span class="add-resume-choose-image"></span>\n\t\t\t\t<span class="hidden-file-buttons"></span>\n\t\t\t\t<div>Вибрати файл</div>\n\t\t\t</button>\n\t\t\t<div class="save-delete-resume-buttons-container">\n\t\t\t\t<button class="delete-resume-button hidden-file-buttons">\n\t\t\t\t\t<span class="red-cross">×</span>\n\t\t\t\t\tВидалити\n\t\t\t\t</button>\n\t\t\t\t<button class="save-resume-button hidden-file-buttons">\n\t\t\t\t\t<span class="green-check-mark">✔</span>\n\t\t\t\t\tЗберегти\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<button class="skip-resume-button">Пропустити</button>\n\t\t</div>\n\t`);
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="add-resume-container phone-buttons-show-animations">\n\t\t\t<input class="input-hidden add-resume-input" type="file" id="fileInput" accept=".pdf, .docx">\n\t\t\t<button class="add-resume-file-button">\n\t\t\t\t<span class="add-resume-choose-image"></span>\n\t\t\t\t<span class="hidden-file-buttons"></span>\n\t\t\t\t<div class="add-resume-choose-text">Вибрати файл</div>\n\t\t\t</button>\n\t\t\t<div class="save-delete-resume-buttons-container">\n\t\t\t\t<button class="delete-resume-button hidden-file-buttons">\n\t\t\t\t\t<span class="red-cross">×</span>\n\t\t\t\t\tВидалити\n\t\t\t\t</button>\n\t\t\t\t<button class="save-resume-button hidden-file-buttons">\n\t\t\t\t\t<span class="green-check-mark">✔</span>\n\t\t\t\t\tЗберегти\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<button class="skip-resume-button">Пропустити</button>\n\t\t</div>\n\t`);
                 scrollChatToBottom();
                 addUploadFileCode();
                 document.querySelector(".save-resume-button").addEventListener("click", (() => {
@@ -1632,18 +1634,33 @@
                     let fileName = event.target.files[0].name;
                     let fileExtension = fileName.split(".").pop().toLowerCase();
                     removeDeleteAndSaveButtons(document.querySelector(".delete-resume-button"), fileInput);
-                    if (file && fileExtension === "docx" || file && fileExtension === "pdf") addDeleteAndSaveButtons(fileName); else if (fileExtension !== "docx" || fileExtension !== "pdf") {
+                    if (file && fileExtension === "docx" || file && fileExtension === "pdf") createBase64StringAndWriteFileDataToObject(fileName, file).then((result => {
+                        postVacancyObject["cv"] = {
+                            file_name: `${result.fileName}`,
+                            file_data: `${result.fileInBase64String}`
+                        };
+                        addDeleteAndSaveButtons(fileName);
+                    })).catch((error => {
+                        console.error("Произошла ошибка:", error);
+                    })); else if (fileExtension !== "docx" || fileExtension !== "pdf") {
                         errorValidateFileFormat();
                         deleteErrorMessagesInChat();
                     }
-                    let reader = new FileReader;
+                }));
+            };
+            const createBase64StringAndWriteFileDataToObject = (nameData, file) => {
+                let reader = new FileReader;
+                return new Promise(((resolve, reject) => {
                     reader.onload = function(e) {
+                        let fileInBase64String = "";
+                        let fileName = nameData;
                         let fileBytes = new Uint8Array(e.target.result);
-                        let base64String = btoa(String.fromCharCode.apply(null, fileBytes));
-                        currentFile = {
-                            file_name: fileName,
-                            file_data: base64String
+                        fileInBase64String = btoa(fileBytes);
+                        let result = {
+                            fileInBase64String,
+                            fileName
                         };
+                        resolve(result);
                     };
                     reader.readAsArrayBuffer(file);
                 }));
@@ -1655,7 +1672,6 @@
                     document.querySelector(".skip-resume-button").classList.add("hidden-file-buttons");
                     document.querySelector(".add-resume-choose-text").innerText = `${fileName}`;
                     document.querySelector(".add-resume-choose-image").classList.add("hidden-file-buttons");
-                    document.querySelector(".add-resume-file-image").classList.remove("hidden-file-buttons");
                 } else removeDeleteAndSaveButtons(document.querySelector(".delete-resume-button"));
             };
             const removeDeleteAndSaveButtons = (deleteButton, fileInput) => {
@@ -1664,8 +1680,6 @@
                     document.querySelector(".save-resume-button").classList.add("hidden-file-buttons");
                     document.querySelector(".skip-resume-button").classList.remove("hidden-file-buttons");
                     document.querySelector(".add-resume-choose-text").innerText = "Вибрати файл";
-                    document.querySelector(".add-resume-choose-image").classList.remove("hidden-file-buttons");
-                    document.querySelector(".add-resume-file-image").classList.add("hidden-file-buttons");
                     currentFile = {};
                     fileInput.value = "";
                 }));
@@ -1929,6 +1943,7 @@
                 const allVariansInChat = document.querySelectorAll(".question-variant");
                 for (let item of allVariansInChat) item.remove();
                 const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                hiddenTextInput();
                 function delayedFunction() {
                     chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element final-message__container input-hidden">\n\t\t\t<div class="main-message-style final-message">${message}</div>\n\t\t\t<button id="001_check-request-vacancy-page" class="route-button final-message__button route-button-main-style button-effect">\n\t\t\t\t<div id="circle"></div>\n\t\t\t\t<div>Продовжити</div>\n\t\t\t</button>\n\t\t</div>\n\t\t`);
                     changeMessageContainerPadding();
@@ -2115,7 +2130,10 @@
             };
             const checkActiveCheckbox = () => {
                 let checkbox = document.querySelector(".check-request-vacancy-page__politics-input");
-                if (checkbox.checked) return true;
+                if (checkbox.checked) {
+                    console.log("checkbox active");
+                    return true;
+                }
             };
             const noCheckActiveCheckboxMessage = () => {
                 let message = document.querySelector(".check-request-vacancy-page__politics-message");
@@ -2132,7 +2150,7 @@
             const sendObjectDataToServer = () => {
                 const checkRequestVacancyButton = document.querySelector(".check-request-vacancy-page__request-button");
                 checkRequestVacancyButton.addEventListener("click", (() => {
-                    if (checkActiveCheckbox()) fetchPostData(postVacancyObject, currentVacancyID); else {
+                    if (checkActiveCheckbox() === true) fetchPostData(postVacancyObject, currentVacancyID); else {
                         noCheckActiveCheckboxMessage();
                         console.log("checkbox not active");
                     }
@@ -2273,6 +2291,7 @@
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Телефон:</div>\n\t\t\t\t<div class="cabinet-page__item-value cabinet-page__item-value-phone" data-item="phone">${data.cabinet.feedback_phone}</div>\n\t\t\t</div>\n\t\t`);
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Місто:</div>\n\t\t\t\t<div class="cabinet-page__item-value cabinet-page__item-value-city" data-item="city">${data.cabinet.city}</div>\n\t\t\t</div>\n\t\t`);
                     cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t\t<div class="cabinet-page__item">\n\t\t\t\t<div class="cabinet-page__item-name">Дата народження:</div>\n\t\t\t\t<div class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${data.cabinet.birthday}</div>\n\t\t\t</div>\n\t\t`);
+                    cabinetWrapper.insertAdjacentHTML("beforeend", `\n\t\t<div class="cabinet-page__item">\n\t\t\t<div class="cabinet-page__item-name">Статус заявки:</div>\n\t\t\t<div class="cabinet-page__item-value cabinet-page__item-value-birthday" data-item="birthday">${currentStatus}</div>\n\t\t</div>\n\t`);
                 }
             };
             writeDataToCabinet(globalCabinet);
@@ -2352,7 +2371,6 @@
                 const backButton = document.querySelector(".footer__button-back-link");
                 backButton.addEventListener("click", (() => {
                     if (currentTemplateID === "post-request-vacancy-page" || currentTemplateID === "check-request-vacancy-page") {
-                        console.log(currentTemplateID);
                         showMainMessage(`\n\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\tПісля виходу з чату ваші відповіді будуть видалені\n\t\t\t\t</div>\n\t\t\t\t<button class="route-button main-message-template-style__width route-button-main-style button-effect stay-in-chat-button">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Залишитись</div>\n\t\t\t\t</button>\n\t\t\t\t<button class="route-button main-message-template-style__width route-button-main-style button-effect back-out-chat-button">\n\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t<div>Вийти</div>\n\t\t\t\t</button>\n\t\t\t`);
                         document.querySelector(".stay-in-chat-button").addEventListener("click", (() => {
                             document.querySelector(".main-message-template-style").classList.add("_hidden-template");
