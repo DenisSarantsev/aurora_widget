@@ -632,7 +632,7 @@ section::-webkit-scrollbar-thumb {
 }
 
 .page-container {
-  padding-top: 1.25rem;
+  padding: 1.25rem 0rem 0rem 0.625rem;
   max-width: 48rem;
   width: 100%;
   display: -webkit-box;
@@ -880,6 +880,36 @@ section::-webkit-scrollbar-thumb {
   border-radius: 20px;
 }
 
+.vacancy-page__content > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.vacancy-page__content > * > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.vacancy-page__content > * > * > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.vacancy-page__content > * > * > * > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.vacancy-page__content > * > * > * > * > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.vacancy-page__content > * > * > * > * > * > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
 .vacancy-page__content li {
   margin-left: 1px;
 }
@@ -894,7 +924,7 @@ section::-webkit-scrollbar-thumb {
 }
 
 .vacancy-page__container {
-  padding-bottom: 0.9375rem;
+  padding: 1.5625rem 0rem 0.9375rem 0.9375rem;
 }
 
 .vacancy-page__request-button {
@@ -1752,6 +1782,21 @@ section::-webkit-scrollbar-thumb {
   background-color: #333;
 }
 
+.about-company-content {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 0.3125rem;
+  background-color: #FFFFFF;
+  padding: 0.9375rem;
+  border-radius: 0.9375rem;
+}
+
 .jobs-list {
   max-width: 100%;
   width: 100%;
@@ -2531,6 +2576,14 @@ section::-webkit-scrollbar-thumb {
   display: none;
 }
 
+.preloader-opacity-background {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  z-index: 100;
+}
+
 .check-request-vacancy-page__container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3080,6 +3133,55 @@ section::-webkit-scrollbar-thumb {
   max-width: 0.625rem;
 }
 
+.text-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -ms-hyphens: auto;
+      hyphens: auto;
+}
+
+.text-content > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -ms-hyphens: auto;
+      hyphens: auto;
+}
+
+.text-content > * > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -ms-hyphens: auto;
+      hyphens: auto;
+}
+
+.text-content > * > * > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -ms-hyphens: auto;
+      hyphens: auto;
+}
+
+.text-content > * > * > * > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -ms-hyphens: auto;
+      hyphens: auto;
+}
+
+.text-content > * > * > * > * > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -ms-hyphens: auto;
+      hyphens: auto;
+}
+
+.text-content > * > * > * > * > * > * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -ms-hyphens: auto;
+      hyphens: auto;
+}
+
 .preloader-in-widget {
   position: absolute;
   z-index: 1000;
@@ -3275,12 +3377,22 @@ section::-webkit-scrollbar-thumb {
   .error-message-age-button {
     font-size: 1rem;
   }
+
+  .politics-page__wrapper {
+    padding: 0.625rem 0.3125rem;
+    font-size: 0.75rem;
+    overflow-x: scroll;
+  }
 }
 
 @media (max-width: 31.25em) {
   .title-main-style {
     font-size: 1.125rem;
     font-weight: 500;
+  }
+
+  .vacancy-page__content {
+    padding: 0.375rem 0.625rem 0.625rem 0.625rem;
   }
 
   .page-template {
@@ -3358,5 +3470,10 @@ section::-webkit-scrollbar-thumb {
 
   .cabinet-page__item-value-vacancy {
     font-size: 0.875rem;
+  }
+
+  .politics-page__wrapper {
+    padding: 0.625rem 0.625rem;
+    font-size: 0.8125rem;
   }
 }

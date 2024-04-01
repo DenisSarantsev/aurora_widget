@@ -1397,7 +1397,7 @@
                 feedback_phone: dataPhone,
                 city: dataCity,
                 birthday: dataBornDate,
-                cv: ""
+                cv: {}
             };
             let fixedQuestionsCounter = 5;
             let allQuestionsCounter = 5;
@@ -1545,6 +1545,11 @@
                 chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="main-error-style">Неправильний формат резюме. Розширення файлу має бути .docx або .pdf</div>\n\t\t</div>\n\t`);
                 scrollChatToBottom();
             };
+            const errorValidateFileSize = () => {
+                const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+                chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t<div class="post-request-vacancy-page__message-element main-error-style__container">\n\t\t\t<div class="main-error-style">Розмір файлу не повинен перевищувати 5 МБ</div>\n\t\t</div>\n\t`);
+                scrollChatToBottom();
+            };
             const chatInput = document.querySelector(".post-request-vacancy-page__input");
             chatInput.addEventListener("keyup", (event => {
                 if (event.key === "Enter") if (answersCounter === -1) validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage(); else if (answersCounter === 1) validateCity(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateCityMessage(); else if (answersCounter > 2) validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
@@ -1630,21 +1635,36 @@
                     fileInput.click();
                 }));
                 fileInput.addEventListener("change", (function(event) {
-                    let file = event.target.files[0];
-                    let fileName = event.target.files[0].name;
-                    let fileExtension = fileName.split(".").pop().toLowerCase();
-                    removeDeleteAndSaveButtons(document.querySelector(".delete-resume-button"), fileInput);
-                    if (file && fileExtension === "docx" || file && fileExtension === "pdf") createBase64StringAndWriteFileDataToObject(fileName, file).then((result => {
-                        postVacancyObject["cv"] = {
-                            file_name: `${result.fileName}`,
-                            file_data: `${result.fileInBase64String}`
-                        };
-                        addDeleteAndSaveButtons(fileName);
-                    })).catch((error => {
-                        console.error("Произошла ошибка:", error);
-                    })); else if (fileExtension !== "docx" || fileExtension !== "pdf") {
-                        errorValidateFileFormat();
-                        deleteErrorMessagesInChat();
+                    if (event.target.files[0]) {
+                        let file = event.target.files[0];
+                        let fileName = event.target.files[0].name;
+                        let fileExtension = fileName.split(".").pop().toLowerCase();
+                        const fileSizeInBytes = file.size;
+                        const fileSizeInKB = fileSizeInBytes / 1024;
+                        const formates = [ "pdf", "docx" ];
+                        removeDeleteAndSaveButtons(document.querySelector(".delete-resume-button"), fileInput);
+                        if (file && fileExtension === "docx" && fileSizeInKB <= 5e3 || file && fileExtension === "pdf" && fileSizeInKB <= 5e3) {
+                            addPreloaderInChat();
+                            addWhitePreloaderBackground();
+                            deleteErrorMessagesInChat();
+                            createBase64StringAndWriteFileDataToObject(fileName, file).then((result => {
+                                removePreloaderInChat();
+                                removeWhitePreloaderBackground();
+                                postVacancyObject.cv = {
+                                    file_name: `${result.fileName}`,
+                                    file_data: `${result.fileInBase64String}`
+                                };
+                                addDeleteAndSaveButtons(fileName);
+                            })).catch((error => {
+                                console.error("Произошла ошибка:", error);
+                            }));
+                        } else if (formates.indexOf(fileExtension) === -1) {
+                            deleteErrorMessagesInChat();
+                            errorValidateFileFormat();
+                        } else if (fileSizeInKB > 5e3) {
+                            deleteErrorMessagesInChat();
+                            errorValidateFileSize();
+                        }
                     }
                 }));
             };
@@ -1652,18 +1672,37 @@
                 let reader = new FileReader;
                 return new Promise(((resolve, reject) => {
                     reader.onload = function(e) {
-                        let fileInBase64String = "";
+                        let fileInBase64String = e.target.result;
                         let fileName = nameData;
-                        let fileBytes = new Uint8Array(e.target.result);
-                        fileInBase64String = btoa(fileBytes);
                         let result = {
                             fileInBase64String,
                             fileName
                         };
                         resolve(result);
                     };
-                    reader.readAsArrayBuffer(file);
+                    reader.onerror = function(e) {
+                        reject(e);
+                    };
+                    reader.readAsDataURL(file);
                 }));
+            };
+            const addPreloaderInChat = () => {
+                let preloaderContainer = document.querySelector(".preloader-in-widget");
+                setTimeout((function() {
+                    preloaderContainer.classList.remove("preloader-hidden");
+                }), 200);
+            };
+            const removePreloaderInChat = () => {
+                let preloaderContainer = document.querySelector(".preloader-in-widget");
+                setTimeout((function() {
+                    preloaderContainer.classList.add("preloader-hidden");
+                }), 250);
+            };
+            const addWhitePreloaderBackground = () => {
+                document.querySelector("body").insertAdjacentHTML("afterbegin", `<div class="preloader-opacity-background"></div>`);
+            };
+            const removeWhitePreloaderBackground = () => {
+                document.querySelector(".preloader-opacity-background").remove();
             };
             const addDeleteAndSaveButtons = fileName => {
                 if (fileName) {
@@ -2150,26 +2189,26 @@
             const sendObjectDataToServer = () => {
                 const checkRequestVacancyButton = document.querySelector(".check-request-vacancy-page__request-button");
                 checkRequestVacancyButton.addEventListener("click", (() => {
-                    if (checkActiveCheckbox() === true) fetchPostData(postVacancyObject, currentVacancyID); else {
+                    if (checkActiveCheckbox() === true) {
+                        console.log("Send", postVacancyObject);
+                        addWhitePreloaderBackground();
+                        addPreloaderInChat();
+                        fetchPostData(postVacancyObject, currentVacancyID);
+                    } else {
                         noCheckActiveCheckboxMessage();
                         console.log("checkbox not active");
                     }
                 }));
             };
             sendObjectDataToServer();
-            const addCVObjectToMainObject = cvObject => {
-                cvObject.cv = {};
-                return cvObject;
-            };
             function fetchPostData(objectData, vacancyID) {
                 let apiPostDataURL = "";
                 if (reserveBranch === false) apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`; else if (reserveBranch === true) {
                     apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/reserve`;
                     currentVacancyTitle = "Резерв";
                 }
-                const data = addCVObjectToMainObject(objectData);
+                const data = objectData;
                 objectData.kind = currentVacancyKind.toLowerCase();
-                objectData.cv = currentFile;
                 console.log(data);
                 const requestOptions = {
                     method: "POST",
@@ -2182,7 +2221,8 @@
                     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                     return response.json();
                 })).then((data => {
-                    console.log("Отримано дані від сервера:", data);
+                    removePreloaderInChat();
+                    addWhitePreloaderBackground();
                     showMainMessage(`\n\t\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\t\tЗаявка успішно надіслана. Перевірити статус, свої анкетні дані, або відкликати заявку ви можете в особистому кабінеті\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="route-button main-message-template-style__home-button route-button-main-style button-effect">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Зрозуміло</div>\n\t\t\t\t\t</button>\n\t\t\t\t`);
                 })).catch((error => {
                     console.error("Помилка під час виконання POST-запиту:", error);

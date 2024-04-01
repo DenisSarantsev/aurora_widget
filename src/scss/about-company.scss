@@ -73,3 +73,12 @@
 	}
 }
 
+.about-company-content {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap:toRem(5);
+	background-color: #FFFFFF;
+	padding: toRem(15);
+	border-radius: toRem(15);
+}

@@ -13,6 +13,15 @@
 			padding: toRem(15) toRem(15);
 			background-color: rgba($color: #FFFFFF, $alpha: 0.95);
 			color: #000;
+			@media (max-width: em(500)){
+				padding: toRem(10) toRem(10);
+				font-size: toRem(13);
+			}
+			@media (max-width: em(400)){
+				padding: toRem(10) toRem(5);
+				font-size: toRem(12);
+				overflow-x: scroll;
+			}
 			& li {
 				margin-left: 1px;
 				&::before {
@@ -24,5 +33,42 @@
 					max-width: toRem(10);
 				}
 			}
+			
 		}
+}
+
+.text-content {
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	hyphens: auto;
+	&>* {
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		hyphens: auto;
+		&>* {
+			word-wrap: break-word;
+			overflow-wrap: break-word;
+			hyphens: auto;
+			&>* {
+				word-wrap: break-word;
+				overflow-wrap: break-word;
+				hyphens: auto;
+				&>* {
+					word-wrap: break-word;
+					overflow-wrap: break-word;
+					hyphens: auto;
+					&>* {
+						word-wrap: break-word;
+						overflow-wrap: break-word;
+						hyphens: auto;
+						&>* {
+							word-wrap: break-word;
+							overflow-wrap: break-word;
+							hyphens: auto;
+						}
+					}
+				}
+			}
+		}
+	}
 }

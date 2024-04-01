@@ -383,7 +383,7 @@ const postVacancyObject = {
 	'feedback_phone': dataPhone,
 	'city': dataCity,
 	'birthday': dataBornDate,
-	'cv': '',
+	'cv': {},
 }
 
 // Счетчики вопросов и ответов
@@ -747,6 +747,16 @@ const errorValidateFileFormat = () => {
 	`);
 	scrollChatToBottom();
 }
+// Сообщение, если вес файла превышает 5 мб
+const errorValidateFileSize = () => {
+	const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
+	chatMessagesBlock.insertAdjacentHTML("beforeend", `
+		<div class="post-request-vacancy-page__message-element main-error-style__container">
+			<div class="main-error-style">Розмір файлу не повинен перевищувати 5 МБ</div>
+		</div>
+	`);
+	scrollChatToBottom();
+}
 
 // -------------------------------------------------------------------------------------------------- Добавление вопросов в чат
 
@@ -880,48 +890,58 @@ const addUploadFileCode = () => {
 		fileInput.click();
 	});
 
+
 	fileInput.addEventListener('change', function(event) {
 			
+		if ( event.target.files[0] ) {
 			let file = event.target.files[0];
 			let fileName = event.target.files[0].name;
 			let fileExtension = fileName.split('.').pop().toLowerCase();
-			removeDeleteAndSaveButtons(document.querySelector(".delete-resume-button"), fileInput);
-			if ( file && fileExtension === "docx" || file && fileExtension === "pdf" ) {
+			const fileSizeInBytes = file.size;
+			const fileSizeInKB = fileSizeInBytes / 1024;
+			const formates = ["pdf", "docx"]; // Допустимые форматы для загрузки
 
+			removeDeleteAndSaveButtons(document.querySelector(".delete-resume-button"), fileInput);
+			if ( file && fileExtension === "docx" && fileSizeInKB <= 5000 || file && fileExtension === "pdf" && fileSizeInKB <= 5000 ) {
+				addPreloaderInChat();
+				addWhitePreloaderBackground();
+				deleteErrorMessagesInChat();
 				createBase64StringAndWriteFileDataToObject(fileName, file)
 				.then(result => {
-					postVacancyObject['cv'] = {'file_name': `${result.fileName}`, 'file_data': `${result.fileInBase64String}`};
-					addDeleteAndSaveButtons(fileName)
+					removePreloaderInChat();
+					removeWhitePreloaderBackground();
+					postVacancyObject.cv = {file_name:`${result.fileName}`,file_data:`${result.fileInBase64String}`};
+					addDeleteAndSaveButtons(fileName);
 				})
 				.catch(error => {
 					console.error("Произошла ошибка:", error);
 				});
 
-			} else if ( fileExtension !== "docx" || fileExtension !== "pdf" ) {
-				errorValidateFileFormat();
+			} else if ( formates.indexOf(fileExtension) === -1 ) {
 				deleteErrorMessagesInChat();
-			} 
-
-
-
-
-
+				errorValidateFileFormat();
+			} else if ( fileSizeInKB > 5000 ) {
+				deleteErrorMessagesInChat();
+				errorValidateFileSize();
+			}
+		}
 	});
 }
-// Cчитываем файл и переводим в формат строки + добавляем данные в финальный обьект
+
 const createBase64StringAndWriteFileDataToObject = (nameData, file) => {
-	let reader = new FileReader();
-	return new Promise((resolve, reject) => {
-		reader.onload = function(e) {
-			let fileInBase64String = '';
-			let fileName = nameData;
-			let fileBytes = new Uint8Array(e.target.result);
-			fileInBase64String = btoa(fileBytes);
-			let result = {fileInBase64String, fileName};
-			resolve(result);
-		}
-		reader.readAsArrayBuffer(file);
-	});
+    let reader = new FileReader();
+    return new Promise((resolve, reject) => {
+        reader.onload = function(e) {
+            let fileInBase64String = e.target.result;
+            let fileName = nameData;
+            let result = { fileInBase64String, fileName };
+            resolve(result);
+        }
+        reader.onerror = function(e) {
+            reject(e);
+        }
+        reader.readAsDataURL(file); // Используем readAsDataURL для получения файла в формате base64
+    });
 }
 
 // Добавляем прелоадер до момента, пока не подгрузились кнопки направлений
@@ -938,7 +958,14 @@ const removePreloaderInChat = () => {
 		preloaderContainer.classList.add("preloader-hidden");
 	}, 250)
 }
-
+// Добавляем белую подкладку под прелоадер
+const addWhitePreloaderBackground = () => {
+	document.querySelector("body").insertAdjacentHTML("afterbegin", `<div class="preloader-opacity-background"></div>`);
+}
+// Удаляем белую подкладку под прелоадер
+const removeWhitePreloaderBackground = () => {
+	document.querySelector(".preloader-opacity-background").remove();
+}
 
 // Появление кнопок удаления и сохранения после добалвения файла. Скрываем кнопку "Пропустить"
 const addDeleteAndSaveButtons = (fileName) => {
@@ -1672,20 +1699,22 @@ const sendObjectDataToServer = () => {
 	const checkRequestVacancyButton = document.querySelector(".check-request-vacancy-page__request-button");
 	checkRequestVacancyButton.addEventListener("click", () => {
 		if ( checkActiveCheckbox() === true ) {
-			fetchPostData(postVacancyObject, currentVacancyID);
+			console.log("Send", postVacancyObject);
+			addWhitePreloaderBackground();
+			addPreloaderInChat();
+			fetchPostData(postVacancyObject, currentVacancyID)
 		} else {
 			noCheckActiveCheckboxMessage();
 			console.log("checkbox not active")
 		}
-		
 	})
 }
 sendObjectDataToServer();
 // Добавляем в обьект для отправки  на бэк поле, содержащее информацию о резюме
-const addCVObjectToMainObject = (cvObject) => {
-	cvObject.cv = {};
-	return cvObject
-}
+// const addCVObjectToMainObject = (cvObject) => {
+// 	cvObject.cv = {};
+// 	return cvObject
+// }
 // Отправка заявки на вакансию с анкетой кандидата (вызывается при клике на кнопку)
 function fetchPostData(objectData, vacancyID) {
 
@@ -1697,9 +1726,10 @@ function fetchPostData(objectData, vacancyID) {
 		currentVacancyTitle = "Резерв";
 	}
 	// Данные POST запроса
-	const data = addCVObjectToMainObject(objectData);
+	// const data = addCVObjectToMainObject(objectData);
+	const data = objectData;
 	objectData.kind = currentVacancyKind.toLowerCase();
-	objectData.cv = currentFile;
+	// objectData.cv = currentFile;
 	console.log(data);
 	const requestOptions = {
 		method: 'POST',
@@ -1719,7 +1749,8 @@ function fetchPostData(objectData, vacancyID) {
 			return response.json(); // Перетворюємо отриману відповідь у JSON
 		})
 		.then(data => {
-				console.log('Отримано дані від сервера:', data);
+				removePreloaderInChat();
+				addWhitePreloaderBackground();
 				showMainMessage(
 				`
 					<div class="main-message-template-style__message">
@@ -2297,41 +2328,4 @@ const downloadInformationAboutCompany = () => {
 }
 downloadInformationAboutCompany()
 
-/*
-						let reader = new FileReader();
-						reader.onload = function(e) {
-						let fileBytes = new Uint8Array(e.target.result);
-						let base64String = btoa(fileBytes);
-						console.log(base64String)
-						};
-						reader.readAsArrayBuffer(file);
-
-
-						// Разбираем строку Base64 в массив байтов
-						let binaryString = atob(base64String);
-
-						// Разбиваем строку на массив чисел
-						let numbers = binaryString.split(',').map(Number);
-
-						// Создаем Uint8Array из массива чисел
-						let uintArray = new Uint8Array(numbers);
-
-						// Создаем Blob из массива Uint8Array
-						let blob = new Blob([uintArray], { type: 'application/octet-stream' });
-
-						// Создаем ссылку для скачивания файла
-						let link = document.createElement('a');
-						link.href = URL.createObjectURL(blob);
-						link.download = 'yourfile.pdf'; // Указываем имя файла для скачивания
-						link.click(); // Автоматически запускаем скачивание файла
-
-						*/
-
 })
-
-
-
-
-
-
-

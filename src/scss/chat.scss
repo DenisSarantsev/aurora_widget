@@ -543,4 +543,10 @@
 	display: none;
 }
 
-
+.preloader-opacity-background {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: #fff;
+	z-index: 100;
+}

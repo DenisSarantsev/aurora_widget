@@ -251,7 +251,7 @@ section {
 
 // Головний контейнер з контентом
 .page-container {
-	padding-top: toRem(20);
+	padding: toRem(20) toRem(0) toRem(0) toRem(10);
 	max-width: toRem(768);
 	width: 100%;
 	display: flex;
@@ -433,6 +433,33 @@ section {
 		padding: toRem(10) toRem(20) toRem(20) toRem(20);
 		background-color: rgba($color: #FFFFFF, $alpha: 0.90);
 		border-radius: 20px;
+		@media (max-width: em(500)){
+			padding: toRem(6) toRem(10) toRem(10) toRem(10);
+		}
+		&>* {
+			word-wrap: break-word;
+			overflow-wrap: break-word;
+			&>* {
+				word-wrap: break-word;
+				overflow-wrap: break-word;
+				&>* {
+					word-wrap: break-word;
+					overflow-wrap: break-word;
+					&>* {
+						word-wrap: break-word;
+						overflow-wrap: break-word;
+						&>* {
+							word-wrap: break-word;
+							overflow-wrap: break-word;
+							&>* {
+								word-wrap: break-word;
+								overflow-wrap: break-word;
+							}
+						}
+					}
+				}
+			}
+		}
 		& li {
 			margin-left: 1px;
 			&::before {
@@ -446,7 +473,7 @@ section {
 		}
 	}
 	&__container {
-		padding-bottom: toRem(15);
+		padding: toRem(25) toRem(0) toRem(15) toRem(15);
 	}
 	&__request-button {
 		width: 100%;
