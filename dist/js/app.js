@@ -1371,7 +1371,6 @@
                             includeCurrentTemplate(currentTemplateID);
                             hiddenOrShowFooter();
                             scrollToTop();
-                            console.log(templatesRoad);
                         } else addListenerToAllVacancyRequestButtons();
                     };
                     const allRouteButtons = document.querySelectorAll(".route-button");
@@ -2427,6 +2426,9 @@
                                 backToPreviousTemplate();
                             } else backToPreviousTemplate();
                         }));
+                    } else if (currentTemplateID === "vacancy-page") {
+                        document.querySelector(".vacancy-page__content").innerHTML = "";
+                        backToPreviousTemplate();
                     } else backToPreviousTemplate();
                     hiddenOrShowFooter();
                 }));

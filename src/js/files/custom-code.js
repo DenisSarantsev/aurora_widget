@@ -1,6 +1,4 @@
 
-
-
 document.addEventListener("DOMContentLoaded", () => {
 
 let data = {
@@ -340,7 +338,6 @@ const addListenerToAllRouteButtons = () => {
 				// addWhiteBackground(item);
 				hiddenOrShowFooter();
 				scrollToTop();
-				console.log(templatesRoad);
 			} else {
 				addListenerToAllVacancyRequestButtons();
 			}
@@ -1692,7 +1689,6 @@ const writeNewDataToPostVacancyObject = () => {
 		}
 	}
 }
-
 // Проверяем, активен ли чекбокс
 const checkActiveCheckbox = () => {
  let checkbox = document.querySelector(".check-request-vacancy-page__politics-input");
@@ -2151,6 +2147,9 @@ const addListenerToBackButton = () => {
 						backToPreviousTemplate();
 					}
 				})
+		} else if ( currentTemplateID === 'vacancy-page' ) {
+			document.querySelector(".vacancy-page__content").innerHTML = "";
+			backToPreviousTemplate();
 		} else {
 			backToPreviousTemplate();
 		}
