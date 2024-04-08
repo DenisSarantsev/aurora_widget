@@ -118,10 +118,6 @@ a {
   text-decoration: none;
 }
 
-ul li {
-  list-style: none;
-}
-
 img {
   vertical-align: top;
 }
@@ -632,7 +628,7 @@ section::-webkit-scrollbar-thumb {
 }
 
 .page-container {
-  padding: 1.25rem 0rem 0rem 0.625rem;
+  padding: 1.25rem 0.625rem 0rem 0.625rem;
   max-width: 48rem;
   width: 100%;
   display: -webkit-box;
@@ -649,7 +645,6 @@ section::-webkit-scrollbar-thumb {
       -ms-flex-pack: center;
           justify-content: center;
   gap: 0.625rem;
-  overflow: scroll;
   z-index: 3;
 }
 
@@ -868,7 +863,7 @@ section::-webkit-scrollbar-thumb {
 }
 
 .vacancy-page {
-  padding: 0rem 0;
+  padding: 0rem 0.9375rem 0rem 0rem;
 }
 
 .vacancy-page__content {
@@ -911,16 +906,11 @@ section::-webkit-scrollbar-thumb {
 }
 
 .vacancy-page__content li {
-  margin-left: 1px;
+  margin-left: 18px;
 }
 
-.vacancy-page__content li::before {
-  content: url("../img/icons/dot.png");
-  position: relative;
-  left: -3px;
-  top: 4px;
-  max-height: 10px;
-  max-width: 0.625rem;
+.vacancy-page__content p {
+  margin-bottom: 5px;
 }
 
 .vacancy-page__container {

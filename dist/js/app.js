@@ -1438,7 +1438,7 @@
             };
             addListenerToAllVacancyRequestButtons();
             const questionsArray = [ `Добрий день. Будь-ласка, вкажіть ваші ім'я та прізвище:`, `Вкажіть актуальний номер телефону для зв'язку:`, `Вкажіть місто проживання:`, `Вкажіть дату народження:`, `Додайте резюме у форматі .docx або .pdf:` ];
-            const finalMessage = "Дякуємо за терпіння! Залишилось перевірити правильність введених даних і можна надсилати заявку)";
+            const finalMessage = "Дякуємо за відповіді! Перевір, будь ласка, правильність введених даних і можеш відправляти заявку :)";
             let additionalQuestionsWithAnswers;
             let additionalQuestions;
             let withAnswers = true;
@@ -2041,6 +2041,7 @@
                 function onInput() {
                     activeInput();
                     activeMesssageButton();
+                    scrollChatToBottom();
                 }
                 setTimeout(onInput, 800);
             }
@@ -2122,7 +2123,7 @@
             const addListenerOnEditButtons = () => {
                 const allEditButtons = document.querySelectorAll(".check-request-vacancy-page__edit-button");
                 for (let item of allEditButtons) item.addEventListener("click", (() => {
-                    if (item.previousElementSibling.lastElementChild.hasAttribute("disabled")) activeCheckInput(item); else writeNewDataToPostVacancyObject(item);
+                    if (item.previousElementSibling.lastElementChild.hasAttribute("disabled")) activeCheckInput(item);
                 }));
             };
             const activeCheckInput = button => {
@@ -2158,14 +2159,12 @@
                     }
                 }));
             };
-            const writeNewDataToPostVacancyObject = button => {
-                let inputElement = button.previousElementSibling.lastElementChild;
-                let currentObjectKey = button.previousElementSibling.dataset.key;
-                if (currentObjectKey[0] === "q" && currentObjectKey.length === 2) {
-                    let objectElement = postVacancyObject[currentObjectKey];
-                    let currentQuestion = Object.keys(objectElement)[0];
-                    objectElement[currentQuestion] = inputElement.value;
-                } else postVacancyObject[currentObjectKey] = inputElement.value;
+            const writeNewDataToPostVacancyObject = () => {
+                const allCheckFields = document.querySelectorAll(".check-request-vacancy-page__check-item");
+                for (let item of allCheckFields) if (item.firstElementChild.hasAttribute("data-key")) for (let elem of Object.keys(postVacancyObject)) if (item.firstElementChild.getAttribute("data-key") === elem) {
+                    const newValue = item.firstElementChild.lastElementChild.value;
+                    postVacancyObject[`${elem}`] = newValue;
+                }
             };
             const checkActiveCheckbox = () => {
                 let checkbox = document.querySelector(".check-request-vacancy-page__politics-input");
@@ -2191,6 +2190,7 @@
                 checkRequestVacancyButton.addEventListener("click", (() => {
                     if (checkActiveCheckbox() === true) {
                         console.log("Send", postVacancyObject);
+                        writeNewDataToPostVacancyObject();
                         addWhitePreloaderBackground();
                         addPreloaderInChat();
                         fetchPostData(postVacancyObject, currentVacancyID);

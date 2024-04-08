@@ -1,4 +1,6 @@
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
 let data = {
@@ -454,7 +456,7 @@ const questionsArray = [
 ]
 
 // Финальное сообщение после ответа на все вопросы
-const finalMessage = "Дякуємо за терпіння! Залишилось перевірити правильність введених даних і можна надсилати заявку)"
+const finalMessage = "Дякуємо за відповіді! Перевір, будь ласка, правильність введених даних і можеш відправляти заявку :)"
 // Отримуємо список додаткових питань
 let additionalQuestionsWithAnswers; // Змінна, в яку ми записємо дані у новому формати (питання + відповіді) для подальшщої обробки
 let additionalQuestions; // Змінна, в яку ми записуємо дані у старому форматі (тільки питання)
@@ -1405,6 +1407,7 @@ function addMessageToChat(question) {
 	function onInput() {
 		activeInput();
 		activeMesssageButton();
+		scrollChatToBottom();
 	}
 	setTimeout(onInput, 800);
 }
@@ -1530,6 +1533,7 @@ let checkQuestionsArray = [
 	`Дата народження:`,
 	`fileName`
 ]
+
 // Добавляем список дополнительных вопросов в основной спысок проверочных вопросов
 const addAdditionalQuestionsToMainCheckQuestionsArray = (questionsObject, arrayToWrite) => {
 	for (var key in questionsObject.forms) {
@@ -1606,7 +1610,7 @@ const addListenerOnEditButtons = () => {
 			if ( item.previousElementSibling.lastElementChild.hasAttribute("disabled") ) {
 				activeCheckInput(item);
 			} else {
-				writeNewDataToPostVacancyObject(item);
+				//writeNewDataToPostVacancyObject(item);
 			}
 		})
 	}
@@ -1659,7 +1663,9 @@ const inactiveCheckInputs = () => {
 	})
 }
 // Перезапись новых данных в обьекте для отправки
+/*
 const writeNewDataToPostVacancyObject = (button) => {
+	console.log("edit")
 	let inputElement = button.previousElementSibling.lastElementChild;
 	let currentObjectKey = button.previousElementSibling.dataset.key;
 	if ( currentObjectKey[0] === "q" && currentObjectKey.length === 2 ) {
@@ -1670,6 +1676,23 @@ const writeNewDataToPostVacancyObject = (button) => {
 		postVacancyObject[currentObjectKey] = inputElement.value;
 	}
 }
+*/
+
+// Перезаписываем данные в финальном обьекте уже на стадии отправки запроса
+const writeNewDataToPostVacancyObject = () => {
+	const allCheckFields = document.querySelectorAll(".check-request-vacancy-page__check-item");
+	for ( let item of allCheckFields ) {
+		if ( item.firstElementChild.hasAttribute("data-key") ) {
+			for ( let elem of Object.keys(postVacancyObject) ) {
+				if ( item.firstElementChild.getAttribute("data-key") === elem ) {
+					const newValue = item.firstElementChild.lastElementChild.value;
+					postVacancyObject[`${elem}`] = newValue;
+				}
+			}
+		}
+	}
+}
+
 // Проверяем, активен ли чекбокс
 const checkActiveCheckbox = () => {
  let checkbox = document.querySelector(".check-request-vacancy-page__politics-input");
@@ -1700,6 +1723,7 @@ const sendObjectDataToServer = () => {
 	checkRequestVacancyButton.addEventListener("click", () => {
 		if ( checkActiveCheckbox() === true ) {
 			console.log("Send", postVacancyObject);
+			writeNewDataToPostVacancyObject();
 			addWhitePreloaderBackground();
 			addPreloaderInChat();
 			fetchPostData(postVacancyObject, currentVacancyID)

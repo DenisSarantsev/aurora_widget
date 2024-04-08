@@ -251,7 +251,7 @@ section {
 
 // Головний контейнер з контентом
 .page-container {
-	padding: toRem(20) toRem(0) toRem(0) toRem(10);
+	padding: toRem(20) toRem(10) toRem(0) toRem(10);
 	max-width: toRem(768);
 	width: 100%;
 	display: flex;
@@ -259,7 +259,7 @@ section {
 	align-items: center;
 	justify-content: center;
 	gap: toRem(10);
-	overflow: scroll;
+	// overflow: scroll;
 	z-index: 3;
 }
 
@@ -425,7 +425,7 @@ section {
 
 
 .vacancy-page {
-	padding: toRem(0) 0;
+	padding: toRem(0) toRem(15) toRem(0) toRem(0);
 	&__content {
 		width: 100%;
 		font-family: $fontFamily;
@@ -461,15 +461,18 @@ section {
 			}
 		}
 		& li {
-			margin-left: 1px;
-			&::before {
-				content: url("@img/icons/dot.png");
-				position: relative;
-				left: -3px;
-				top: 4px;
-				max-height: 10px;
-				max-width: toRem(10);
-			}
+			margin-left: 18px;
+			// &::before {
+			// 	content: url("@img/icons/dot.png");
+			// 	position: relative;
+			// 	left: -3px;
+			// 	top: 4px;
+			// 	max-height: 10px;
+			// 	max-width: toRem(10);
+			// }
+		}
+		& p {
+			margin-bottom: 5px;
 		}
 	}
 	&__container {
