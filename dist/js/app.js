@@ -1987,13 +1987,10 @@
                 document.querySelector(".post-request-vacancy-page__messages-container").classList.add("padding-message-container-final");
             };
             const showFinalBlock = () => {
+                scrollChatToBottom();
                 document.querySelector(".final-message__container").classList.add("show-final-message");
-                function delayedFunction() {
-                    document.querySelector(".final-message__container").classList.remove("input-hidden");
-                    document.querySelector(".final-message__container").classList.add("input-visible");
-                    scrollChatToBottom();
-                }
-                setTimeout(delayedFunction, 300);
+                document.querySelector(".final-message__container").classList.remove("input-hidden");
+                document.querySelector(".final-message__container").classList.add("input-visible");
             };
             const addUserAnswers = userMessageText => {
                 inactiveInput();
@@ -2039,7 +2036,7 @@
                     const allVariansInChat = document.querySelectorAll(".question-variant");
                     for (let item of allVariansInChat) item.remove();
                     const addQuestionWithAnswers = (currentQuestion, a, b, c) => {
-                        chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">\n\t\t\t\t\t<div class="answers-variants-container">\n\t\t\t\t\t\t<div class="variants-question main-message-style">${currentQuestion}</div>\n\t\t\t\t\t\t<div class="answers-to-quetion-container">\n\t\t\t\t\t\t\t<div variant="a" class="main-message-style question-variant"><span>Варіант 1:</span> ${a}</div>\n\t\t\t\t\t\t\t<div variant="b" class="main-message-style question-variant"><span>Варіант 2:</span> ${b}</div>\n\t\t\t\t\t\t\t<div variant="c" class="main-message-style question-variant"><span>Варіант 3:</span> ${c}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t`);
+                        chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="post-request-vacancy-page__message-element app-message__container bot-questions-message-animation">\n\t\t\t\t\t<div class="answers-variants-container">\n\t\t\t\t\t\t<div class="variants-question main-message-style">${currentQuestion}</div>\n\t\t\t\t\t\t<div class="answers-to-quetion-container">\n\t\t\t\t\t\t\t<div variant="a" class="main-message-style question-variant"><span>Варіант 1:</span> ${a}</div>\n\t\t\t\t\t\t\t<div variant="b" class="main-message-style question-variant"><span>Варіант 2:</span> ${b}</div>\n\t\t\t\t\t\t\t<div variant="c" class="main-message-style question-variant"><span>Варіант 3:</span> ${c}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t`);
                     };
                     addQuestionWithAnswers(currentQuestion, a, b, c);
                     addListenerToAnswers(currentQuestion);

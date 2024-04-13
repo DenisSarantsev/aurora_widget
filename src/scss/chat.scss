@@ -4,6 +4,7 @@
 		top: 0;
 		left: 0;
 		&__chat-container {
+			// Старі стилі
 			// height: 100%;
 			// width: 768px;
 			// position: relative;
@@ -426,6 +427,26 @@
 		transition: all 0.3s ease 0s;
 	}
 }
+
+
+
+.bot-questions-message-animation {
+	animation: chatQuestionsWithAnswersMessageEffect 0.7s ease;
+}
+
+@keyframes chatQuestionsWithAnswersMessageEffect {
+	0% {
+		transform: translate(0, 120px);
+		transition: all 0.3s ease 0s;
+	}
+	100% {
+		transform: translate(0, 0);
+		transition: all 0.3s ease 0s;
+	}
+}
+
+
+
 
 .input-visible {
 	margin-bottom: 0vh;

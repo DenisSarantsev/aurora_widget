@@ -3,6 +3,7 @@
 		&__container {
 			display: flex;
 			flex-direction: column;
+			justify-content: center;
 			gap: toRem(20);
 			height: 100%;
 			width: 100%;

@@ -1352,13 +1352,10 @@ const changeMessageContainerPadding = () => {
 }
 // Анимация появления блока с финальным сообщением и кнопкой Продолжить
 const showFinalBlock = () => {
+	scrollChatToBottom();
 	document.querySelector(".final-message__container").classList.add("show-final-message");
-	function delayedFunction() {
-		document.querySelector(".final-message__container").classList.remove("input-hidden");
-		document.querySelector(".final-message__container").classList.add("input-visible");
-		scrollChatToBottom();
-	}
-	setTimeout(delayedFunction, 300);
+	document.querySelector(".final-message__container").classList.remove("input-hidden");
+	document.querySelector(".final-message__container").classList.add("input-visible");
 }
 // Функционал обновления счетчика при добавлении ответа + вызов функции для добавления ответа в чат + вызов функции для деактивации инпута
 const addUserAnswers = (userMessageText) => {
@@ -1420,7 +1417,7 @@ const addMessageAndAnswersToChat = (currentQuestion) => {
 		}
 		const addQuestionWithAnswers = (currentQuestion, a, b, c) => {
 			chatMessagesBlock.insertAdjacentHTML("beforeend", `
-				<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">
+				<div class="post-request-vacancy-page__message-element app-message__container bot-questions-message-animation">
 					<div class="answers-variants-container">
 						<div class="variants-question main-message-style">${currentQuestion}</div>
 						<div class="answers-to-quetion-container">
