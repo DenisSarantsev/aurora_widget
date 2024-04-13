@@ -1256,7 +1256,6 @@
                     item.classList.add("position-right");
                     setTimeout((function() {
                         item.classList.remove("position-right");
-                        console.log("ok");
                     }), 100);
                 }), 600);
             };
@@ -1271,7 +1270,6 @@
                         let globalKinds = [];
                         globalVacancies = data;
                         const findAllKindsOfVacancies = vacancies => {
-                            console.log(vacancies);
                             for (let i = 0; i < vacancies.vacancies.length; i++) {
                                 let currentKind = vacancies.vacancies[i].kind;
                                 if (!globalKinds.includes(currentKind)) globalKinds.push(currentKind);
@@ -1312,7 +1310,6 @@
                                 reserveBranch = true;
                                 addBackButtonMechanics(e.target);
                                 includeCurrentTemplate(removeDigitsAndUnderscore(e.target.id));
-                                console.log(e.target.id);
                             }));
                         };
                         addListenerToAllKindReserveButtons();
@@ -1505,8 +1502,6 @@
             };
             const validateBirthday = date => {
                 let formattedDate = formateDate(date);
-                console.log("findAge(formattedDate) < 18", findAge(formattedDate) < 18);
-                console.log(findAge(formattedDate));
                 if (findAge(formattedDate) < 18) {
                     hiddenCalendarInput();
                     return findAge(formattedDate);
@@ -1573,32 +1568,17 @@
                     addMessagesAfterUserAnswers(questionsArray);
                     checkFinalAnswerMessage();
                     addResumeBlock();
-                    console.log("questionsCounter", questionsCounter);
-                    console.log("fixedQuestionsCounter", fixedQuestionsCounter);
-                    console.log("answersCounter", answersCounter);
-                    console.log("allQuestionsCounter", allQuestionsCounter);
-                    console.log("questionsCounter+1", questionsCounter + 1);
-                    console.log("fixedQuestionsCounter", fixedQuestionsCounter);
-                    console.log("questionsCounter+1 > fixedQuestionsCounter", questionsCounter + 1 > fixedQuestionsCounter);
-                    console.log("questionsCounter-1 === answersCounter", questionsCounter - 1 === answersCounter);
-                    console.log("questionsArray[questionsCounter-1]", questionsArray[questionsCounter - 1]);
-                    console.log("questionsArray[questionsCounter+1]", questionsArray[questionsCounter + 1]);
-                    console.log("questionsArray[questionsCounter]", questionsArray[questionsCounter]);
-                    console.log("current quetion", questionsArray[questionsCounter + 1]);
-                    console.log("questionsArray", questionsArray);
                     if (withAnswers === false) {
                         if (validateAdditionalAnswers(chatInput.value)) addUserMessageToChat(chatInput.value);
                         writeAnswerToPostDataObject();
                         addUserFreeAnswerToPostVacancyObject(questionsArray[questionsCounter - 1], chatInput.value);
                     }
-                    console.log(postVacancyObject);
                 }
                 chatInput.value = "";
                 deleteErrorMessagesInChat();
             };
             const addUserFreeAnswerToPostVacancyObject = (currentQuestion, inputValue) => {
                 let currentQuestionKey = `q${questionsCounter - fixedQuestionsCounter}`;
-                console.log("currentQuestionKey", currentQuestionKey);
                 postVacancyObject[`${currentQuestionKey}`] = {
                     [`${currentQuestion}`]: `${inputValue}`,
                     point: null
@@ -1783,13 +1763,11 @@
                         addResumeBlock();
                     }
                     setTimeout(delayedFunction, 300);
-                    console.log("true");
                 } else if (validateBirthday(dateInput.value) < 18) errorValidateBirthdayAge();
             }));
             const addListenerToButtonGetIntoTheDatabase = () => {
                 const button = document.querySelector(".error-message-age-button");
                 button.addEventListener("click", (() => {
-                    console.log("Запись в резерв");
                     reserveBranch = true;
                     deleteErrorMessagesInChat();
                     writeActualBirthDate(dateInput.value);
@@ -1833,7 +1811,7 @@
                     new Promise((function(resolve, reject) {
                         function showButtons() {
                             const chatMessagesBlock = document.querySelector(".post-request-vacancy-page__messages-container");
-                            chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="change-number-container phone-buttons-show-animations">\n\t\t\t\t\t<button class="route-button route-button-main-style button-effect actual-number-button">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Так, ${dataPhone} - це актуальный номер</div>\n\t\t\t\t\t</button>\n\t\t\t\t\t<button class="route-button route-button-main-style button-effect no-actual-number-button">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Ні, хочу вказати інший номер</div>\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t\t`);
+                            chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="change-number-container phone-buttons-show-animations">\n\t\t\t\t\t<button class="route-button route-button-main-style actual-number-button">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Так, ${dataPhone} - це актуальний номер</div>\n\t\t\t\t\t</button>\n\t\t\t\t\t<button class="route-button route-button-main-style no-actual-number-button">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Ні, хочу вказати інший номер</div>\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t\t`);
                             const actualNumberButton = document.querySelector(".actual-number-button");
                             const noActualNumberButton = document.querySelector(".no-actual-number-button");
                             const numberButtonsArray = [ actualNumberButton, noActualNumberButton ];
@@ -2061,7 +2039,7 @@
                     const allVariansInChat = document.querySelectorAll(".question-variant");
                     for (let item of allVariansInChat) item.remove();
                     const addQuestionWithAnswers = (currentQuestion, a, b, c) => {
-                        chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">\n\t\t\t\t\t<div class="answers-variants-container">\n\t\t\t\t\t\t<div class="main-message-style app-message">${currentQuestion}</div>\n\t\t\t\t\t\t\t<div class="answers-to-quetion-container">\n\t\t\t\t\t\t\t\t<div variant="a" class="main-message-style app-message question-variant"><span>Варіант 1:</span> ${a}</div>\n\t\t\t\t\t\t\t\t<div variant="b" class="main-message-style app-message question-variant"><span>Варіант 2:</span> ${b}</div>\n\t\t\t\t\t\t\t\t<div variant="c" class="main-message-style app-message question-variant"><span>Варіант 3:</span> ${c}</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t`);
+                        chatMessagesBlock.insertAdjacentHTML("beforeend", `\n\t\t\t\t<div class="post-request-vacancy-page__message-element app-message__container bot-message-animation">\n\t\t\t\t\t<div class="answers-variants-container">\n\t\t\t\t\t\t<div class="variants-question main-message-style">${currentQuestion}</div>\n\t\t\t\t\t\t<div class="answers-to-quetion-container">\n\t\t\t\t\t\t\t<div variant="a" class="main-message-style question-variant"><span>Варіант 1:</span> ${a}</div>\n\t\t\t\t\t\t\t<div variant="b" class="main-message-style question-variant"><span>Варіант 2:</span> ${b}</div>\n\t\t\t\t\t\t\t<div variant="c" class="main-message-style question-variant"><span>Варіант 3:</span> ${c}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t`);
                     };
                     addQuestionWithAnswers(currentQuestion, a, b, c);
                     addListenerToAnswers(currentQuestion);
@@ -2167,10 +2145,7 @@
             };
             const checkActiveCheckbox = () => {
                 let checkbox = document.querySelector(".check-request-vacancy-page__politics-input");
-                if (checkbox.checked) {
-                    console.log("checkbox active");
-                    return true;
-                }
+                if (checkbox.checked) return true;
             };
             const noCheckActiveCheckboxMessage = () => {
                 let message = document.querySelector(".check-request-vacancy-page__politics-message");
@@ -2187,19 +2162,17 @@
             const sendObjectDataToServer = () => {
                 const checkRequestVacancyButton = document.querySelector(".check-request-vacancy-page__request-button");
                 checkRequestVacancyButton.addEventListener("click", (() => {
+                    console.log(postVacancyObject);
                     if (checkActiveCheckbox() === true) {
-                        console.log("Send", postVacancyObject);
                         writeNewDataToPostVacancyObject();
-                        addWhitePreloaderBackground();
-                        addPreloaderInChat();
                         fetchPostData(postVacancyObject, currentVacancyID);
-                    } else {
-                        noCheckActiveCheckboxMessage();
-                        console.log("checkbox not active");
-                    }
+                    } else noCheckActiveCheckboxMessage();
                 }));
             };
             sendObjectDataToServer();
+            const validateAllFieldsOnCheckPage = (name, phone, city, birthday) => {
+                if (!validateBirthdayOnCheckPage(birthday) || !validatePhoneOnCheckPage(phone) || !validateCity(city) || !validateName(name) || findAgeOnCheckPage(birthday) < 18) return false; else return true;
+            };
             function fetchPostData(objectData, vacancyID) {
                 let apiPostDataURL = "";
                 if (reserveBranch === false) apiPostDataURL = `${actualHost}/questionnaire/${currentTelegramID}/${currentPassword}/${vacancyID}`; else if (reserveBranch === true) {
@@ -2208,7 +2181,6 @@
                 }
                 const data = objectData;
                 objectData.kind = currentVacancyKind.toLowerCase();
-                console.log(data);
                 const requestOptions = {
                     method: "POST",
                     headers: {
@@ -2216,17 +2188,21 @@
                     },
                     body: JSON.stringify(data)
                 };
-                fetch(apiPostDataURL, requestOptions).then((response => {
-                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                    return response.json();
-                })).then((data => {
-                    removePreloaderInChat();
+                if (validateAllFieldsOnCheckPage(data.name, data.feedback_phone, data.city, data.birthday)) {
                     addWhitePreloaderBackground();
-                    showMainMessage(`\n\t\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\t\tЗаявка успішно надіслана. Перевірити статус, свої анкетні дані, або відкликати заявку ви можете в особистому кабінеті\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="route-button main-message-template-style__home-button route-button-main-style button-effect">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Зрозуміло</div>\n\t\t\t\t\t</button>\n\t\t\t\t`);
-                })).catch((error => {
-                    console.error("Помилка під час виконання POST-запиту:", error);
-                    showMainMessage(errorMessage);
-                }));
+                    addPreloaderInChat();
+                    fetch(apiPostDataURL, requestOptions).then((response => {
+                        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                        return response.json();
+                    })).then((data => {
+                        removePreloaderInChat();
+                        addWhitePreloaderBackground();
+                        showMainMessage(`\n\t\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\t\tЗаявка успішно надіслана. Перевірити статус, свої анкетні дані, або відкликати заявку ви можете в особистому кабінеті\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="route-button main-message-template-style__home-button route-button-main-style button-effect">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>Зрозуміло</div>\n\t\t\t\t\t</button>\n\t\t\t\t`);
+                    })).catch((error => {
+                        console.error("Помилка під час виконання POST-запиту:", error);
+                        showMainMessage(errorMessage);
+                    }));
+                }
             }
             const clearCheckQuestionsArray = () => {
                 checkQuestionsArray = [];
@@ -2341,7 +2317,6 @@
                     if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
                     return response.json();
                 })).then((data => {
-                    console.log(data);
                     if (validateResponseAfterDeleteAdd(data)) showMainMessage(`\n\t\t\t\t\t<div class="main-message-template-style__message">\n\t\t\t\t\t\tВаша заявка успішно видалена\n\t\t\t\t\t</div>\n\t\t\t\t\t<button class="route-button main-message-template-style__home-button route-button-main-style button-effect">\n\t\t\t\t\t\t<div id="circle"></div>\n\t\t\t\t\t\t<div>На головну</div>\n\t\t\t\t\t</button>\n\t\t\t\t`); else setTimeout((function() {
                         deleteAddInCabinet();
                     }), 2e3);

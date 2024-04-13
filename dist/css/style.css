@@ -1853,8 +1853,12 @@ section::-webkit-scrollbar-thumb {
 
 .post-request-vacancy-page__chat-container {
   height: 100%;
-  width: 768px;
-  position: relative;
+  max-width: 768px;
+  position: absolute;
+  bottom: 0px;
+  left: center;
+  width: 100%;
+  padding: 3.75rem 0 3.125rem 0;
 }
 
 .post-request-vacancy-page__main-container {
@@ -2047,6 +2051,7 @@ section::-webkit-scrollbar-thumb {
 }
 
 .answers-variants-container {
+  margin-top: 0.9375rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2056,19 +2061,24 @@ section::-webkit-scrollbar-thumb {
           flex-direction: column;
 }
 
+.variants-question {
+  background-color: rgb(255, 221, 0);
+}
+
 .question-variant {
   border: 3px solid transparent;
   cursor: pointer;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
-  background-color: #ffe875;
+  background-color: rgb(245, 245, 245);
+  border: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 .question-variant:hover {
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
   background-color: rgba(255, 221, 0, 0.6);
-  border: 3px solid rgb(255, 221, 0);
+  border: 2px solid rgb(255, 221, 0);
 }
 
 .question-variant span {
@@ -2296,7 +2306,7 @@ section::-webkit-scrollbar-thumb {
 }
 
 .user-message {
-  background-color: rgba(255, 229, 61, 0.3);
+  background-color: rgba(255, 236, 116, 0.829);
   max-width: 80%;
   text-align: right;
   overflow-wrap: break-word;
@@ -2572,6 +2582,38 @@ section::-webkit-scrollbar-thumb {
   width: 100%;
   background-color: #fff;
   z-index: 100;
+}
+
+.actual-number-button {
+  background-color: rgb(245, 245, 245);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-weight: 500;
+  min-height: 2.5625rem;
+  height: 2.5625rem;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+.actual-number-button:hover {
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  background-color: rgb(255, 221, 0);
+}
+
+.no-actual-number-button {
+  background-color: rgb(245, 245, 245);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-weight: 500;
+  min-height: 2.5625rem;
+  height: 2.5625rem;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+.no-actual-number-button:hover {
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  background-color: rgb(255, 221, 0);
 }
 
 .check-request-vacancy-page__container {
