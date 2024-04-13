@@ -16,7 +16,7 @@
 			bottom: 0px;
 			left: center;
 			width: 100%;
-			padding: toRem(60) 0 toRem(50) 0;
+			padding: toRem(60) 0 toRem(10) 0;
 		}
 		&__main-container {
 			height: 100%;
@@ -317,7 +317,7 @@
 }
 
 .padding-message-container-chat {
-	padding: toRem(15) toRem(5) toRem(140) toRem(5);
+	padding: toRem(15) toRem(5) toRem(70) toRem(5);
 	transition: all 0.3s ease 0s;
 }
 
@@ -406,6 +406,7 @@
 		flex-direction: column;
 		align-items: center;
 		gap: toRem(10);
+		padding-bottom: toRem(30);
 	}
 	&__button {
 		width: 100%;
