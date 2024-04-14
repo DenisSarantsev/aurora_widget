@@ -1552,6 +1552,10 @@
             sendMessageButton.addEventListener("click", (() => {
                 if (answersCounter === -1) validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage(); else if (answersCounter === 1) validateCity(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateCityMessage(); else if (answersCounter > 2) validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
                 chatInput.blur();
+                document.querySelector(".header").classList.toggle("red-header");
+            }));
+            document.addEventListener("click", (event => {
+                if (event.target !== chatInput && event.target !== sendMessageButton) chatInput.blur();
             }));
             const addAnswersAndQuestionsToChat = () => {
                 if (questionsCounter + 1 <= fixedQuestionsCounter) {

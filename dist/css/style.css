@@ -1136,6 +1136,10 @@ section::-webkit-scrollbar-thumb {
   padding-bottom: 3.75rem;
 }
 
+.red-header {
+  background-color: red;
+}
+
 @-webkit-keyframes headerMargin {
   0% {
     margin-top: -9.375rem;
