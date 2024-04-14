@@ -5,18 +5,18 @@
 		left: 0;
 		&__chat-container {
 			// Старі стилі
-			// height: 100%;
-			// width: 768px;
-			// position: relative;
+			height: 100%;
+			width: 768px;
+			position: relative;
 
 			// Нові стилі
-			height: 100%;
-			max-width: 768px;
-			position: absolute;
-			bottom: 0px;
-			left: center;
-			width: 100%;
-			padding: toRem(60) 0 toRem(10) 0;
+			// height: 100%;
+			// max-width: 768px;
+			// position: absolute;
+			// bottom: 0px;
+			// left: center;
+			// width: 100%;
+			// padding: toRem(60) 0 toRem(10) 0;
 		}
 		&__main-container {
 			height: 100%;
@@ -81,7 +81,7 @@
 			background-color: inherit;
 		}
 		&__send-message {
-
+			
 		}
 		&__send-message-image {
 			-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -389,8 +389,8 @@
 	overflow-wrap: break-word;
 	&__container {
 		width: 100%;
-		// display: flex;
-		// justify-content: end;
+		display: flex;
+		justify-content: end;
 	}
 }
 

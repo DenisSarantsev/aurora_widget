@@ -1136,8 +1136,10 @@ section::-webkit-scrollbar-thumb {
   padding-bottom: 3.75rem;
 }
 
-.red-header {
-  background-color: red;
+.test-button {
+  width: 30px;
+  height: 30px;
+  background-color: rgb(255, 221, 0);
 }
 
 @-webkit-keyframes headerMargin {
@@ -1162,6 +1164,7 @@ section::-webkit-scrollbar-thumb {
 
 .header {
   z-index: 100;
+  background-color: #FFFFFF;
   box-shadow: 0px 0px 15px 5px rgba(194, 194, 194, 0.75);
   -webkit-box-shadow: 0px 0px 15px 5px rgba(194, 194, 194, 0.75);
   -moz-box-shadow: 0px 0px 15px 5px rgba(194, 194, 194, 0.75);
@@ -1856,12 +1859,8 @@ section::-webkit-scrollbar-thumb {
 
 .post-request-vacancy-page__chat-container {
   height: 100%;
-  max-width: 768px;
-  position: absolute;
-  bottom: 0px;
-  left: center;
-  width: 100%;
-  padding: 3.75rem 0 0.625rem 0;
+  width: 768px;
+  position: relative;
 }
 
 .post-request-vacancy-page__main-container {
@@ -2317,6 +2316,12 @@ section::-webkit-scrollbar-thumb {
 
 .user-message__container {
   width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: end;
 }
 
 .final-message {

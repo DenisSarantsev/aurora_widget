@@ -1,4 +1,5 @@
 // Заголовки, загальні БЕМ блоки та інше...
+
 body {
 	height: 100%;
 	background-color: $backGroundColor;
@@ -684,6 +685,9 @@ section {
 	}
 }
 
-.red-header {
-	background-color: red;
+
+.test-button {
+	width: 30px;
+	height: 30px;
+	background-color: $mainYellow;
 }

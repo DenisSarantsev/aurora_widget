@@ -770,7 +770,9 @@ chatInput.addEventListener("keyup", (event) => {
 })
 // При клике на стрелочку текстового инпута
 const sendMessageButton = document.querySelector(".post-request-vacancy-page__send-message");
-sendMessageButton.addEventListener("click", () => {
+sendMessageButton.addEventListener("click", (event) => {
+	event.stopPropagation();
+	// console.log(event.target)
 	if ( answersCounter === -1 ) {
 		validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage();
 	} else if ( answersCounter === 1 ) {
@@ -778,15 +780,32 @@ sendMessageButton.addEventListener("click", () => {
 	} else if ( answersCounter > 2 ) {
 		validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
 	}
-	chatInput.blur();
-	document.querySelector(".header").classList.toggle("red-header");
 })
+
+// const sendMessageTestButton = document.querySelector(".test-button");
+// sendMessageTestButton.addEventListener("click", (event) => {
+// 	console.log(event.target)
+// 	event.preventDefault
+// 	if ( answersCounter === -1 ) {
+// 		validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage();
+// 	} else if ( answersCounter === 1 ) {
+// 		validateCity(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateCityMessage();
+// 	} else if ( answersCounter > 2 ) {
+// 		validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
+// 	}
+// })
+
+// document.addEventListener("click", (event) => {
+// 	console.log(event.target)
+// })
+
+
 // При клике в любом месте кроме кнопки и инпута
-document.addEventListener("click", (event) => {
-	if ( event.target !== chatInput && event.target !== sendMessageButton ) {
-		chatInput.blur();
-	}
-})
+// document.addEventListener("click", (event) => {
+// 	if ( event.target !== chatInput && event.target !== sendMessageButton ) {
+// 		chatInput.blur();
+// 	}
+// })
 // Данная функция отвечает за добавление вопросов и ответов в чат, записывает данные в обьект для отправки на бэк и вызывает функицю для перехода к следующей странице после ответа не все вопросы
 const addAnswersAndQuestionsToChat = () => {
 	if ( questionsCounter+1 <= fixedQuestionsCounter ) {
