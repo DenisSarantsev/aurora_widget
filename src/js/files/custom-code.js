@@ -778,6 +778,7 @@ sendMessageButton.addEventListener("click", () => {
 	} else if ( answersCounter > 2 ) {
 		validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
 	}
+	chatInput.blur();
 })
 // Данная функция отвечает за добавление вопросов и ответов в чат, записывает данные в обьект для отправки на бэк и вызывает функицю для перехода к следующей странице после ответа не все вопросы
 const addAnswersAndQuestionsToChat = () => {

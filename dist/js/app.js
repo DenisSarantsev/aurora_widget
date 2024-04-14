@@ -1551,6 +1551,7 @@
             const sendMessageButton = document.querySelector(".post-request-vacancy-page__send-message");
             sendMessageButton.addEventListener("click", (() => {
                 if (answersCounter === -1) validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage(); else if (answersCounter === 1) validateCity(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateCityMessage(); else if (answersCounter > 2) validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
+                chatInput.blur();
             }));
             const addAnswersAndQuestionsToChat = () => {
                 if (questionsCounter + 1 <= fixedQuestionsCounter) {
