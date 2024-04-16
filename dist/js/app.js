@@ -1545,14 +1545,45 @@
                 scrollChatToBottom();
             };
             const chatInput = document.querySelector(".post-request-vacancy-page__input");
-            chatInput.addEventListener("keyup", (event => {
-                if (event.key === "Enter") if (answersCounter === -1) validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage(); else if (answersCounter === 1) validateCity(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateCityMessage(); else if (answersCounter > 2) validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
-            }));
             const sendMessageButton = document.querySelector(".post-request-vacancy-page__send-message");
+            chatInput.addEventListener("keyup", (event => {
+                if (event.key === "Enter") {
+                    if (answersCounter === -1) validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage(); else if (answersCounter === 1) validateCity(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateCityMessage(); else if (answersCounter > 2) validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
+                    scrollElementToBottom();
+                    setTimeout((function() {
+                        scrollElementToBottom();
+                    }), 3e3);
+                }
+            }));
             sendMessageButton.addEventListener("click", (event => {
                 event.stopPropagation();
                 if (answersCounter === -1) validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage(); else if (answersCounter === 1) validateCity(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateCityMessage(); else if (answersCounter > 2) validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
+                scrollElementToBottom();
+                setTimeout((function() {
+                    scrollElementToBottom();
+                }), 3e3);
             }));
+            document.addEventListener("click", (event => {
+                console.log(event.target);
+            }));
+            const scrollElementToBottom = () => {
+                let viewportHeight = window.innerHeight;
+                let htmlElement = document.documentElement;
+                let htmlHeight = htmlElement.offsetHeight;
+                htmlElement.scrollTop = htmlHeight - viewportHeight;
+                let bodyElement = document.body;
+                let bodyHeight = bodyElement.offsetHeight;
+                bodyElement.scrollTop = bodyHeight - viewportHeight;
+                let wrapperElement = document.querySelector(".wrapper");
+                let wrapperHeight = wrapperElement.offsetHeight;
+                wrapperElement.scrollTop = wrapperHeight - viewportHeight;
+                let mainElement = document.querySelector(".page");
+                let mainHeight = mainElement.offsetHeight;
+                mainElement.scrollTop = mainHeight - viewportHeight;
+                let sectionElement = document.querySelector(".post-request-vacancy-page");
+                let sectionHeight = sectionElement.offsetHeight;
+                sectionElement.scrollTop = sectionHeight - viewportHeight;
+            };
             const addAnswersAndQuestionsToChat = () => {
                 if (questionsCounter + 1 <= fixedQuestionsCounter) {
                     postVariablesArray[questionsCounter] = chatInput.value;

@@ -756,6 +756,8 @@ const errorValidateFileSize = () => {
 
 // Получаем инпут для ввода текста, и записываем значение при отправке сообщения и вызываем функцию для вывода нового вопроса в чате
 const chatInput = document.querySelector(".post-request-vacancy-page__input");
+const sendMessageButton = document.querySelector(".post-request-vacancy-page__send-message");
+
 // При нажатии кнопки Enter текствого инпута
 chatInput.addEventListener("keyup", (event) => {
 	if ( event.key === "Enter" ) {
@@ -766,10 +768,15 @@ chatInput.addEventListener("keyup", (event) => {
 		} else if ( answersCounter > 2 ) {
 			validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
 		}
+
+		scrollElementToBottom();
+		setTimeout(function() {
+			scrollElementToBottom();
+    }, 3000); 
 	}
 })
+
 // При клике на стрелочку текстового инпута
-const sendMessageButton = document.querySelector(".post-request-vacancy-page__send-message");
 sendMessageButton.addEventListener("click", (event) => {
 	event.stopPropagation();
 	// console.log(event.target)
@@ -780,32 +787,52 @@ sendMessageButton.addEventListener("click", (event) => {
 	} else if ( answersCounter > 2 ) {
 		validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
 	}
+
+	scrollElementToBottom();
+	setTimeout(function() {
+		scrollElementToBottom();
+	}, 3000); 
 })
 
-// const sendMessageTestButton = document.querySelector(".test-button");
-// sendMessageTestButton.addEventListener("click", (event) => {
-// 	console.log(event.target)
-// 	event.preventDefault
-// 	if ( answersCounter === -1 ) {
-// 		validateName(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateNameMessage();
-// 	} else if ( answersCounter === 1 ) {
-// 		validateCity(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateCityMessage();
-// 	} else if ( answersCounter > 2 ) {
-// 		validateAdditionalAnswers(chatInput.value) ? addAnswersAndQuestionsToChat() : errorValidateAdditionalAnswersMessage();
-// 	}
-// })
+// Определяем устройство пользователя и скрываем кнопку
+// const userAgent = navigator.userAgent;
+// if (userAgent.match(/iPhone|iPad|iPod/i)) {
+// 	document.querySelector(".post-request-vacancy-page__send-message").classList.add("_hidden");
+// } else {} 
 
-// document.addEventListener("click", (event) => {
-// 	console.log(event.target)
-// })
+document.addEventListener("click", (event) => {
+	console.log(event.target)
+})
 
 
-// При клике в любом месте кроме кнопки и инпута
-// document.addEventListener("click", (event) => {
-// 	if ( event.target !== chatInput && event.target !== sendMessageButton ) {
-// 		chatInput.blur();
-// 	}
-// })
+// --------------- Скролл вниз
+const scrollElementToBottom = () => {
+	let viewportHeight = window.innerHeight;
+
+	let htmlElement = document.documentElement;
+	let htmlHeight = htmlElement.offsetHeight;
+	htmlElement.scrollTop = htmlHeight - viewportHeight;
+
+	let bodyElement = document.body;
+	let bodyHeight = bodyElement.offsetHeight;
+	bodyElement.scrollTop = bodyHeight - viewportHeight;
+
+	let wrapperElement = document.querySelector(".wrapper");
+	let wrapperHeight = wrapperElement.offsetHeight;
+	wrapperElement.scrollTop = wrapperHeight - viewportHeight;
+
+	let mainElement = document.querySelector(".page");
+	let mainHeight = mainElement.offsetHeight;
+	mainElement.scrollTop = mainHeight - viewportHeight;
+
+	let sectionElement = document.querySelector(".post-request-vacancy-page");
+	let sectionHeight = sectionElement.offsetHeight;
+	sectionElement.scrollTop = sectionHeight - viewportHeight;
+}
+
+
+
+
 // Данная функция отвечает за добавление вопросов и ответов в чат, записывает данные в обьект для отправки на бэк и вызывает функицю для перехода к следующей странице после ответа не все вопросы
 const addAnswersAndQuestionsToChat = () => {
 	if ( questionsCounter+1 <= fixedQuestionsCounter ) {

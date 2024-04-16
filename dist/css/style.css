@@ -215,6 +215,7 @@ h6 {
 
 body {
   height: 100%;
+  overflow: hidden;
   background-color: #f8f9f9;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
@@ -263,7 +264,7 @@ section::-webkit-scrollbar-thumb {
 
 .wrapper {
   height: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .button {
@@ -1270,7 +1271,7 @@ section::-webkit-scrollbar-thumb {
   width: 100%;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
-  position: fixed;
+  position: absolute;
   bottom: 0;
 }
 
@@ -1915,8 +1916,8 @@ section::-webkit-scrollbar-thumb {
 
 .post-request-vacancy-page__input-container {
   max-width: 767.98px;
-  position: fixed;
-  bottom: 3.75rem;
+  position: relative;
+  bottom: 0rem;
   height: auto;
   width: 100%;
   display: -webkit-box;
@@ -3492,7 +3493,7 @@ section::-webkit-scrollbar-thumb {
   }
 
   .post-request-vacancy-page__input-container {
-    bottom: 3.1875rem;
+    bottom: 0rem;
   }
 
   .post-request-vacancy-page__phone-input-container {

@@ -50,8 +50,8 @@
 		}
 		&__input-container {
 			max-width: 767.98px;
-			position: fixed;
-			bottom: toRem(60);
+			position: relative;
+			bottom: toRem(0);
 			height: auto;
 			width: 100%;
 			display: flex;
@@ -67,7 +67,7 @@
 				transition: all 0.3s ease 0s;
 			}
 			@media (max-width: em(500)){
-				bottom: toRem(51)
+				bottom: toRem(0)
 			}
 		}
 		&__input {
